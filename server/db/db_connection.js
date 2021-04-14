@@ -2,7 +2,8 @@ const mysql      = require('mysql');
 const connection = mysql.createConnection({
     host     : 'den1.mysql3.gear.host',
     user     : 'movieclubdb',
-    password : 'Zm246A6W~-pX'
+    password : 'Zm246A6W~-pX',
+    database: 'movieclubdb'
 });
 
 connection.connect(function(err) {
@@ -13,3 +14,5 @@ connection.connect(function(err) {
 
     console.log('Connected to database!');
 });
+
+module.exports = connection;

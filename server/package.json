@@ -8,12 +8,20 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "mysql": "^2.18.1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/panaitescu-paul/BA-Project-2021.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "socket.io": "^4.0.1"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.3",
+    "utf-8-validate": "^5.0.4"
+  },
+  "devDependencies": {
+    "bad-words": "^3.0.4"
   }
 }
