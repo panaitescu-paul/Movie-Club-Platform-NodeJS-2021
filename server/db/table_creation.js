@@ -9,6 +9,3 @@ connection.query(movie_club, function (err, result) {
     if (err) throw err;
     console.log("Created All Tables!");
 });
-
-
-// test
