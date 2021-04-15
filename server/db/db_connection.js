@@ -1,9 +1,9 @@
 const mysql      = require('mysql');
 const connection = mysql.createConnection({
-    host     : 'den1.mysql3.gear.host',
-    user     : 'movieclubdb',
-    password : 'Zm246A6W~-pX',
-    database: 'movieclubdb'
+    host     : 'den1.mysql6.gear.host',
+    user     : 'movieclubdb1',
+    password : 'Ll7zX8!5sel!',
+    database: 'movieclubdb1'
 });
 
 connection.connect(function(err) {
