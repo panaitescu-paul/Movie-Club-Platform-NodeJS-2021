@@ -15,4 +15,5 @@ connection.connect(function(err) {
     console.log('Connected to database!');
 });
 
-module.exports = connection;
+const movie_club = require('./movie_club.sql');
+module.exports = {connection, movie_club};

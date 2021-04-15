@@ -1,8 +1,14 @@
-const conn = require("./db_connection");
+// const conn = require("./db_connection");
+// const conn2 = require("./movie_club.sql");
 
-const createRoomTable = "CREATE TABLE IF NOT EXISTS Room(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) NOT NULL)";
+// conn.query();
+const {connection} = require("./db_connection");
+const {movie_club} = require("./db_connection");
 
-conn.query(createRoomTable, function (err, result) {
+connection.query(movie_club, function (err, result) {
     if (err) throw err;
-    console.log("Room Table created");
+    console.log("Created All Tables!");
 });
+
+
+// test
