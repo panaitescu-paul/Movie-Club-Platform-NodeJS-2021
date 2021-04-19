@@ -196,3 +196,43 @@ app.put("/review/:id", (req, res) => {
         }
     });
 });
+
+/**
+ * DELETE Review by id
+ *
+ * Input:   Id of the Review to delete
+ * Output:  Success if Review was successfully deleted!
+ * Erros:   Review with this ID does not exist!
+ *          This Review could not be deleted!
+ */
+app.delete("/review/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sqlGet = `SELECT * FROM review WHERE id = ?`;
+    let sqlDelete = `DELETE FROM review WHERE id = ?`;
+    db.all(sqlGet, [req.params.id], (err, review) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!review.length) {
+                res.status(404).json({
+                    message: `Review with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                db.run(sqlDelete, req.params.id, (err) => {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Review could not be deleted!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
