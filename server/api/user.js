@@ -66,7 +66,7 @@ app.post("/user", (req, res) => {
 */
 app.get("/user", (req, res) => {
     let sql = `SELECT * FROM user`;
-    db.all(sql, [], (err, users) => {
+    connection.query(sql, [], (err, users) => {
         if (err) {
             res.status(400).json({
                 message: 'There are no Users in the DB!',
@@ -92,7 +92,7 @@ app.get("/user/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sql = `SELECT * FROM user WHERE id = ?`;
 
-    db.all(sql, [req.params.id], (err, user) => {
+    connection.query(sql, [req.params.id], (err, user) => {
         if (err) {
             res.status(400).json({
                 error: err
@@ -100,9 +100,10 @@ app.get("/user/:id", (req, res) => {
             console.log(err);
         } else {
             if(user.length) {
-                res.status(200).json({
-                    user
-                });
+                res.status(200).send(user);
+                // res.status(200).json({
+                //     user
+                // });
             } else {
                 res.status(404).json({
                     message: `User with this ID (${req.params.id}) does not exist!`
@@ -137,7 +138,7 @@ app.put("/user/:id", (req, res) => {
     let sqlGet = `SELECT * FROM user WHERE id = ?`;
     let sqlUpdate = `UPDATE user SET firstName = ?, lastName = ?, email = ?, username = ?, 
                     birthday = ?, gender = ?, country = ?, isAdmin = ?, WHERE id = ?`;
-    db.all(sqlGet, [req.params.id], (err, user) => {
+    connection.query(sqlGet, [req.params.id], (err, user) => {
         if (err) {
             res.status(400).json({
                 error: err
@@ -149,7 +150,7 @@ app.put("/user/:id", (req, res) => {
                     message: `User with this ID (${req.params.id}) does not exist!`
                 });
             } else {
-                db.run(sqlUpdate, [firstName, firstName, lastName, email, username, 
+                connection.query(sqlUpdate, [firstName, firstName, lastName, email, username, 
                                    birthday, gender, country, isAdmin, req.params.id], (err) => {
                     if (err) {
                         res.status(400).json({
@@ -178,7 +179,7 @@ app.delete("/user/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sqlGet = `SELECT * FROM user WHERE id = ?`;
     let sqlDelete = `DELETE FROM user WHERE id = ?`;
-    db.all(sqlGet, [req.params.id], (err, user) => {
+    connection.query(sqlGet, [req.params.id], (err, user) => {
         if (err) {
             res.status(400).json({
                 error: err
@@ -190,7 +191,7 @@ app.delete("/user/:id", (req, res) => {
                     message: `User with this ID (${req.params.id}) does not exist!`
                 });
             } else {
-                db.run(sqlDelete, req.params.id, (err) => {
+                connection.query(sqlDelete, req.params.id, (err) => {
                     if (err) {
                         res.status(400).json({
                             message: 'The User could not be deleted!',
