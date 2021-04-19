@@ -74,3 +74,34 @@ app.get("/user", (req, res) => {
         }
     });
 });
+
+/**
+* READ User by id
+*
+* Input:   id of the User
+* Output:  an User and their information,
+* Errors:  User with this ID does not exist!
+*/
+app.get("/user/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sql = `SELECT * FROM user WHERE id = ?`;
+
+    db.all(sql, [req.params.id], (err, user) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(user.length) {
+                res.status(200).json({
+                    user
+                });
+            } else {
+                res.status(404).json({
+                    message: `User with this ID (${req.params.id}) does not exist!`
+                });
+            }
+        }
+    });
+});
