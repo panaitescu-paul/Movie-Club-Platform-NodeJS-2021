@@ -15,21 +15,21 @@ CREATE TABLE IF NOT EXISTS user
     firstName VARCHAR(120),
     lastName  VARCHAR(120),
     email     VARCHAR(120) UNIQUE NOT NULL,
-    username  VARCHAR(120) DEFAULT email,
+    username  VARCHAR(120) UNIQUE DEFAULT 'email',
     password  VARCHAR(120),
     birthday  DATE,
     gender    VARCHAR(20),
     country   VARCHAR(120),
     isAdmin   BOOLEAN NOT NULL DEFAULT false,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+);
 
 CREATE TABLE IF NOT EXISTS room
 (
     id        INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name      VARCHAR(120),
+    name      VARCHAR(120) UNIQUE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+);
 
 -- Create tables with FK
 CREATE TABLE IF NOT EXISTS message
@@ -41,10 +41,10 @@ CREATE TABLE IF NOT EXISTS message
     modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES user (id)
-    ON DELETE CASCADE,
+        ON DELETE CASCADE,
     FOREIGN KEY (roomId) REFERENCES room (id)
-    ON DELETE CASCADE
-    );
+        ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS participants
 (
@@ -53,12 +53,18 @@ CREATE TABLE IF NOT EXISTS participants
     roomId     INTEGER NOT NULL,
     createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES user (id)
-    ON DELETE CASCADE,
+        ON DELETE CASCADE,
     FOREIGN KEY (roomId) REFERENCES room (id)
-    ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 
---
+CREATE TABLE IF NOT EXISTS admin
+(
+    id         INTEGER PRIMARY KEY AUTO_INCREMENT,
+    username  VARCHAR(120) UNIQUE,
+    password  VARCHAR(120),
+    createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- CREATE TABLE IF NOT EXISTS rating
 -- (
