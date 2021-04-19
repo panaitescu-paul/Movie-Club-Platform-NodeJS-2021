@@ -206,3 +206,13 @@ app.delete("/user/:id", (req, res) => {
         }
     });
 });
+
+
+app.listen(PORT, HOSTNAME, (err) => {
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log(`Server running at http://${HOSTNAME}:${PORT}/`);
+    }
+});
