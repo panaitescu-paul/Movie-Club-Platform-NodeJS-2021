@@ -1,3 +1,12 @@
+const connection = require("../db/db_connection");
+const express = require("express");
+const axios = require('axios');
+const bcrypt = require('bcrypt');
+const HOSTNAME = 'localhost';
+const PORT = 3000;
+let app = express();
+app.use(express.json());
+
 // TODO: add more cases to cover all errors
 // TODO: updatePassword(email, oldPassword, newPassword)
 
@@ -10,7 +19,7 @@
 /**
 * CREATE new User
 *
-* Input:   email, password
+* Input:   username, password
 * Output:  the Id of the new User,
 * Errors:  Email can not be null!
 *          Password can not be null!
@@ -18,11 +27,13 @@
 *          User could not be created!
 */
 app.post("/user", (req, res) => {
-    let email = req.body.email;
+    console.log(req.body.username);
+    console.log(req.body.password);
+    let username = req.body.username;
     let password = req.body.password;
-    let sql = `INSERT INTO user(email, password) VALUES(?, ?)`;
+    let sql = `INSERT INTO user(username, password) VALUES(?, ?);`;
 
-    db.run(sql, [email, password], function (err) {
+    connection.query(sql, [username, password], function (err, result) {
         if (err) {
             res.status(400).json({
                 message: 'The User could not be created!',
@@ -32,20 +43,15 @@ app.post("/user", (req, res) => {
         } else {
             console.log(`A new row has been inserted!`);
             // Get the last inserted User
-            axios.get(`http://localhost:3001/user/${this.lastID}`).then(response =>{
-                res.status(201).json({
-                    id: response.data.user[0].id,
-                    email: response.data.user[0].email,
-                    username: response.data.user[0].username,
-                    isAdmin: response.data.user[0].isAdmin,
-                    createdAt: response.data.user[0].createdAt
-                });
+            axios.get(`http://localhost:3000/user/${result.insertId}`).then(response =>{
+                console.log(response);
+                res.status(201).send(response.data[0]);
             }).catch(err =>{
                 if(err){
                     console.log(err);
                 }
                 res.status(400).json({
-                    message: `There is no User with the id ${this.lastID}`
+                    message: `There is no User with the id ${result.insertId}`
                 });
             });
         }
