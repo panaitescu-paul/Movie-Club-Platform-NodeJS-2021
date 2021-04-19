@@ -51,3 +51,26 @@ app.post("/user", (req, res) => {
         }
     });
 });
+
+/**
+* READ all Users
+*
+* Output:   an array with all Users and their information,
+* Errors:   There are no Users in the DB!
+*/
+app.get("/user", (req, res) => {
+    let sql = `SELECT * FROM user`;
+    db.all(sql, [], (err, users) => {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Users in the DB!',
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.status(200).json({
+                users
+            });
+        }
+    });
+});
