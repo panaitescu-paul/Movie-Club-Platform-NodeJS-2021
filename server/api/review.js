@@ -151,3 +151,48 @@ app.get("/review/:id", (req, res) => {
         }
     });
 });
+
+/**
+ * UPDATE Review by id
+ *
+ * Input:    id - Id of the Review
+ *           value - a number between 0-5
+ * Output:   Success if Review was successfully updated!
+ * Errors:   Title can not be null!
+ *           Content can not be null!
+ *           Review with this ID does not exist!
+ *           Review could not be updated!
+ */
+app.put("/review/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let title = req.body.title;
+    let content = req.body.content;
+    let sqlGet = `SELECT * FROM review WHERE id = ?`;
+    let sqlUpdate = `UPDATE review SET title = ?, content = ?, WHERE id = ?`;
+    db.all(sqlGet, [req.params.id], (err, review) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!review.length) {
+                res.status(404).json({
+                    message: `Review with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                db.run(sqlUpdate, [title, content, req.params.id], (err) => {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Review could not be updated!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
