@@ -105,3 +105,57 @@ app.get("/user/:id", (req, res) => {
         }
     });
 });
+
+// TODO: add more cases to cover all errors
+/**
+* UPDATE User by id
+*
+* Input:    id, firstName, lastName, email, username,
+*           birthday, gender, country, isAdmin
+* Output:   Success if User was successfully updated!
+* Errors:   Email can not be null!
+*           User with this ID does not exist!
+*           User with this Email already exists!
+*           The User could not be updated!
+*/
+app.put("/user/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let email = req.body.email;
+    let username = req.body.username;
+    let birthday = req.body.birthday;
+    let gender = req.body.gender;
+    let country = req.body.country;
+    let isAdmin = req.body.isAdmin;
+    let sqlGet = `SELECT * FROM user WHERE id = ?`;
+    let sqlUpdate = `UPDATE user SET firstName = ?, lastName = ?, email = ?, username = ?, 
+                    birthday = ?, gender = ?, country = ?, isAdmin = ?, WHERE id = ?`;
+    db.all(sqlGet, [req.params.id], (err, user) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!user.length) {
+                res.status(404).json({
+                    message: `User with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                db.run(sqlUpdate, [firstName, firstName, lastName, email, username, 
+                                   birthday, gender, country, isAdmin, req.params.id], (err) => {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The User could not be updated!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
