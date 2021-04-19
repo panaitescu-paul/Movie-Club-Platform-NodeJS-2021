@@ -40,11 +40,17 @@ app.post("/rating", (req, res) => {
                 res.status(404).json({
                     message: `User with this ID (${req.params.id}) does not exist!`
                 });
-            } else {
-                // TODO: add the next query here, if it doesn't work otherwise
             }
+            // else {
+            //     isUserFOund = 1;
+            //     // TODO: add the next query here, if it doesn't work otherwise
+            // }
         }
     });
+
+    // if(isUserFOund) {
+    //
+    // }
     // Check if there is a Movie with this id
     db.all(sqlGetMovie, [userId], (err, user) => {
         if (err) {
