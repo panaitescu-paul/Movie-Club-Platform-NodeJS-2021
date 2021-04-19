@@ -1,10 +1,11 @@
 const mysql      = require('mysql');
 const fs = require('fs');
+
 const connection = mysql.createConnection({
-    host     : 'den1.mysql6.gear.host',
-    user     : 'movieclubdb1',
-    password : 'Ll7zX8!5sel!',
-    database: 'movieclubdb1',
+    host:               'den1.mysql6.gear.host',
+    user:               'movieclubdb1',
+    password:           'Ll7zX8!5sel!',
+    database:           'movieclubdb1',
     multipleStatements: true
 });
 

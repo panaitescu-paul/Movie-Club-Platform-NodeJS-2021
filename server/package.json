@@ -13,6 +13,7 @@
     "url": "https://github.com/panaitescu-paul/BA-Project-2021.git"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "mysql": "^2.18.1",

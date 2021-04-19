@@ -1,5 +1,4 @@
 const connection = require("../db/db_connection");
-const mysql = require('mysql');
 const express = require("express");
 const bcrypt = require('bcrypt');
 const HOSTNAME = 'localhost';
