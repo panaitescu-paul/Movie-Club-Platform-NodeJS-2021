@@ -159,3 +159,43 @@ app.put("/user/:id", (req, res) => {
         }
     });
 });
+
+/**
+* DELETE User by id
+*
+* Input:   Id of the User to delete
+* Output:  Success if User was successfully deleted!
+* Erros:   User with this ID does not exist!
+*          This User could not be deleted!
+*/
+app.delete("/user/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sqlGet = `SELECT * FROM user WHERE id = ?`;
+    let sqlDelete = `DELETE FROM user WHERE id = ?`;
+    db.all(sqlGet, [req.params.id], (err, user) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!user.length) {
+                res.status(404).json({
+                    message: `User with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                db.run(sqlDelete, req.params.id, (err) => {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The User could not be deleted!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
