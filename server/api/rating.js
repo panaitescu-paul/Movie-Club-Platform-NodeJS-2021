@@ -147,3 +147,46 @@ app.get("/rating/:id", (req, res) => {
         }
     });
 });
+
+/**
+ * UPDATE Rating by id
+ *
+ * Input:    id - Id of the Rating
+ *           value - a number between 0-5
+ * Output:   Success if Rating was successfully updated!
+ * Errors:   The field Value must be a number between 0-5!
+ *           Rating with this ID does not exist!
+ *           The Rating could not be updated!
+ */
+app.put("/rating/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let value = req.body.value;
+    let sqlGet = `SELECT * FROM rating WHERE id = ?`;
+    let sqlUpdate = `UPDATE rating SET value = ?, WHERE id = ?`;
+    db.all(sqlGet, [req.params.id], (err, rating) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!rating.length) {
+                res.status(404).json({
+                    message: `Rating with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                db.run(sqlUpdate, [value, req.params.id], (err) => {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Rating could not be updated!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
