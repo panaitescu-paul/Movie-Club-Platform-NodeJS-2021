@@ -93,3 +93,26 @@ app.post("/rating", (req, res) => {
         }
     });
 });
+
+/**
+ * READ all Ratings
+ *
+ * Output:   an array with all Ratings and their information,
+ * Errors:   There are no Ratings in the DB!
+ */
+app.get("/rating", (req, res) => {
+    let sql = `SELECT * FROM rating`;
+    db.all(sql, [], (err, ratings) => {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Ratings in the DB!',
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.status(200).json({
+                ratings
+            });
+        }
+    });
+});
