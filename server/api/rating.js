@@ -190,3 +190,43 @@ app.put("/rating/:id", (req, res) => {
         }
     });
 });
+
+/**
+ * DELETE Rating by id
+ *
+ * Input:   Id of the Rating to delete
+ * Output:  Success if Rating was successfully deleted!
+ * Erros:   Rating with this ID does not exist!
+ *          This Rating could not be deleted!
+ */
+app.delete("/rating/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sqlGet = `SELECT * FROM rating WHERE id = ?`;
+    let sqlDelete = `DELETE FROM rating WHERE id = ?`;
+    db.all(sqlGet, [req.params.id], (err, rating) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!rating.length) {
+                res.status(404).json({
+                    message: `Rating with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                db.run(sqlDelete, req.params.id, (err) => {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Rating could not be deleted!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
