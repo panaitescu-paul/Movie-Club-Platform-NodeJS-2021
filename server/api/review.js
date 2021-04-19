@@ -120,3 +120,34 @@ app.get("/review", (req, res) => {
         }
     });
 });
+
+/**
+ * READ Review by id
+ *
+ * Input:   id of the Review
+ * Output:  an Review and their information,
+ * Errors:  Review with this ID does not exist!
+ */
+app.get("/review/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sql = `SELECT * FROM review WHERE id = ?`;
+
+    db.all(sql, [req.params.id], (err, review) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(review.length) {
+                res.status(200).json({
+                    review
+                });
+            } else {
+                res.status(404).json({
+                    message: `Review with this ID (${req.params.id}) does not exist!`
+                });
+            }
+        }
+    });
+});
