@@ -24,6 +24,7 @@
     "utf-8-validate": "^5.0.4"
   },
   "devDependencies": {
-    "bad-words": "^3.0.4"
+    "bad-words": "^3.0.4",
+    "nodemon": "^2.0.7"
   }
 }

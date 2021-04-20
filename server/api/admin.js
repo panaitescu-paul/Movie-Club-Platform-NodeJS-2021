@@ -1,6 +1,7 @@
 const connection = require("../db/db_connection");
 const express = require("express");
 const bcrypt = require('bcrypt');
+const axios = require('axios');
 const HOSTNAME = 'localhost';
 const PORT = 5000;
 let app = express();
@@ -11,9 +12,18 @@ app.post("/admin", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     let hashedPassword = bcrypt.hashSync(password, 10);
-    let stmt = `INSERT INTO admin(username, password) VALUES(?, ?);`;
+    let stmt = `INSERT INTO admin(username, password, createdAt) VALUES(?, ?, ?);`;
 
-    connection.query(stmt, [username, hashedPassword], function (err, result) {
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    let hours = ("0" + date.getHours()).slice(-2);
+    let minutes = ("0" + date.getMinutes()).slice(-2);
+    let seconds = ("0" + date.getSeconds()).slice(-2);
+    let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+
+    connection.query(stmt, [username, hashedPassword, createdAt], function (err, result) {
         if (err) {
             res.status(400).json({
                 message: 'The admin user could not be created!',
@@ -22,10 +32,15 @@ app.post("/admin", (req, res) => {
             console.log(err);
         } else {
             console.log("A new admin user record inserted, ID: " + result.insertId );
-            res.status(201).json({
-                id: result.insertId,
-                username: username,
-                password: hashedPassword
+            axios.get(`http://${HOSTNAME}:${PORT}/admin/${result.insertId}`).then(response =>{
+                res.status(201).send(response.data[0]);
+            }).catch(err =>{
+                if(err){
+                    console.log(err);
+                }
+                res.status(400).json({
+                    message: `There is no User with the id ${result.insertId}`
+                });
             });
         }
     });
