@@ -1,96 +1,175 @@
 USE movieclubdb1;
 -- USE movie_club;
 
--- DROP TABLE IF EXISTS user;
--- DROP TABLE IF EXISTS rating;
--- DROP TABLE IF EXISTS review;
--- DROP TABLE IF EXISTS message;
--- DROP TABLE IF EXISTS room;
--- DROP TABLE IF EXISTS participants;
+# Drop tables with FK
+DROP TABLE IF EXISTS rating;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS participant;
+DROP TABLE IF EXISTS movie_crew;
+DROP TABLE IF EXISTS movie_genre;
+DROP TABLE IF EXISTS movie_language;
+DROP TABLE IF EXISTS message;
+
+# Drop base tables
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS room;
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS crew;
+
 
 -- Create base tables
 CREATE TABLE IF NOT EXISTS user
 (
-    id        INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     firstName VARCHAR(120),
-    lastName  VARCHAR(120),
-    email     VARCHAR(120) UNIQUE NOT NULL,
-    username  VARCHAR(120) UNIQUE DEFAULT 'email',
-    password  VARCHAR(120),
-    birthday  DATE,
-    gender    VARCHAR(20),
-    country   VARCHAR(120),
-    isAdmin   BOOLEAN NOT NULL DEFAULT false,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS room
-(
-    id        INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name      VARCHAR(120) UNIQUE,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create tables with FK
-CREATE TABLE IF NOT EXISTS message
-(
-    id         INTEGER PRIMARY KEY AUTO_INCREMENT,
-    userId     INTEGER NOT NULL,
-    roomId    INTEGER NOT NULL,
-    content    VARCHAR(200) NOT NULL,
-    modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (userId) REFERENCES user (id)
-        ON DELETE CASCADE,
-    FOREIGN KEY (roomId) REFERENCES room (id)
-        ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS participants
-(
-    id         INTEGER PRIMARY KEY AUTO_INCREMENT,
-    userId     INTEGER NOT NULL,
-    roomId     INTEGER NOT NULL,
-    createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (userId) REFERENCES user (id)
-        ON DELETE CASCADE,
-    FOREIGN KEY (roomId) REFERENCES room (id)
-        ON DELETE CASCADE
+    lastName VARCHAR(120),
+    username VARCHAR(120) UNIQUE NOT NULL,
+    password VARCHAR(120),
+    birthday DATE,
+    gender VARCHAR(20),
+    country VARCHAR(120),
+    createdAt TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS admin
 (
-    id         INTEGER PRIMARY KEY AUTO_INCREMENT,
-    username  VARCHAR(120) UNIQUE,
-    password  VARCHAR(120),
-    createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(120) UNIQUE,
+    password VARCHAR(120),
+    createdAt TIMESTAMP
 );
 
--- CREATE TABLE IF NOT EXISTS rating
--- (
---     id         INTEGER PRIMARY KEY AUTO_INCREMENT,
---     userId     INTEGER NOT NULL,
---     movieId    INTEGER NOT NULL,
---     value      INTEGER NOT NULL,
---     createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     FOREIGN KEY (userId) REFERENCES user (id)
---     ON DELETE CASCADE,
---     FOREIGN KEY (movieId) REFERENCES movie (id)
---     ON DELETE CASCADE
---     );
---
---
--- CREATE TABLE IF NOT EXISTS review
--- (
---     id         INTEGER PRIMARY KEY AUTO_INCREMENT,
---     userId     INTEGER NOT NULL,
---     movieId    INTEGER NOT NULL,
---     title      VARCHAR(120) NOT NULL,
---     content    VARCHAR(200) NOT NULL,
---     modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     createdAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---     FOREIGN KEY (userId) REFERENCES user (id)
---     ON DELETE CASCADE,
---     FOREIGN KEY (movieId) REFERENCES movie (id)
---     ON DELETE CASCADE
--- );
+CREATE TABLE IF NOT EXISTS room
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(120) UNIQUE,
+    createdAt TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS movie
+(
+    id  INTEGER PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(120) NOT NULL,
+    releaseDate DATE,
+    runtime INTEGER,
+    overview VARCHAR(1000),
+    poster BLOB,
+    trailerLink VARCHAR(120)
+);
+
+CREATE TABLE IF NOT EXISTS genre
+(
+    id  INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS language
+(
+    id  INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS crew
+(
+    id  INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL,
+    role VARCHAR(120),
+    dateOfBirth DATE,
+    birthPlace VARCHAR(120),
+    biography VARCHAR(120),
+    website VARCHAR(120)
+);
+
+-- Create tables with FK
+CREATE TABLE IF NOT EXISTS rating
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    userId INTEGER NOT NULL,
+    movieId INTEGER NOT NULL,
+    value INTEGER NOT NULL,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES user (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (movieId) REFERENCES movie (id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS review
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    userId INTEGER NOT NULL,
+    movieId INTEGER NOT NULL,
+    title VARCHAR(120) NOT NULL,
+    content VARCHAR(200) NOT NULL,
+    modifiedAt TIMESTAMP,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES user (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (movieId) REFERENCES movie (id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS message
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    userId INTEGER NOT NULL,
+    roomId INTEGER NOT NULL,
+    content VARCHAR(200) NOT NULL,
+    modifiedAt TIMESTAMP,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES user (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (roomId) REFERENCES room (id)
+        ON DELETE CASCADE
+);
+
+-- Create bridge tables
+CREATE TABLE IF NOT EXISTS participant
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    userId INTEGER NOT NULL,
+    roomId INTEGER NOT NULL,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES user (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (roomId) REFERENCES room (id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS movie_crew
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    movieId INTEGER NOT NULL,
+    crewId INTEGER NOT NULL,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (movieId) REFERENCES movie (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (crewId) REFERENCES crew (id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS movie_genre
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    movieId INTEGER NOT NULL,
+    genreId INTEGER NOT NULL,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (movieId) REFERENCES movie (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (genreId) REFERENCES genre (id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS movie_language
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    movieId INTEGER NOT NULL,
+    languageId INTEGER NOT NULL,
+    createdAt TIMESTAMP,
+    FOREIGN KEY (movieId) REFERENCES movie (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (languageId) REFERENCES language (id)
+        ON DELETE CASCADE
+);
