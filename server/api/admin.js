@@ -1,4 +1,5 @@
 const connection = require("../db/db_connection");
+const createdAt = require("./functions/createdAt");
 const express = require("express");
 const bcrypt = require('bcrypt');
 const axios = require('axios');
@@ -13,15 +14,6 @@ app.post("/admin", (req, res) => {
     let password = req.body.password;
     let hashedPassword = bcrypt.hashSync(password, 10);
     let stmt = `INSERT INTO admin(username, password, createdAt) VALUES(?, ?, ?);`;
-
-    let date = new Date();
-    let year = date.getFullYear();
-    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-    let day = ("0" + date.getDate()).slice(-2);
-    let hours = ("0" + date.getHours()).slice(-2);
-    let minutes = ("0" + date.getMinutes()).slice(-2);
-    let seconds = ("0" + date.getSeconds()).slice(-2);
-    let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 
     connection.query(stmt, [username, hashedPassword, createdAt], function (err, result) {
         if (err) {
