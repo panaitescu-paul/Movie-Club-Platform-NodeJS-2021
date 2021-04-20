@@ -25,7 +25,7 @@ app.post("/admin", (req, res) => {
         } else {
             console.log("A new admin user record inserted, ID: " + result.insertId );
             axios.get(`http://${HOSTNAME}:${PORT}/admin/${result.insertId}`).then(response =>{
-                res.status(201).send(response.data[0]);
+                res.status(201).send(response.data);
             }).catch(err =>{
                 if(err){
                     console.log(err);
@@ -106,7 +106,7 @@ app.get("/admin/:id", (req, res) => {
             console.log(err);
         } else {
             if(result.length) {
-                res.status(200).send(result);
+                res.status(200).send(result[0]);
             } else {
                 res.status(404).json({
                     message: `No admin user found with the id ${req.params.id}!`
