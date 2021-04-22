@@ -167,7 +167,7 @@ app.delete("/participant/:id", (req, res) => {
                 connection.query(deleteStmt, [req.params.id], function (err, result) {
                     if (err) {
                         res.status(400).json({
-                            message: 'The participant could not be updated!',
+                            message: 'The participant could not be deleted!',
                             error: err.message
                         });
                         console.log(err);

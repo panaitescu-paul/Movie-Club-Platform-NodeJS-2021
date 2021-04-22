@@ -176,7 +176,7 @@ app.delete("/admin/:id", (req, res) => {
                 connection.query(deleteStmt, [req.params.id], function (err, result) {
                     if (err) {
                         res.status(400).json({
-                            message: 'The admin user could not be updated!',
+                            message: 'The admin user could not be deleted!',
                             error: err.message
                         });
                         console.log(err);

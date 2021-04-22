@@ -2,54 +2,49 @@ const connection = require("../db/db_connection");
 const express = require("express");
 const axios = require('axios');
 const HOSTNAME = 'localhost';
-const PORT = 5001;
+const PORT = 5004;
 let app = express();
 app.use(express.json());
 
-// CREATE Room
-app.post("/room", (req, res) => {
-    let name = req.body.name;
-    let stmt = `INSERT INTO room(name, createdAt) VALUES(?, ?);`;
+// CREATE Crew
+app.post("/crew", (req, res) => {
+    let name = req.body.name || null;
+    let dateOfBirth = req.body.dateOfBirth || null;
+    let birthPlace = req.body.birthPlace || null;
+    let biography = req.body.biography || null;
+    let website = req.body.website || null;
+    let stmt = `INSERT INTO crew(name, dateOfBirth, birthPlace, biography, website) VALUES(?, ?, ?, ?, ?);`;
 
-    let date = new Date();
-    let year = date.getFullYear();
-    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-    let day = ("0" + date.getDate()).slice(-2);
-    let hours = ("0" + date.getHours()).slice(-2);
-    let minutes = ("0" + date.getMinutes()).slice(-2);
-    let seconds = ("0" + date.getSeconds()).slice(-2);
-    let currentDateAndTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-
-    connection.query(stmt, [name, currentDateAndTime], function (err, result) {
+    connection.query(stmt, [name, dateOfBirth, birthPlace, biography, website], function (err, result) {
         if (err) {
             res.status(400).json({
-                message: 'The room could not be created!',
+                message: 'The crew member could not be created!',
                 error: err.message
             });
             console.log(err);
         } else {
-            console.log("A new room record inserted, ID: " + result.insertId );
-            axios.get(`http://${HOSTNAME}:${PORT}/room/${result.insertId}`).then(response =>{
+            console.log("A new crew record inserted, ID: " + result.insertId );
+            axios.get(`http://${HOSTNAME}:${PORT}/crew/${result.insertId}`).then(response =>{
                 res.status(201).send(response.data);
             }).catch(err =>{
                 if(err){
                     console.log(err);
                 }
                 res.status(400).json({
-                    message: `There is no Room with the id ${result.insertId}`
+                    message: `There is no Crew member with the id ${result.insertId}`
                 });
             });
         }
     });
 });
 
-// READ All Rooms
-app.get("/room", (req, res) => {
-    let stmt = `SELECT * FROM room`;
+// READ All Crew Members
+app.get("/crew", (req, res) => {
+    let stmt = `SELECT * FROM crew`;
     connection.query(stmt, function (err, results) {
         if (err) {
             res.status(400).json({
-                message: 'The rooms could not be showed!',
+                message: 'The crew members could not be showed!',
                 error: err.message
             });
             console.log(err);
@@ -59,13 +54,13 @@ app.get("/room", (req, res) => {
     });
 });
 
-// READ One Room
-app.get("/room/:id", (req, res) => {
-    let stmt = `SELECT * FROM room WHERE id = ?`;
+// READ One Crew
+app.get("/crew/:id", (req, res) => {
+    let stmt = `SELECT * FROM crew WHERE id = ?`;
     connection.query(stmt, [req.params.id], function (err, result) {
         if (err) {
             res.status(400).json({
-                message: 'The room could not be showed!',
+                message: 'The crew member could not be showed!',
                 error: err.message
             });
             console.log(err);
@@ -74,31 +69,37 @@ app.get("/room/:id", (req, res) => {
                 res.status(200).send(result[0]);
             } else {
                 res.status(404).json({
-                    message: `No room found with the id ${req.params.id}!`
+                    message: `No crew member found with the id ${req.params.id}!`
                 });
             }
         }
     });
 });
 
-// Update Room
-app.put("/room/:id", (req, res) => {
-    let name = req.body.name;
-    let getOneStmt = `SELECT * FROM room WHERE id = ?`;
-    let updateStmt = `UPDATE room SET name = ? WHERE id = ?`;
+// Update Crew
+app.put("/crew/:id", (req, res) => {
+    let getOneStmt = `SELECT * FROM crew WHERE id = ?`;
+    let updateStmt = `UPDATE crew SET name = ?, dateOfBirth = ?, birthPlace = ?, biography = ?, website = ? WHERE id = ?`;
+
     connection.query(getOneStmt, [req.params.id], function (err, result) {
         if (err) {
             res.status(400).json({
-                message: 'The room could not be showed!',
+                message: 'The crew member could not be showed!',
                 error: err.message
             });
             console.log(err);
         } else {
             if(result.length) {
-                connection.query(updateStmt, [name, req.params.id], function (err, result) {
+                let name = req.body.name || result[0].name;
+                let dateOfBirth = req.body.dateOfBirth || result[0].dateOfBirth;
+                let birthPlace = req.body.birthPlace || result[0].birthPlace;
+                let biography = req.body.biography || result[0].biography;
+                let website = req.body.website || result[0].website;
+
+                connection.query(updateStmt, [name, dateOfBirth, birthPlace, biography, website, req.params.id], function (err, result) {
                     if (err) {
                         res.status(400).json({
-                            message: 'The room could not be updated!',
+                            message: 'The crew member could not be updated!',
                             error: err.message
                         });
                         console.log(err);
@@ -108,21 +109,21 @@ app.put("/room/:id", (req, res) => {
                 });
             } else {
                 res.status(404).json({
-                    message: `No room found with the id ${req.params.id}!`
+                    message: `No crew member found with the id ${req.params.id}!`
                 });
             }
         }
     });
 });
 
-// Delete Room
-app.delete("/room/:id", (req, res) => {
-    let getOneStmt = `SELECT * FROM room WHERE id = ?`;
-    let deleteStmt = `DELETE FROM room WHERE id = ?`;
+// Delete Crew
+app.delete("/crew/:id", (req, res) => {
+    let getOneStmt = `SELECT * FROM crew WHERE id = ?`;
+    let deleteStmt = `DELETE FROM crew WHERE id = ?`;
     connection.query(getOneStmt, [req.params.id], function (err, result) {
         if (err) {
             res.status(400).json({
-                message: 'The room could not be showed!',
+                message: 'The crew member could not be showed!',
                 error: err.message
             });
             console.log(err);
@@ -131,7 +132,7 @@ app.delete("/room/:id", (req, res) => {
                 connection.query(deleteStmt, [req.params.id], function (err, result) {
                     if (err) {
                         res.status(400).json({
-                            message: 'The room could not be deleted!',
+                            message: 'The crew member could not be deleted!',
                             error: err.message
                         });
                         console.log(err);
@@ -141,7 +142,7 @@ app.delete("/room/:id", (req, res) => {
                 });
             } else {
                 res.status(404).json({
-                    message: `No room found with the id ${req.params.id}!`
+                    message: `No crew member found with the id ${req.params.id}!`
                 });
             }
         }
