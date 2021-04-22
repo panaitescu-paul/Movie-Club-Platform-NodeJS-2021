@@ -1,0 +1,147 @@
+http:
+  port: 8000
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+#  api:
+#    host: localhost
+#    paths: '/ip'
+  admin:
+    host: localhost
+    paths: [ '/admin', '/admin/*', 'admin/login' ]
+  user:
+    host: localhost
+    paths: [ '/user', '/user/*', '/user/login' ]
+  room:
+    host: localhost
+    paths: [ '/room', '/room/*' ]
+  message:
+    host: localhost
+    paths: [ '/message', '/message/*' ]
+  participant:
+    host: localhost
+    paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]
+  crew:
+    host: localhost
+    paths: [ '/crew', '/crew/*' ]
+  movie:
+    host: localhost
+    paths: [ '/movie', '/movie/*' ]
+  rating:
+    host: localhost
+    paths: [ '/rating', '/rating/*' ]
+  review:
+    host: localhost
+    paths: [ '/review', '/review/*' ]
+serviceEndpoints:
+#  httpbin:
+#    url: 'https://httpbin.org'
+  adminService:
+    url: 'http://localhost:5000'
+  userService:
+    url: 'http://localhost:3000'
+  roomService:
+    url: 'http://localhost:5001'
+  messageService:
+    url: 'http://localhost:5002'
+  participantService:
+    url: 'http://localhost:5003'
+  crewService:
+    url: 'http://localhost:5004'
+  movieService:
+    url: 'http://localhost:3003'
+  ratingService:
+    url: 'http://localhost:3001'
+  reviewService:
+    url: 'http://localhost:3002'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+#  default:
+#    apiEndpoints:
+#      - api
+#    policies:
+#      - proxy:
+#          - action:
+#              serviceEndpoint: httpbin
+#              changeOrigin: true
+  adminPipeline:
+    apiEndpoints:
+      - admin
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: adminService
+              changeOrigin: true
+  userPipeline:
+    apiEndpoints:
+      - user
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: userService
+              changeOrigin: true
+  roomPipeline:
+    apiEndpoints:
+      - room
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: roomService
+              changeOrigin: true
+  messagePipeline:
+    apiEndpoints:
+      - message
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: messageService
+              changeOrigin: true
+  participantPipeline:
+    apiEndpoints:
+      - participant
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: participantService
+              changeOrigin: true
+  crewPipeline:
+    apiEndpoints:
+      - crew
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: crewService
+              changeOrigin: true
+  moviePipeline:
+    apiEndpoints:
+      - movie
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieService
+              changeOrigin: true
+  ratingPipeline:
+    apiEndpoints:
+      - rating
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: ratingService
+              changeOrigin: true
+  reviewPipeline:
+    apiEndpoints:
+      - review
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: reviewService
+              changeOrigin: true
