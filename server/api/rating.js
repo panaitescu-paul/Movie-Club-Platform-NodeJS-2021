@@ -1,5 +1,17 @@
-// TODO: add more cases to cover all errors
+/**
+* Rating class
+*
+* @author Paul Panaitescu
+* @version 1.0 19 APR 2020
+*/
 
+const connection = require("../db/db_connection");
+const express = require("express");
+const axios = require('axios');
+const HOSTNAME = 'localhost';
+const PORT = 3001;
+let app = express();
+app.use(express.json());
 
 // ******************************************************
 // ***                                                ***
@@ -69,17 +81,17 @@ app.post("/rating", (req, res) => {
         }
     });
 
-    // Add Rating to Movie
+            // Add Rating to Movie
     db.run(sqlAddRating, [userId, movieId, value], function (err) {
-        if (err) {
-            res.status(400).json({
-                message: 'The Rating could not be created!',
-                error: err.message
-            });
-            console.log(err.message);
-        } else {
-            console.log(`A new row has been inserted!`);
-            // Get the last inserted Rating
+                if (err) {
+                    res.status(400).json({
+                        message: 'The Rating could not be created!',
+                        error: err.message
+                    });
+                    console.log(err.message);
+                } else {
+                    console.log(`A new row has been inserted!`);
+                    // Get the last inserted Rating
             axios.get(`http://localhost:3001/rating/${this.lastID}`).then(response =>{
                 res.status(201).json({
                     id: response.data.rating[0].id,
@@ -88,24 +100,24 @@ app.post("/rating", (req, res) => {
                     value: response.data.rating[0].value,
                     createdAt: response.data.rating[0].createdAt
                 });
-            }).catch(err =>{
-                if(err){
-                    console.log(err);
-                }
-                res.status(400).json({
+                    }).catch(err =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        res.status(400).json({
                     message: `There is no Rating with the id ${this.lastID}`
-                });
+                        });
+                    });
+                }
             });
-        }
-    });
 });
 
 /**
- * READ all Ratings
- *
- * Output:   an array with all Ratings and their information,
- * Errors:   There are no Ratings in the DB!
- */
+* READ all Ratings
+*
+* Output:   an array with all Ratings and their information,
+* Errors:   There are no Ratings in the DB!
+*/
 app.get("/rating", (req, res) => {
     let sql = `SELECT * FROM rating`;
     db.all(sql, [], (err, ratings) => {
@@ -124,12 +136,12 @@ app.get("/rating", (req, res) => {
 });
 
 /**
- * READ Rating by id
- *
+* READ Rating by id
+*
  * Input:   id of the Rating
  * Output:  an Rating and their information,
  * Errors:  Rating with this ID does not exist!
- */
+*/
 app.get("/rating/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sql = `SELECT * FROM rating WHERE id = ?`;
@@ -155,15 +167,15 @@ app.get("/rating/:id", (req, res) => {
 });
 
 /**
- * UPDATE Rating by id
- *
- * Input:    id - Id of the Rating
+* UPDATE Rating by id
+*
+* Input:    id - Id of the Rating
  *           value - a number between 0-5
  * Output:   Success if Rating was successfully updated!
  * Errors:   The field Value must be a number between 0-5!
- *           Rating with this ID does not exist!
- *           The Rating could not be updated!
- */
+*           Rating with this ID does not exist!
+*           The Rating could not be updated!
+*/
 app.put("/rating/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let value = req.body.value;
@@ -198,13 +210,13 @@ app.put("/rating/:id", (req, res) => {
 });
 
 /**
- * DELETE Rating by id
- *
+* DELETE Rating by id
+*
  * Input:   Id of the Rating to delete
  * Output:  Success if Rating was successfully deleted!
  * Erros:   Rating with this ID does not exist!
  *          This Rating could not be deleted!
- */
+*/
 app.delete("/rating/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sqlGet = `SELECT * FROM rating WHERE id = ?`;
@@ -235,4 +247,15 @@ app.delete("/rating/:id", (req, res) => {
             }
         }
     });
+});
+
+
+// Server connection
+app.listen(PORT, HOSTNAME, (err) => {
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log(`Server running at http://${HOSTNAME}:${PORT}/`);
+    }
 });
