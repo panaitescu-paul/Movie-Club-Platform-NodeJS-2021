@@ -184,9 +184,9 @@ app.get("/rating/:id", (req, res) => {
 * UPDATE Rating by id
 *
 * Input:    id - Id of the Rating
- *           value - a number between 0-5
- * Output:   Success if Rating was successfully updated!
- * Errors:   The field Value must be a number between 0-5!
+*           value - a number between 0-10
+* Output:   Status 204 - Success if Rating was successfully updated!
+* Errors:   The field Value must be a number between 0-10!
 *           Rating with this ID does not exist!
 *           The Rating could not be updated!
 */
@@ -194,8 +194,17 @@ app.put("/rating/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let value = req.body.value;
     let sqlGet = `SELECT * FROM rating WHERE id = ?`;
-    let sqlUpdate = `UPDATE rating SET value = ?, WHERE id = ?`;
-    db.all(sqlGet, [req.params.id], (err, rating) => {
+    let sqlUpdate = `UPDATE rating SET value = ? WHERE id = ?`;
+    
+    // Check if Value is a number between 0-10
+    if (isNaN(value) || value < 0 || value > 10) {
+        res.status(409).json({
+            message: 'The field Value must be a number between 0-10!'
+        });
+        return 0;
+    }
+
+    connection.query(sqlGet, [req.params.id], (err, rating) => {
         if (err) {
             res.status(400).json({
                 error: err
@@ -207,7 +216,7 @@ app.put("/rating/:id", (req, res) => {
                     message: `Rating with this ID (${req.params.id}) does not exist!`
                 });
             } else {
-                db.run(sqlUpdate, [value, req.params.id], (err) => {
+                connection.query(sqlUpdate, [value, req.params.id], function(err) {
                     if (err) {
                         res.status(400).json({
                             message: 'The Rating could not be updated!',
