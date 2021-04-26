@@ -213,16 +213,17 @@ app.put("/user/:id", (req, res) => {
 /**
 * DELETE User by id
 *
-* Input:   Id of the User to delete
-* Output:  Success if User was successfully deleted!
-* Erros:   User with this ID does not exist!
-*          This User could not be deleted!
+* Input:    Id of the User to delete
+* Output:   Status 204 - Success if User was successfully deleted!
+* Erros:    User with this ID does not exist!
+*           The User could not be deleted!
 */
 app.delete("/user/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sqlGet = `SELECT * FROM user WHERE id = ?`;
     let sqlDelete = `DELETE FROM user WHERE id = ?`;
-    connection.query(sqlGet, [req.params.id], (err, user) => {
+    
+    connection.query(sqlGet, [req.params.id], function(err, user) {
         if (err) {
             res.status(400).json({
                 error: err
@@ -234,7 +235,7 @@ app.delete("/user/:id", (req, res) => {
                     message: `User with this ID (${req.params.id}) does not exist!`
                 });
             } else {
-                connection.query(sqlDelete, req.params.id, (err) => {
+                connection.query(sqlDelete, [req.params.id], function(err) {
                     if (err) {
                         res.status(400).json({
                             message: 'The User could not be deleted!',
