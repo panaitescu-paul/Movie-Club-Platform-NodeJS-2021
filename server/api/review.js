@@ -197,8 +197,9 @@ app.get("/review/:id", (req, res) => {
 * UPDATE Review by id
 *
 * Input:    id - Id of the Review
- *           value - a number between 0-5
- * Output:   Success if Review was successfully updated!
+*           title 
+*           content
+* Output:   Status 204 - Success if Review was successfully updated!
 * Errors:   Title can not be null!
 *           Content can not be null!
 *           Review with this ID does not exist!
@@ -209,8 +210,22 @@ app.put("/review/:id", (req, res) => {
     let title = req.body.title;
     let content = req.body.content;
     let sqlGet = `SELECT * FROM review WHERE id = ?`;
-    let sqlUpdate = `UPDATE review SET title = ?, content = ?, WHERE id = ?`;
-    db.all(sqlGet, [req.params.id], (err, review) => {
+    let sqlUpdate = `UPDATE review SET title = ?, content = ? WHERE id = ?`;
+
+    // Check if Title and Content are null
+    if(title.length == 0) {
+        res.status(409).json({
+            message: 'Title can not be null!'
+        });
+        return 0;
+    } else if (content.length == 0) {
+        res.status(409).json({
+            message: 'Content can not be null!'
+        });
+        return 0;
+    }
+
+    connection.query(sqlGet, [req.params.id], function(err, review) {
         if (err) {
             res.status(400).json({
                 error: err
@@ -222,7 +237,7 @@ app.put("/review/:id", (req, res) => {
                     message: `Review with this ID (${req.params.id}) does not exist!`
                 });
             } else {
-                db.run(sqlUpdate, [title, content, req.params.id], (err) => {
+                connection.query(sqlUpdate, [title, content, req.params.id], function(err) {
                     if (err) {
                         res.status(400).json({
                             message: 'The Review could not be updated!',
