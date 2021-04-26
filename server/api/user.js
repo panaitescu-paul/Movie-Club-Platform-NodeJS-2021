@@ -299,6 +299,86 @@ app.post("/user/login", (req, res) => {
     });
 });
 
+/**
+* UPDATE User Password by id
+*
+* Input:    id, oldPassword, newPassword
+* Output:   Status 204 - Success if User was successfully updated!
+* Errors:   Old Password can not be null!
+*           New Password can not be null!
+*           Old Password and New Password are the same!
+*           User with this ID does not exist!
+*           Old Password is not matching this User!
+*           User could not be updated!
+*/
+app.put("/user/password/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let oldPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+    let sqlGet = `SELECT password FROM user WHERE id = ?`;
+    let sqlUpdate = `UPDATE user SET password = ? WHERE id = ?`;
+    
+    // Check if Old Password and New Password are null
+     if(oldPassword.length == 0) {
+        res.status(409).json({
+            message: 'Old Password can not be null!'
+        });
+    } else if(newPassword.length == 0) {
+        res.status(409).json({
+            message: 'New Password can not be null!'
+        });
+    } 
+
+    // Check if Old Password and New Password are the same
+    if(oldPassword == newPassword) {
+        res.status(409).json({
+            message: 'Old Password and New Password are the same!'
+        });
+    }
+
+    // Get the Old Password of the User
+    connection.query(sqlGet, [req.params.id], function (err, user) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(!user.length) {
+                res.status(404).json({
+                    message: `User with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                let passwordMatch = bcrypt.compareSync(oldPassword, user[0].password);
+                if (passwordMatch) {
+                    // Old Password is matching this User
+
+                    // Hash the Password
+                    let hashedNewPassword = bcrypt.hashSync(newPassword, 10);
+                    connection.query(sqlUpdate, [hashedNewPassword, req.params.id], function (err) {
+                        if (err) {
+                            res.status(400).json({
+                                message: 'User could not be updated!',
+                                error: err.message
+                            });
+                            console.log(err.message);
+                        } else {
+                            res.sendStatus(204);
+                        }
+                    });
+                } else {
+                    res.status(403).json({
+                        message: `Old Password is not matching this User!`
+                    });
+                }
+
+            }
+        }
+    });
+});
+
+
+// Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
         console.log(err);
