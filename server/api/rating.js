@@ -138,17 +138,15 @@ app.post("/rating", (req, res) => {
 */
 app.get("/rating", (req, res) => {
     let sql = `SELECT * FROM rating`;
-    db.all(sql, [], (err, ratings) => {
+    connection.query(sql, function(err, ratings) {
         if (err) {
             res.status(400).json({
                 message: 'There are no Ratings in the DB!',
-                error: err
+                error: err.message
             });
             console.log(err);
         } else {
-            res.status(200).json({
-                ratings
-            });
+            res.status(200).send(ratings);
         }
     });
 });
