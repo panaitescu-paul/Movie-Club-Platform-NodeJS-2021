@@ -19,18 +19,20 @@ app.use(express.json());
 // ***                                                ***
 // ******************************************************
 
+// TODO: return the object after it was created
+
 /**
 * CREATE new Rating (Add a Rating to a Movie)
 *               
-* Input:   userId 
-*          movieId 
-*          value - a number between 0-5
-* Output:  the Id of the new Rating,
-* Errors:  The field Value must be a number between 0-5!
-*          User with this ID does not exist!
-*          Movie with this ID does not exist!
-*          Rating from this User is already attached to this Movie!
-*          Rating could not be added to Movie!
+* Input:    userId 
+*           movieId 
+*           value - a number between 0-10
+* Output:   the Id of the new Rating,
+* Errors:   The field Value must be a number between 0-10!
+*           User with this ID does not exist!
+*           Movie with this ID does not exist!
+*           Rating from this User is already attached to this Movie!
+*           Rating could not be added to Movie!
 */
 app.post("/rating", (req, res) => {
     let userId = req.body.userId;
@@ -40,8 +42,16 @@ app.post("/rating", (req, res) => {
     let sqlGetMovie = `SELECT * FROM movie WHERE id = ?`;
     let sqlAddRating = `INSERT INTO rating(userId, movieId, value) VALUES(?, ?, ?)`;
 
+    // Check if Value is a number between 0-10
+    if (isNaN(value) || value < 0 || value > 10) {
+        res.status(409).json({
+            message: 'The field Value must be a number between 0-10!'
+        });
+        return 0;
+    }
+
     // Check if there is a User with this id
-    db.all(sqlGetUser, [userId], (err, user) => {
+    connection.query(sqlGetUser, [userId], function (err, user) {
         if (err) {
             res.status(400).json({
                 error: err
@@ -50,30 +60,23 @@ app.post("/rating", (req, res) => {
         } else {
             if(!user.length) {
                 res.status(404).json({
-                    message: `User with this ID (${req.params.id}) does not exist!`
+                    message: `User with this ID (${userId}) does not exist!`
                 });
             }
-            // else {
-            //     isUserFOund = 1;
-            //     // TODO: add the next query here, if it doesn't work otherwise
-            // }
         }
     });
 
-    // if(isUserFOund) {
-    //
-    // }
     // Check if there is a Movie with this id
-    db.all(sqlGetMovie, [userId], (err, user) => {
+    connection.query(sqlGetMovie, [movieId], function(err, movie) {
         if (err) {
             res.status(400).json({
                 error: err
             });
             console.log(err);
         } else {
-            if(!user.length) {
+            if(!movie.length) {
                 res.status(404).json({
-                    message: `User with this ID (${req.params.id}) does not exist!`
+                    message: `Movie with this ID (${movieId}) does not exist!`
                 });
             } else {
                // TODO: add the next query here, if it doesn't work otherwise
@@ -81,8 +84,18 @@ app.post("/rating", (req, res) => {
         }
     });
 
+    // Check if this User added a rating to this movie already
+    connection.query(`SELECT COUNT(*) AS total FROM rating WHERE userId = ? AND movieId = ?;` , 
+                    [userId, movieId], function (err, result) {
+        console.log('total: ', result[0].total);
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'Rating from this User is already attached to this Movie!',
+            });
+        } else {
+
             // Add Rating to Movie
-    db.run(sqlAddRating, [userId, movieId, value], function (err) {
+            connection.query(sqlAddRating, [userId, movieId, value], function (err, result) {
                 if (err) {
                     res.status(400).json({
                         message: 'The Rating could not be created!',
@@ -92,24 +105,29 @@ app.post("/rating", (req, res) => {
                 } else {
                     console.log(`A new row has been inserted!`);
                     // Get the last inserted Rating
-            axios.get(`http://localhost:3001/rating/${this.lastID}`).then(response =>{
-                res.status(201).json({
-                    id: response.data.rating[0].id,
-                    userId: response.data.rating[0].userId,
-                    movieId: response.data.rating[0].movieId,
-                    value: response.data.rating[0].value,
-                    createdAt: response.data.rating[0].createdAt
-                });
+                    axios.get(`http://${HOSTNAME}:${PORT}/rating/${result.insertId}`).then(response =>{
+                        console.log(response);
+                        res.status(201).send(response.data[0]);
+                        // res.status(201).json({
+                        //     id: response.data.rating[0].id,
+                        //     userId: response.data.rating[0].userId,
+                        //     movieId: response.data.rating[0].movieId,
+                        //     value: response.data.rating[0].value,
+                        //     createdAt: response.data.rating[0].createdAt
+                        // });
                     }).catch(err =>{
                         if(err){
                             console.log(err);
                         }
                         res.status(400).json({
-                    message: `There is no Rating with the id ${this.lastID}`
+                            message: `There is no Rating with the id ${result.insertId}`
                         });
                     });
                 }
             });
+        }
+    });
+
 });
 
 /**
