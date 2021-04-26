@@ -139,22 +139,24 @@ app.post("/review", (req, res) => {
 /**
 * READ all Reviews
 *
- * Output:   an array with all Reviews and their information,
+* Input:    -
+* Output:   an array with all Reviews and their information
 * Errors:   There are no Reviews in the DB!
 */
 app.get("/review", (req, res) => {
     let sql = `SELECT * FROM review`;
-    db.all(sql, [], (err, reviews) => {
+    connection.query(sql, function(err, reviews) {
         if (err) {
             res.status(400).json({
                 message: 'There are no Reviews in the DB!',
-                error: err
+                error: err.message
             });
             console.log(err);
         } else {
-            res.status(200).json({
-                reviews
-            });
+            res.status(200).send(reviews);
+            // res.status(200).json({
+            //     reviews
+            // });
         }
     });
 });
