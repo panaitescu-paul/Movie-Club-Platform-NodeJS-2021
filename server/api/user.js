@@ -1,3 +1,10 @@
+/**
+* User class
+*
+* @author Paul Panaitescu
+* @version 1.0 19 APR 2020
+*/
+
 const connection = require("../db/db_connection");
 const express = require("express");
 const axios = require('axios');
@@ -6,9 +13,6 @@ const HOSTNAME = 'localhost';
 const PORT = 3000;
 let app = express();
 app.use(express.json());
-
-// TODO: add more cases to cover all errors
-// TODO: updatePassword(email, oldPassword, newPassword)
 
 // ******************************************************
 // ***                                                ***
@@ -19,31 +23,58 @@ app.use(express.json());
 /**
 * CREATE new User
 *
-* Input:   username, password
-* Output:  the Id of the new User,
-* Errors:  Email can not be null!
-*          Password can not be null!
-*          User with this Email already exists!
-*          User could not be created!
+* Input:    username, password
+* Output:   the Id of the new User,
+* Errors:   Username can not be null!
+*           Password can not be null!
+*           User with this Username already exists!
+*           User could not be created!
+*           User with this ID does not exist!
 */
 app.post("/user", (req, res) => {
-    console.log(req.body.username);
-    console.log(req.body.password);
     let username = req.body.username;
     let password = req.body.password;
     let sql = `INSERT INTO user(username, password) VALUES(?, ?);`;
+    console.log(username);
+    console.log(password);
 
-    connection.query(sql, [username, password], function (err, result) {
+    // Check if Username and Password are null
+    if(username.length == 0) {
+        res.status(409).json({
+            message: 'Username can not be null!'
+        });
+    } else if (password.length == 0) {
+        res.status(409).json({
+            message: 'Password can not be null!'
+        });
+    }
+
+    // Check the count of Users with this Username
+    connection.query(`SELECT COUNT(*) AS total FROM user WHERE username = ?;` , 
+                    [username], function (err, result) {
+        console.log('total: ', result[0].total);
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'User with this Username already exists!',
+            });
+        } 
+    });
+
+    // Hash the Password
+    let hashedPassword = bcrypt.hashSync(password, 10);
+    
+    // Create User
+    connection.query(sql, [username, hashedPassword], function (err, result) {
         if (err) {
             res.status(400).json({
-                message: 'The User could not be created!',
+                message: 'User could not be created!',
                 error: err.message
             });
             console.log(err.message);
         } else {
             console.log(`A new row has been inserted!`);
             // Get the last inserted User
-            axios.get(`http://localhost:3000/user/${result.insertId}`).then(response =>{
+            axios.get(`http://${HOSTNAME}:${PORT}/user/${result.insertId}`).then(response =>{
                 console.log(response);
                 res.status(201).send(response.data[0]);
             }).catch(err =>{
@@ -51,7 +82,7 @@ app.post("/user", (req, res) => {
                     console.log(err);
                 }
                 res.status(400).json({
-                    message: `There is no User with the id ${result.insertId}`
+                    message: `User with this ID (${result.insertId}) does not exist!`
                 });
             });
         }
