@@ -140,32 +140,48 @@ app.get("/user/:id", (req, res) => {
     });
 });
 
-// TODO: add more cases to cover all errors
 /**
 * UPDATE User by id
 *
-* Input:    id, firstName, lastName, email, username,
-*           birthday, gender, country, isAdmin
-* Output:   Success if User was successfully updated!
-* Errors:   Email can not be null!
+* Input:    id, username, firstName, lastName,
+*           gender, birthday, country
+* Output:   Status 204 - Success if User was successfully updated!
+* Errors:   Username can not be null!
+*           User with this Username already exists!
 *           User with this ID does not exist!
-*           User with this Email already exists!
 *           The User could not be updated!
 */
 app.put("/user/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
+    let username = req.body.username;
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
-    let email = req.body.email;
-    let username = req.body.username;
-    let birthday = req.body.birthday;
     let gender = req.body.gender;
+    let birthday = req.body.birthday;
     let country = req.body.country;
-    let isAdmin = req.body.isAdmin;
     let sqlGet = `SELECT * FROM user WHERE id = ?`;
-    let sqlUpdate = `UPDATE user SET firstName = ?, lastName = ?, email = ?, username = ?, 
-                    birthday = ?, gender = ?, country = ?, isAdmin = ?, WHERE id = ?`;
-    connection.query(sqlGet, [req.params.id], (err, user) => {
+    let sqlUpdate = `UPDATE user SET username = ?, firstName = ?, lastName = ?, 
+                    gender= ?, birthday = ?, country = ? WHERE id = ?`;
+    
+    // Check if Username is null
+    if(username.length == 0) {
+        res.status(409).json({
+            message: 'Username can not be null!'
+        });
+    } 
+
+    // Check the count of Users with this Username
+    connection.query(`SELECT COUNT(*) AS total FROM user WHERE username = ?;` , 
+                    [username], function (err, result) {
+        console.log('total: ', result[0].total);
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'User with this Username already exists!',
+            });
+        } 
+    });
+
+    connection.query(sqlGet, [req.params.id], function (err, user) {
         if (err) {
             res.status(400).json({
                 error: err
@@ -177,8 +193,8 @@ app.put("/user/:id", (req, res) => {
                     message: `User with this ID (${req.params.id}) does not exist!`
                 });
             } else {
-                connection.query(sqlUpdate, [firstName, firstName, lastName, email, username, 
-                                   birthday, gender, country, isAdmin, req.params.id], (err) => {
+                connection.query(sqlUpdate, [username, firstName, lastName, gender,
+                                birthday, country, req.params.id], function (err) {
                     if (err) {
                         res.status(400).json({
                             message: 'The User could not be updated!',
