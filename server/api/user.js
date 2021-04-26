@@ -92,22 +92,21 @@ app.post("/user", (req, res) => {
 /**
 * READ all Users
 *
+* Input:    -
 * Output:   an array with all Users and their information,
 * Errors:   There are no Users in the DB!
 */
 app.get("/user", (req, res) => {
     let sql = `SELECT * FROM user`;
-    connection.query(sql, [], (err, users) => {
+    connection.query(sql, function (err, users) {
         if (err) {
             res.status(400).json({
                 message: 'There are no Users in the DB!',
-                error: err
+                error: err.message
             });
             console.log(err);
         } else {
-            res.status(200).json({
-                users
-            });
+            res.status(200).send(users);
         }
     });
 });
