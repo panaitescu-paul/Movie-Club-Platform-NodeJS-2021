@@ -1,5 +1,17 @@
-// TODO: add more cases to cover all errors
+/**
+* Review class
+*
+* @author Paul Panaitescu
+* @version 1.0 19 APR 2020
+*/
 
+const connection = require("../db/db_connection");
+const express = require("express");
+const axios = require('axios');
+const HOSTNAME = 'localhost';
+const PORT = 3002;
+let app = express();
+app.use(express.json());
 
 // ******************************************************
 // ***                                                ***
@@ -65,17 +77,17 @@ app.post("/review", (req, res) => {
         }
     });
 
-    // Add Review to Movie
+            // Add Review to Movie
     db.run(sqlAddReview, [userId, movieId, title, content], function (err) {
-        if (err) {
-            res.status(400).json({
-                message: 'The Review could not be created!',
-                error: err.message
-            });
-            console.log(err.message);
-        } else {
-            console.log(`A new row has been inserted!`);
-            // Get the last inserted Review
+                if (err) {
+                    res.status(400).json({
+                        message: 'The Review could not be created!',
+                        error: err.message
+                    });
+                    console.log(err.message);
+                } else {
+                    console.log(`A new row has been inserted!`);
+                    // Get the last inserted Review
             axios.get(`http://localhost:3001/review/${this.lastID}`).then(response =>{
                 res.status(201).json({
                     id: response.data.rating[0].id,
@@ -86,24 +98,24 @@ app.post("/review", (req, res) => {
                     modifiedAt: response.data.rating[0].modifiedAt,
                     createdAt: response.data.rating[0].createdAt
                 });
-            }).catch(err =>{
-                if(err){
-                    console.log(err);
-                }
-                res.status(400).json({
+                    }).catch(err =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        res.status(400).json({
                     message: `There is no Review with the id ${this.lastID}`
-                });
+                        });
             });
         }
     });
 });
 
 /**
- * READ all Reviews
- *
+* READ all Reviews
+*
  * Output:   an array with all Reviews and their information,
- * Errors:   There are no Reviews in the DB!
- */
+* Errors:   There are no Reviews in the DB!
+*/
 app.get("/review", (req, res) => {
     let sql = `SELECT * FROM review`;
     db.all(sql, [], (err, reviews) => {
@@ -122,12 +134,12 @@ app.get("/review", (req, res) => {
 });
 
 /**
- * READ Review by id
- *
+* READ Review by id
+*
  * Input:   id of the Review
  * Output:  an Review and their information,
  * Errors:  Review with this ID does not exist!
- */
+*/
 app.get("/review/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sql = `SELECT * FROM review WHERE id = ?`;
@@ -153,16 +165,16 @@ app.get("/review/:id", (req, res) => {
 });
 
 /**
- * UPDATE Review by id
- *
- * Input:    id - Id of the Review
+* UPDATE Review by id
+*
+* Input:    id - Id of the Review
  *           value - a number between 0-5
  * Output:   Success if Review was successfully updated!
- * Errors:   Title can not be null!
- *           Content can not be null!
- *           Review with this ID does not exist!
- *           Review could not be updated!
- */
+* Errors:   Title can not be null!
+*           Content can not be null!
+*           Review with this ID does not exist!
+*           Review could not be updated!
+*/
 app.put("/review/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let title = req.body.title;
@@ -198,13 +210,13 @@ app.put("/review/:id", (req, res) => {
 });
 
 /**
- * DELETE Review by id
- *
+* DELETE Review by id
+*
  * Input:   Id of the Review to delete
  * Output:  Success if Review was successfully deleted!
  * Erros:   Review with this ID does not exist!
  *          This Review could not be deleted!
- */
+*/
 app.delete("/review/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sqlGet = `SELECT * FROM review WHERE id = ?`;
@@ -235,4 +247,15 @@ app.delete("/review/:id", (req, res) => {
             }
         }
     });
+});
+
+
+// Server connection
+app.listen(PORT, HOSTNAME, (err) => {
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log(`Server running at http://${HOSTNAME}:${PORT}/`);
+    }
 });
