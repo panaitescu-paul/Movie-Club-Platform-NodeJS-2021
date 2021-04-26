@@ -251,6 +251,53 @@ app.delete("/user/:id", (req, res) => {
     });
 });
 
+// ******************************************************
+// ***                                                ***
+// ***             User Extra Functionality           ***
+// ***                                                ***
+// ******************************************************
+
+/**
+* Login User
+*
+* Input:    username, password
+* Output:   true    - if the Password and Username are matching
+*           false   - if the Password and Username are not matching
+* Errors:   User with this Username does not exist!
+*/
+app.post("/user/login", (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    let sql = `SELECT * FROM user WHERE username = ?`;
+
+    connection.query(sql, [username], function (err, user) {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!user.length) {
+                res.status(404).json({
+                    message: `User with this Username does not exist!`
+                });
+            } else {
+                let passwordMatch = bcrypt.compareSync(password, user[0].password);
+                if (passwordMatch) {
+                    res.status(200).json({
+                        result: true,
+                        message: `Password and Username are matching!`
+                    });
+                } else {
+                    res.status(403).json({
+                        result: false,
+                        message: `Password and Username are not matching!`
+                    });
+                }
+            }
+        }
+    });
+});
 
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
