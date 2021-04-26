@@ -154,25 +154,23 @@ app.get("/rating", (req, res) => {
 /**
 * READ Rating by id
 *
- * Input:   id of the Rating
- * Output:  an Rating and their information,
- * Errors:  Rating with this ID does not exist!
+* Input:    id of the Rating
+* Output:   an Rating and their information,
+* Errors:   Rating with this ID does not exist!
 */
 app.get("/rating/:id", (req, res) => {
     console.log("req.params.id: ", req.params.id);
     let sql = `SELECT * FROM rating WHERE id = ?`;
 
-    db.all(sql, [req.params.id], (err, rating) => {
+    connection.query(sql, [req.params.id], function(err, rating) {
         if (err) {
             res.status(400).json({
-                error: err
+                error: err.message
             });
             console.log(err);
         } else {
             if(rating.length) {
-                res.status(200).json({
-                    rating
-                });
+                res.status(200).send(rating[0]);
             } else {
                 res.status(404).json({
                     message: `Rating with this ID (${req.params.id}) does not exist!`
