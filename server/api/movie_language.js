@@ -158,6 +158,48 @@ app.get("/movie_language/:id", (req, res) => {
         }
     });
 });
+
+/**
+* DELETE Movie_Language by id
+*
+* Input:    Id of the Movie_Language to delete
+* Output:   Status 204 - Success if Movie_Language was successfully deleted!
+* Erros:    Movie_Language with this ID does not exist!
+*           This Movie_Language could not be deleted!
+*/
+app.delete("/movie_language/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sqlGet = `SELECT * FROM movie_language WHERE id = ?`;
+    let sqlDelete = `DELETE FROM movie_language WHERE id = ?`;
+    
+    connection.query(sqlGet, [req.params.id], function(err, movie_language) {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!movie_language.length) {
+                res.status(404).json({
+                    message: `Movie_Language with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                connection.query(sqlDelete, req.params.id, function(err) {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Movie_Language could not be deleted!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
+
 // ******************************************************
 // ***                                                ***
 // ***       Movie_Language Extra Functionality       ***
