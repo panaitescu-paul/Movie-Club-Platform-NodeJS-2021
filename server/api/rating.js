@@ -19,6 +19,7 @@ app.use(express.json());
 // ***                                                ***
 // ******************************************************
 
+// TODO: Add if else statements to prevent stoping the server after request failure
 // TODO: return the object after it was created
 
 /**
@@ -27,12 +28,12 @@ app.use(express.json());
 * Input:    userId 
 *           movieId 
 *           value - a number between 0-10
-* Output:   the Id of the new Rating,
+* Output:   the Id of the new Rating
 * Errors:   The field Value must be a number between 0-10!
 *           User with this ID does not exist!
 *           Movie with this ID does not exist!
 *           Rating from this User is already attached to this Movie!
-*           Rating could not be added to Movie!
+*           The Rating could not be created!
 */
 app.post("/rating", (req, res) => {
     let userId = req.body.userId;
@@ -120,7 +121,7 @@ app.post("/rating", (req, res) => {
                             console.log(err);
                         }
                         res.status(400).json({
-                            message: `There is no Rating with the id ${result.insertId}`
+                            message: `Rating with this ID (${result.insertId}) does not exist!`
                         });
                     });
                 }
@@ -133,7 +134,7 @@ app.post("/rating", (req, res) => {
 /**
 * READ all Ratings
 *
-* Output:   an array with all Ratings and their information,
+* Output:   an array with all Ratings and their information
 * Errors:   There are no Ratings in the DB!
 */
 app.get("/rating", (req, res) => {
@@ -155,7 +156,7 @@ app.get("/rating", (req, res) => {
 * READ Rating by id
 *
 * Input:    id of the Rating
-* Output:   an Rating and their information,
+* Output:   an Rating and their information
 * Errors:   Rating with this ID does not exist!
 */
 app.get("/rating/:id", (req, res) => {
