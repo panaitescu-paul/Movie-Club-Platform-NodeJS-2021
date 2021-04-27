@@ -158,6 +158,48 @@ app.get("/movie_genre/:id", (req, res) => {
         }
     });
 });
+
+/**
+* DELETE Movie_Genre by id
+*
+* Input:    Id of the Movie_Genre to delete
+* Output:   Status 204 - Success if Movie_Genre was successfully deleted!
+* Erros:    Movie_Genre with this ID does not exist!
+*           This Movie_Genre could not be deleted!
+*/
+app.delete("/movie_genre/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sqlGet = `SELECT * FROM movie_genre WHERE id = ?`;
+    let sqlDelete = `DELETE FROM movie_genre WHERE id = ?`;
+    
+    connection.query(sqlGet, [req.params.id], function(err, movie_genre) {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!movie_genre.length) {
+                res.status(404).json({
+                    message: `Movie_Genre with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                connection.query(sqlDelete, req.params.id, function(err) {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Movie_Genre could not be deleted!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
+
 // ******************************************************
 // ***                                                ***
 // ***         Movie_Genre Extra Functionality         ***
