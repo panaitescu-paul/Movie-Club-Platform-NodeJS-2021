@@ -148,6 +148,35 @@ app.get("/movie_crew", (req, res) => {
         }
     });
 });
+
+/**
+* READ Movie_Crew by id
+*
+* Input:    id of the Movie_Crew
+* Output:   an Movie_Crew and their information,
+* Errors:   Movie_Crew with this ID does not exist!
+*/
+app.get("/movie_crew/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sql = `SELECT * FROM movie_crew WHERE id = ?`;
+
+    connection.query(sql, [req.params.id], function(err, movie_crew) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_crew.length) {
+                res.status(200).send(movie_crew[0]);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Crew with this ID (${req.params.id}) does not exist!`
+                });
+            }
+        }
+    });
+});
 // ******************************************************
 // ***                                                ***
 // ***         Movie_Crew Extra Functionality         ***
