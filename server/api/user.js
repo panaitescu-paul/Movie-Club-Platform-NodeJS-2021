@@ -20,11 +20,13 @@ app.use(express.json());
 // ***                                                ***
 // ******************************************************
 
+// TODO: Add if else statements to prevent stoping the server after request failure
+
 /**
 * CREATE new User
 *
 * Input:    username, password
-* Output:   the Id of the new User,
+* Output:   the Id of the new User
 * Errors:   Username can not be null!
 *           Password can not be null!
 *           User with this Username already exists!
@@ -43,10 +45,12 @@ app.post("/user", (req, res) => {
         res.status(409).json({
             message: 'Username can not be null!'
         });
+        return 0;
     } else if (password.length == 0) {
         res.status(409).json({
             message: 'Password can not be null!'
         });
+        return 0;
     }
 
     // Check the count of Users with this Username
@@ -93,7 +97,7 @@ app.post("/user", (req, res) => {
 * READ all Users
 *
 * Input:    -
-* Output:   an array with all Users and their information,
+* Output:   an array with all Users and their information
 * Errors:   There are no Users in the DB!
 */
 app.get("/user", (req, res) => {
@@ -115,7 +119,7 @@ app.get("/user", (req, res) => {
 * READ User by id
 *
 * Input:    id of the User
-* Output:   an User and their information,
+* Output:   an User and their information
 * Errors:   User with this ID does not exist!
 */
 app.get("/user/:id", (req, res) => {
@@ -168,6 +172,7 @@ app.put("/user/:id", (req, res) => {
         res.status(409).json({
             message: 'Username can not be null!'
         });
+        return 0;
     } 
 
     // Check the count of Users with this Username
@@ -319,7 +324,7 @@ app.put("/user/password/:id", (req, res) => {
     let sqlUpdate = `UPDATE user SET password = ? WHERE id = ?`;
     
     // Check if Old Password and New Password are null
-     if(oldPassword.length == 0) {
+    if(oldPassword.length == 0) {
         res.status(409).json({
             message: 'Old Password can not be null!'
         });
