@@ -108,6 +108,27 @@ app.post("/movie_language", (req, res) => {
         }
     });
 });
+
+/**
+* READ all Movie_Languages
+*
+* Output:   an array with all Movie_Languages and their information,
+* Errors:   There are no Movie_Languages in the DB!
+*/
+app.get("/movie_language", (req, res) => {
+    let sql = `SELECT * FROM movie_language`;
+    connection.query(sql, function(err, movie_languages) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Movie_Languages in the DB!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            res.status(200).send(movie_languages);
+        }
+    });
+});
 // ******************************************************
 // ***                                                ***
 // ***       Movie_Language Extra Functionality       ***
