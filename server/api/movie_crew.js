@@ -127,6 +127,27 @@ app.post("/movie_crew", (req, res) => {
         }
     });
 });
+
+/**
+* READ all Movie_Crews
+*
+* Output:   an array with all Movie_Crews and their information,
+* Errors:   There are no Movie_Crews in the DB!
+*/
+app.get("/movie_crew", (req, res) => {
+    let sql = `SELECT * FROM movie_crew`;
+    connection.query(sql, function(err, movie_crews) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Movie_Crews in the DB!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            res.status(200).send(movie_crews);
+        }
+    });
+});
 // ******************************************************
 // ***                                                ***
 // ***         Movie_Crew Extra Functionality         ***
