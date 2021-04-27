@@ -129,6 +129,35 @@ app.get("/movie_genre", (req, res) => {
         }
     });
 });
+
+/**
+* READ Movie_Genre by id
+*
+* Input:    id of the Movie_Genre
+* Output:   an Movie_Genre and their information,
+* Errors:   Movie_Genre with this ID does not exist!
+*/
+app.get("/movie_genre/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sql = `SELECT * FROM movie_genre WHERE id = ?`;
+
+    connection.query(sql, [req.params.id], function(err, movie_genre) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_genre.length) {
+                res.status(200).send(movie_genre[0]);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Genre with this ID (${req.params.id}) does not exist!`
+                });
+            }
+        }
+    });
+});
 // ******************************************************
 // ***                                                ***
 // ***         Movie_Genre Extra Functionality         ***
