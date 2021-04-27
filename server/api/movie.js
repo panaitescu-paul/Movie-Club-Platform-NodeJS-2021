@@ -107,6 +107,35 @@ app.get("/movie", (req, res) => {
         }
     });
 });
+
+/**
+* READ Movie by id
+*
+* Input:    id of the Movie
+* Output:   an Movie and their information
+* Errors:   Movie with this ID does not exist!
+*/
+app.get("/movie/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sql = `SELECT * FROM movie WHERE id = ?`;
+
+    connection.query(sql, [req.params.id], function (err, movie) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie.length) {
+                res.status(200).send(movie[0]);
+            } else {
+                res.status(404).json({
+                    message: `Movie with this ID (${req.params.id}) does not exist!`
+                });
+            }
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
