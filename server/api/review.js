@@ -19,6 +19,7 @@ app.use(express.json());
 // ***                                                ***
 // ******************************************************
 
+// TODO: Add if else statements to prevent stoping the server after request failure
 // TODO: return the object after it was created
 
 /**
