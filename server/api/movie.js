@@ -136,6 +136,78 @@ app.get("/movie/:id", (req, res) => {
         }
     });
 });
+
+/**
+* UPDATE Movie by id
+*
+* Input:    id, title, overview, runtime, trailerLink, poster, releaseDate
+* Output:   Status 204 - Success if Movie was successfully updated!
+* Errors:   Title can not be null!
+*           Movie with this Title already exists!
+*           Movie with this ID does not exist!
+*           The Movie could not be updated!
+*/
+app.put("/movie/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let title = req.body.title;
+    let overview = req.body.overview;
+    let runtime = req.body.runtime;
+    let trailerLink = req.body.trailerLink;
+    let poster = req.body.poster;
+    let releaseDate = req.body.releaseDate;
+    let sqlGet = `SELECT * FROM movie WHERE id = ?`;
+    let sqlUpdate = `UPDATE movie SET title = ?, overview = ?, runtime = ?, 
+                     trailerLink = ?, poster = ?, releaseDate = ? WHERE id = ?`;
+    
+    // Check if Title is null
+    if(title.length == 0) {
+        res.status(409).json({
+            message: 'Title can not be null!'
+        });
+        return 0;
+    } 
+
+    // Check the count of Movies with this Title
+    connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ?;` , 
+                    [title], function (err, result) {
+        console.log('total: ', result[0].total);
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'Movie with this Title already exists!',
+            });
+        } else {
+            // Get Movie
+            connection.query(sqlGet, [req.params.id], function (err, movie) {
+                if (err) {
+                    res.status(400).json({
+                        error: err
+                    });
+                    console.log(err);
+                } else {
+                    if(!movie.length) {
+                        res.status(404).json({
+                            message: `Movie with this ID (${req.params.id}) does not exist!`
+                        });
+                    } else {
+                        // Update Movie
+                        connection.query(sqlUpdate, [title, overview, runtime, trailerLink, 
+                            poster, releaseDate, req.params.id], function (err) {
+                            if (err) {
+                                res.status(400).json({
+                                    message: 'The Movie could not be updated!',
+                                    error: err.message
+                                });
+                                console.log(err.message);
+                            } else {
+                                res.sendStatus(204);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
