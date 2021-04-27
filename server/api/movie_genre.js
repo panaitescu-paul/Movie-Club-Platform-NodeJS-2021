@@ -108,6 +108,27 @@ app.post("/movie_genre", (req, res) => {
         }
     });
 });
+
+/**
+* READ all Movie_Genres
+*
+* Output:   an array with all Movie_Genres and their information,
+* Errors:   There are no Movie_Genres in the DB!
+*/
+app.get("/movie_genre", (req, res) => {
+    let sql = `SELECT * FROM movie_genre`;
+    connection.query(sql, function(err, movie_genres) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Movie_Genres in the DB!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            res.status(200).send(movie_genres);
+        }
+    });
+});
 // ******************************************************
 // ***                                                ***
 // ***         Movie_Genre Extra Functionality         ***
