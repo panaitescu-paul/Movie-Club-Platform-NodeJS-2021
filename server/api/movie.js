@@ -86,6 +86,27 @@ app.post("/movie", (req, res) => {
     });
 });
 
+/**
+* READ all Movies
+*
+* Input:    -
+* Output:   an array with all Movies and their information
+* Errors:   There are no Movies in the DB!
+*/
+app.get("/movie", (req, res) => {
+    let sql = `SELECT * FROM movie`;
+    connection.query(sql, function (err, movies) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Movies in the DB!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            res.status(200).send(movies);
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
