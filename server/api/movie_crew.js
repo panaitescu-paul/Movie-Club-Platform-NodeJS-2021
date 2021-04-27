@@ -177,6 +177,48 @@ app.get("/movie_crew/:id", (req, res) => {
         }
     });
 });
+
+/**
+* DELETE Movie_Crew by id
+*
+* Input:    Id of the Movie_Crew to delete
+* Output:   Status 204 - Success if Movie_Crew was successfully deleted!
+* Erros:    Movie_Crew with this ID does not exist!
+*           This Movie_Crew could not be deleted!
+*/
+app.delete("/movie_crew/:id", (req, res) => {
+    console.log("req.params.id: ", req.params.id);
+    let sqlGet = `SELECT * FROM movie_crew WHERE id = ?`;
+    let sqlDelete = `DELETE FROM movie_crew WHERE id = ?`;
+    
+    connection.query(sqlGet, [req.params.id], function(err, movie_crew) {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!movie_crew.length) {
+                res.status(404).json({
+                    message: `Movie_Crew with this ID (${req.params.id}) does not exist!`
+                });
+            } else {
+                connection.query(sqlDelete, req.params.id, function(err) {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The Movie_Crew could not be deleted!',
+                            error: err.message
+                        });
+                        console.log(err.message);
+                    } else {
+                        res.sendStatus(204);
+                    }
+                });
+            }
+        }
+    });
+});
+
 // ******************************************************
 // ***                                                ***
 // ***         Movie_Crew Extra Functionality         ***
