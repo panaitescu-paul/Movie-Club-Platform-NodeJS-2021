@@ -17,7 +17,7 @@
                 /*
                 * Perform some validation here.
                 */
-                $.post("/login",{email:email,pass:pass},function(data){
+                $.post("http://localhost:3000/login",{email:email,pass:pass},function(data){
                     if(data==='done') {
                         window.location.href="/admin";
                     }
