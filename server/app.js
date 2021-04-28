@@ -3,13 +3,15 @@ const session = require('express-session');
 const path = require('path');
 const redis = require('redis');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const redisStore = require('connect-redis')(session);
 const client  = redis.createClient();
 const HOSTNAME = 'localhost';
-const PORT = 3000;
+const PORT = 4000;
 let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 app.use(express.static(path.join(__dirname, '../client')));
 
 app.use(session({

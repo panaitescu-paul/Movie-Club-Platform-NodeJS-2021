@@ -8,36 +8,56 @@
     <link rel="icon" href="img/movie-icon.png" type="image/ico">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/jquery-3.5.1.js"></script>
-    <script>
-        $(document).ready(function(){
-            let email,pass;
-            $("#submit").click(function(){
-                email=$("#email").val();
-                pass=$("#password").val();
-                /*
-                * Perform some validation here.
-                */
-                $.post("http://localhost:3000/login",{email:email,pass:pass},function(data){
-                    if(data==='done') {
-                        window.location.href="/admin";
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="js/script.js"></script>
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+<!--            let email,pass;-->
+<!--            $("#submit").click(function(){-->
+<!--                email=$("#email").val();-->
+<!--                pass=$("#password").val();-->
+<!--                /*-->
+<!--                * Perform some validation here.-->
+<!--                */-->
+<!--                $.post("http://localhost:3000/login",{email:email,pass:pass},function(data){-->
+<!--                    if(data==='done') {-->
+<!--                        window.location.href="/admin";-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 </head>
 <body>
+    <header>
+        <p>Movie Club - Home</p>
+        <a href="index.html">Home</a>
+        <a href="src/login.html">Login</a>
+        <a href="src/admin.html">Admin</a>
+        <a href="src/user.html">User</a>
+        <a href="src/community.html">Community</a>
+        <br>
+<!--        <input type="text" size="40" placeholder="Type your email" id="email"><br />-->
+<!--        <input type="password" size="40" placeholder="Type your password" id="password"><br />-->
+<!--        <input type="button" value="Submit" id="submit">-->
+    </header>
 
-    <p>Movie Club - Home</p>
-    <a href="index.html">Home</a>
-    <a href="src/login.html">Login</a>
-    <a href="src/admin.html">Admin</a>
-    <a href="src/user.html">User</a>
-    <a href="src/community.html">Community</a>
-    <br>
-    <input type="text" size="40" placeholder="Type your email" id="email"><br />
-    <input type="password" size="40" placeholder="Type your password" id="password"><br />
-    <input type="button" value="Submit" id="submit">
+    <main>
+        <form id="customerForm" method="POST">
+            <fieldset>
+                <legend>Customer panel</legend>
+                <p>Browse:</p>
+                <input type="radio" id="moviesSearch" name="searchType" value="moviesSearch">
+                <label for="moviesSearch">Movies</label><br>
+                <input type="radio" id="crewsSearch" name="searchType" value="crewsSearch">
+                <label for="crewsSearch" >Crews</label><br>
 
+
+            </fieldset>
+        </form>
+    </main>
+
+    <footer>
+
+    </footer>
 </body>
 </html>
