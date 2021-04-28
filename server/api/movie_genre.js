@@ -8,10 +8,12 @@
 const connection = require("../db/db_connection");
 const express = require("express");
 const axios = require('axios');
+const cors = require('cors');
 const HOSTNAME = 'localhost';
 const PORT = 3005;
 let app = express();
 app.use(express.json());
+
 
 // ******************************************************
 // ***                                                ***

@@ -1,11 +1,11 @@
 const express = require("express");
 const session = require('express-session');
 const path = require('path');
-const redis = require('redis');
 const bodyParser = require('body-parser');
-const cors = require('cors')
-const redisStore = require('connect-redis')(session);
-const client  = redis.createClient();
+const cors = require('cors');
+// const redis = require('redis');
+// const redisStore = require('connect-redis')(session);
+// const client  = redis.createClient();
 const HOSTNAME = 'localhost';
 const PORT = 4000;
 let app = express();
@@ -14,13 +14,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../client')));
 
-app.use(session({
-    secret: 'ssshhhhh',
-    // create new redis store.
-    store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
-    saveUninitialized: false,
-    resave: false
-}));
+// app.use(session({
+//     secret: 'ssshhhhh',
+//     // create new redis store.
+//     store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
+//     saveUninitialized: false,
+//     resave: false
+// }));
 
 app.get('/',(req,res) => {
     let sess = req.session;

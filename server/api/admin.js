@@ -2,10 +2,13 @@ const connection = require("../db/db_connection");
 const express = require("express");
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const cors = require('cors');
 const HOSTNAME = 'localhost';
 const PORT = 5000;
 let app = express();
 app.use(express.json());
+// To bypass Cors Policy error
+app.use(cors());
 
 // CREATE Admin User
 app.post("/admin", (req, res) => {
