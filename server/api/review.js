@@ -304,6 +304,33 @@ app.delete("/review/:id", (req, res) => {
 // ***                                                ***
 // ******************************************************
 
+/**
+* READ all Reviews for a Movie
+*
+* Input:    -
+* Output:   an array with all Reviews for a Movie and their information
+* Errors:   There are no Reviews for this Movie!
+*/
+app.get("/review/movie/:id", (req, res) => {
+    let sql = `SELECT * FROM review WHERE movieId = ?`;
+    connection.query(sql, [req.params.id], function(err, reviews) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Reviews for this Movie!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(reviews.length) {
+                res.status(200).send(reviews);
+            } else {
+                res.status(404).json({
+                    message: `There are no Reviews for this Movie!`
+                });
+            }
+        }
+    });
+});
 
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
