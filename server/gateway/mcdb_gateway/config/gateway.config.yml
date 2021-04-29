@@ -27,10 +27,10 @@ apiEndpoints:
     paths: [ '/movie', '/movie/*' ]
   rating:
     host: localhost
-    paths: [ '/rating', '/rating/*' ]
+    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
   review:
     host: localhost
-    paths: [ '/review', '/review/*' ]
+    paths: [ '/review', '/review/*', '/review/movie/*' ]
   moview_crew:
     host: localhost
     paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/crewId/*' ]
