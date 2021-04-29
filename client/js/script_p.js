@@ -167,6 +167,40 @@ $(document).ready(function() {
             }
         });
 
+        $.ajax({
+            url: URL + `rating/movie/${id}`,
+            type: "GET",
+            success: function(data) {
+                // Calculate the Average Rating
+                let sum = 0;
+                for (let i = 0; i < data.length; i++) {
+                    sum += data[i].value;
+                }
+                let average = sum/data.length;
+                console.log('sum: ', sum);
+                console.log('average: ', average);
+
+                const elem = $("<div />");
+                elem.append($("<div />", { "class": "", "html": 
+                    `<hr>
+                    <h3>Ratings</h3>
+                    <p>
+                        <span class="tag">Rating Average</span>
+                        <span class="tag-info">${average}</span>
+                    </p>
+                    <hr>
+                    <h3>Reviews</h3>
+                    `}))
+                $("#modalInfoContent2").append(elem);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    // alert(errorMsg);
+                }
+            }
+        });
+
     //     $('input[type=radio]').click(function() {
     //         let searchType = $('input[name="searchType"]:checked').val();
     //         switch (searchType) {
