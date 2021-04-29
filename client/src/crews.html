@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Movie Club</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Policy against XSS Atacks -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'self'; child-src 'none';"> -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/jquery-3.5.1.js"></script>
+    <script src="../js/script_p.js"></script>
+    <script src="../js/script_c.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <link rel="shortcut icon" type="image/png" href="../img/favicon.png"/>
+</head>
+<body>
+    <!-- -sm|-md|-lg|-xl -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-success bg-custom1">
+        <a class="navbar-brand" href="#">Movie Club</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="btn btn-success btn-custom1 btn-bd-primary mb-2 btnNav" href="../src/movies.html">Movies <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success btn-custom1 mb-2 btnNav" href="../src/crews.html">Crews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success btn-custom1 mb-2 btnNav" href="admins.html">Admins</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-success btn-custom1 mb-2 btnNav" href="../src/community.html">Community</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <span class="navbar-text">
+                        <form id="frmLogout" action="../auth/login.php" method="POST">
+                            <input type="hidden" name="logout" value="logout">
+                            <button type="submit" id="btnLogOut" class="btn btn-success btn-custom1 mb-2 btnNav" data-toggle='modal' data-target='#modal'>
+                                Login / Log Out from: ...
+                            </button>
+                        </form>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal-->
+    <div class="modals">
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Information</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- Information will be added here -->
+                    <div class="modal-body">
+                        <div id="modalInfoContent1">
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of Header -->
+
+    <!-- Start of Page content -->
+    <div class="container" id="page-artists">
+
+        <!-- Sidebar navigation -->
+        <div class="sidebar">
+            <button type="button" class="btn btn-success btn-custom1 scrollUp">Up</button>
+            <button type="button" class="btn btn-success btn-custom1 scrollDown">Down</button>
+        </div>
+
+        <h1 class="main-title">Crews</h1>
+        <div class="resultArea">
+            
+            <div class="controls">
+                <!-- <div class="buttons">
+                    <button type="button" id="btnMoviesTab" class="btn btn-custom1 mb-2 btnLibrary">Movies</button>
+                    <button type="button" id="btnCrewTab" class="btn btn-custom1 mb-2 btnLibrary active">Crew</button>
+                    <button type="button" id="btnAdminTab" class="btn btn-custom1 mb-2 btnLibrary">Admin</button>
+                </div> -->
+                <label for="txtName" id="txtNameLabel">Crew Name</label>
+                <input type="text" id="searchAlbumName" name="Name" class="form-control" required>
+                </br>
+                <button type="button" class="btn btn-success mb-2" id="btnSearchAlbum">Search Crew</button>
+            </div>
+            
+            <section id="results">
+            </section>
+        </div>
+    </div>
+
+    <!-- End of Page content -->
+
+    <!-- Start of Footer !!!!!! -->
+    <footer class="page-footer font-small blue bg-success bg-custom1 footer">
+        <div class="footer-copyright text-center py-3">
+            &copy; 2021 - Movie Club
+        </div>
+    </footer>
+</body>
+</html>
