@@ -201,17 +201,54 @@ $(document).ready(function() {
             }
         });
 
-    //     $('input[type=radio]').click(function() {
-    //         let searchType = $('input[name="searchType"]:checked').val();
-    //         switch (searchType) {
-    //             case 'moviesSearch':
-    //                 $.ajax({
-    //                     url: `${URLPath}/movie`,
-    //                     type: "GET",
-    //                     success: function(data) {
-    //                         console.log(data);
-    //                         // console.log(data[0]);
+        $.ajax({
+            url: URL + `review/movie/${id}`,
+            type: "GET",
+            success: function(data) {
+                data.forEach(element => {
+                    const elem = $("<div />");
+                    elem.append($("<div />", { "class": "", "html": 
+                        `<hr>
+                        <p>
+                            <span class="tag">User name:</span>
+                            <span class="tag-info" id="user-name"></span>
+                        </p>
+                        <p>
+                            <span class="tag">Title</span>
+                            <span class="tag-info">${element.title}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Content</span>
+                            <span class="tag-info">${element.content}</span>
+                        </p>
+                        ` }))
+                    let userId = element.userId;
+                    console.log('userId: ', userId);
 
+                    $.ajax({
+                        url: URL + `user/${userId}`,
+                        type: "GET",
+                        success: function(data) {
+                            document.getElementById("user-name").innerHTML = data.firstName + ' ' + data.lastName;
+                            $("#modalInfoContent2").append(elem);
+                        },
+                        statusCode: {
+                            404: function(data) {
+                                const errorMsg = JSON.parse(data.responseText).Error;
+                                // alert(errorMsg);
+                            }
+                        }
+                    });
+                    $("#modalInfoContent2").append(elem);
+                });                
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    // alert(errorMsg);
+                }
+            }
+        });
 
     //                         // for (const element of data) {
     //                         //     console.log(element);
