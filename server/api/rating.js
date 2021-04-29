@@ -283,6 +283,32 @@ app.delete("/rating/:id", (req, res) => {
 // ***                                                ***
 // ******************************************************
 
+/**
+* READ all Ratings for a Movies
+*
+* Output:   an array with all Ratings from a Movie and their information
+* Errors:   There are no Ratings for this Movie!
+*/
+app.get("/rating/movie/:id", (req, res) => {
+    let sql = `SELECT * FROM rating WHERE movieId = ?`;
+    connection.query(sql, [req.params.id], function(err, ratings) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Ratings for this Movie!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(ratings.length) {
+                res.status(200).send(ratings);
+            } else {
+                res.status(404).json({
+                    message: `There are no Ratings for this Movie!`
+                });
+            }
+        }
+    });
+});
 
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {

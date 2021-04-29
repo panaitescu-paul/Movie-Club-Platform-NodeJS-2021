@@ -156,6 +156,13 @@ app.delete("/crew/:id", (req, res) => {
     });
 });
 
+// ******************************************************
+// ***                                                ***
+// ***              Crew Extra Functionality          ***
+// ***                                                ***
+// ******************************************************
+
+
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
         console.log(err);
