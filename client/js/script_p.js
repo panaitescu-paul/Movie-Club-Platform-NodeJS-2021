@@ -106,8 +106,66 @@ $(document).ready(function() {
             }
         });
     }
-    // $(document).ready(function() {
-    //     const URLPath = 'http://localhost:8000';
+
+    // Open Modal - Show Movie 
+    $(document).on("click", ".showMovieModal", function() {
+        const id = $(this).attr("data-id");
+        $.ajax({
+            url: URL + `movie/${id}`,
+            type: "GET",
+            success: function(data) {
+                console.log('data: ', data);
+
+                // Empty the previous Results
+                $("#modalInfoContent1").empty();
+                $("#modalInfoContent2").empty();
+
+                const elem = $("<div />");
+                $("#modalTitle").html("Movie Details");           
+                elem.append($("<div />", { "class": "", "html": 
+                    `<p>
+                        <span class="tag">Id</span>
+                        <span class="tag-info">${data.id}</span>
+                    </p>
+                    <p>
+                        <span class="tag">Title</span>
+                        <span class="tag-info">${data.title}</span>
+                    </p>
+                    <p>
+                        <span class="tag">Overview</span>
+                        <span class="tag-info">${data.overview}</span>
+                    </p>
+                    <p>
+                        <span class="tag">Runtime</span>
+                        <span class="tag-info">${data.runtime}</span>
+                    </p>
+                    <p>
+                        <span class="tag">TrailerLink</span>
+                        <span class="tag-info">${data.trailerLink}</span>
+                    </p>
+                    <p>
+                        <span class="tag">Poster</span>
+                        <span class="tag-info">${data.poster}</span>
+                    </p>
+                    <p>
+                        <span class="tag">RelseaseDate</span>
+                        <span class="tag-info">${data.relseaseDate}</span>
+                    </p>
+                    <p>
+                        <span class="tag">Created At</span>
+                        <span class="tag-info">${data.createdAt}</span>
+                    </p>
+                    `
+                    }))
+                $("#modalInfoContent1").append(elem);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
+            }
+        });
 
     //     $('input[type=radio]').click(function() {
     //         let searchType = $('input[name="searchType"]:checked').val();
@@ -160,6 +218,7 @@ $(document).ready(function() {
     //     });
     // });
                     
+    });
 });
 
 
