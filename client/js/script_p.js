@@ -27,12 +27,25 @@ $(document).ready(function() {
 
                         data.forEach(element => {
                             console.log(element.title);
+                            let data = element.poster;
+
+                            let bytes = new Uint8Array(data.length / 2);
+
+                            for (let i = 0; i < data.length; i += 2) {
+                                bytes[i / 2] = parseInt(data.substring(i, i + 2), 16);
+                            }
+
+                            let blob = new Blob([bytes], {type: 'image/bmp'});
+
+                            let image = new Image();
+                            image.src = URL.createObjectURL(blob);
+
                             $("#showList").append(`
                                 <div>
                                     <p id="title">${element.title}</p>
                                     <p id="overview">${element.overview}</p>
                                     <p id="releaseDate">${element.releaseDate}</p>
-                                    <p id="profile">${element.profile}</p>
+                                    <p id="poster"><img src="${image}"></p>
                                 </div>
                             `);
                         });

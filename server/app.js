@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const axios = require('axios');
 // const redis = require('redis');
 // const redisStore = require('connect-redis')(session);
 // const client  = redis.createClient();
@@ -29,6 +30,10 @@ app.get('/',(req,res) => {
     }
     res.sendFile(path.join(__dirname, '../client') + '/index.html');
 });
+
+// app.get('/crew-details/:id',(req,res) => {
+//
+// });
 
 app.post('/login',(req,res) => {
     console.log(req.session);

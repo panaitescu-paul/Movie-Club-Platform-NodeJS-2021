@@ -7,10 +7,14 @@
     <title>Movie Club - Home</title>
     <link rel="icon" href="img/movie-icon.png" type="image/ico">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/functions.js"></script>
     <script src="js/script_c.js"></script>
     <script src="js/script_p.js"></script>
-<!--    <script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!--    <script>-->
 <!--        $(document).ready(function(){-->
 <!--            let email,pass;-->
 <!--            $("#submit").click(function(){-->
@@ -51,20 +55,29 @@
                 <label for="moviesSearch">Movies</label><br>
                 <input type="radio" id="crewsSearch" name="searchType" value="crewsSearch">
                 <label for="crewsSearch" >Crews</label><br>
-
-
             </fieldset>
         </form>
+        <div id="showList" class="d-flex flex-row"></div>
+
+        <!-- Crew modal -->
+        <div id="crewModal" class="modal2">
+            <div class="modal-content2">
+                <div class="modal-header2">
+                    <h3 id="headerCrew">Crew Information</h3>
+                </div>
+
+                <div class="modal-body2">
+                    <div id="crewDetails"></div>
+                </div>
+
+                <div class="modal-footer2">
+                    <button id="btnCrewCancel">Ok</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <div id="showList">Show liust</div>
-
-    <div>
-        <p id="title">Title</p>
-        <p id="overview">overview</p>
-        <p id="releaseDate">releaseDate</p>
-        <p id="profile">profile</p>
-    </div>
 
     <footer>
 

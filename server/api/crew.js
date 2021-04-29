@@ -12,13 +12,15 @@ app.use(cors());
 // CREATE Crew
 app.post("/crew", (req, res) => {
     let name = req.body.name || null;
+    let mainActivity = req.body.mainActivity || null;
     let dateOfBirth = req.body.dateOfBirth || null;
     let birthPlace = req.body.birthPlace || null;
     let biography = req.body.biography || null;
+    let picture = req.body.picture || null;
     let website = req.body.website || null;
-    let stmt = `INSERT INTO crew(name, dateOfBirth, birthPlace, biography, website) VALUES(?, ?, ?, ?, ?);`;
+    let stmt = `INSERT INTO crew(name, mainActivity, dateOfBirth, birthPlace, biography, picture, website) VALUES(?, ?, ?, ?, ?, ?, ?);`;
 
-    connection.query(stmt, [name, dateOfBirth, birthPlace, biography, website], function (err, result) {
+    connection.query(stmt, [name, mainActivity, dateOfBirth, birthPlace, biography, picture, website], function (err, result) {
         if (err) {
             res.status(400).json({
                 message: 'The crew member could not be created!',
@@ -82,7 +84,7 @@ app.get("/crew/:id", (req, res) => {
 // Update Crew
 app.put("/crew/:id", (req, res) => {
     let getOneStmt = `SELECT * FROM crew WHERE id = ?`;
-    let updateStmt = `UPDATE crew SET name = ?, dateOfBirth = ?, birthPlace = ?, biography = ?, website = ? WHERE id = ?`;
+    let updateStmt = `UPDATE crew SET name = ?, mainActivity = ?, dateOfBirth = ?, birthPlace = ?, biography = ?, picture = ?, website = ? WHERE id = ?`;
 
     connection.query(getOneStmt, [req.params.id], function (err, result) {
         if (err) {
@@ -94,12 +96,14 @@ app.put("/crew/:id", (req, res) => {
         } else {
             if(result.length) {
                 let name = req.body.name || result[0].name;
+                let mainActivity = req.body.mainActivity || result[0].mainActivity;
                 let dateOfBirth = req.body.dateOfBirth || result[0].dateOfBirth;
                 let birthPlace = req.body.birthPlace || result[0].birthPlace;
                 let biography = req.body.biography || result[0].biography;
+                let picture = req.body.picture || result[0].picture;
                 let website = req.body.website || result[0].website;
 
-                connection.query(updateStmt, [name, dateOfBirth, birthPlace, biography, website, req.params.id], function (err, result) {
+                connection.query(updateStmt, [name, mainActivity, dateOfBirth, birthPlace, biography, picture, website, req.params.id], function (err, result) {
                     if (err) {
                         res.status(400).json({
                             message: 'The crew member could not be updated!',

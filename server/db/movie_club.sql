@@ -303,8 +303,8 @@ CREATE TABLE IF NOT EXISTS crew
    dateOfBirth DATE,
    birthPlace VARCHAR(120),
    biography VARCHAR(120),
-   website VARCHAR(120),
-   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   picture BLOB,
+   website VARCHAR(120)
 );
 
 -- Create tables with FK
