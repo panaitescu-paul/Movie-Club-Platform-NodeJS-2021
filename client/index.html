@@ -10,6 +10,13 @@
     <script src="js/jquery-3.5.1.js"></script>
     <script src="js/script_c.js"></script>
     <script src="js/script_p.js"></script>
+    <script>
+        // Show Movies Page
+        $(document).ready(function(){
+            window.location.href='../src/movies.html';
+        });
+    </script>
+
 <!--    <script>-->
 <!--        $(document).ready(function(){-->
 <!--            let email,pass;-->
@@ -31,12 +38,23 @@
 <body>
     <header>
         <p>Movie Club - Home</p>
-        <a href="index.html">Home</a>
-        <a href="src/login.html">Login</a>
-        <a href="src/admin.html">Admin</a>
-        <a href="src/user.html">User</a>
-        <a href="src/community.html">Community</a>
+        <a href="../index.html">Home</a>
+        <a href="movies.html">Movie List</a>
+        <a href="movie-details.html">Movie Details</a>
+        <a href="crew.html">Crew List</a>
+        <a href="crew-details.html">Crew Details</a>
+        <a href="login.html">Login</a>
+        <a href="admin.html">Admin</a>
+        <a href="user.html">User</a>
+        <a href="community.html">Community</a>
         <br>
+
+        <!-- Buttons to select pages -->
+        <button type="button" class="btn btn-primary" id="showMoviesPage">Show Movies Page</button>
+        <button type="button" class="btn btn-primary" id="showMovieDetailsPage">Show Movie Details Page</button>
+        <button type="button" class="btn btn-primary" id="showCrewPage">Show Crew Page</button>
+        <button type="button" class="btn btn-primary" id="showCrewDetailsPage">Show Crew Details Page</button>
+        
 <!--        <input type="text" size="40" placeholder="Type your email" id="email"><br />-->
 <!--        <input type="password" size="40" placeholder="Type your password" id="password"><br />-->
 <!--        <input type="button" value="Submit" id="submit">-->
