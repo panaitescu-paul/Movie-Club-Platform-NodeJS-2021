@@ -250,45 +250,58 @@ $(document).ready(function() {
             }
         });
 
-    //                         // for (const element of data) {
-    //                         //     console.log(element);
+        // $.ajax({
+        //     url: URL + `crew/movie/${id}`,
+        //     type: "GET",
+        //     success: function(data) {
+        //         console.log('-------------data: ', data);
+        //         data.forEach(element => {
 
-    //                         //     // const row = $("<tr />");
-    //                         //     // const movies = element["ArtistId"];
-    //                         //     // row.
-    //                         //     //     append($("<td />", { "text": element["ArtistId"]})).
-    //                         //     //     append($("<td />", { "text": element["Name"]}))
-    //                         //     // tableBody.append(row);
-    //                         // }
+        //             const elem = $("<div />");
+        //             elem.append($("<div />", { "class": "", "html": 
+        //                 `<hr>
+        //                 <p>
+        //                     <span class="tag">User name:</span>
+        //                     <span class="tag-info" id="user-name"></span>
+        //                 </p>
+        //                 <p>
+        //                     <span class="tag">Title</span>
+        //                     <span class="tag-info">${element.title}</span>
+        //                 </p>
+        //                 <p>
+        //                     <span class="tag">Content</span>
+        //                     <span class="tag-info">${element.content}</span>
+        //                 </p>
+        //                 ` }))
+        //             let userId = element.userId;
+        //             console.log('userId: ', userId);
 
 
-    //                         data.forEach(element => {
-    //                             console.log(element.title);
-    //                             $("#showList").append(`
-    //                                 <div>
-    //                                     <p id="title">${element.title}</p>
-    //                                     <p id="overview">${element.overview}</p>
-    //                                     <p id="releaseDate">${element.releaseDate}</p>
-    //                                     <p id="profile">${element.profile}</p>
-    //                                 </div>
-    //                             `);
-    //                         });
-    //                     }
-    //                 });
-    //                 break;
-    //             case 'crewsSearch':
-    //                 $.ajax({
-    //                     url: `${URLPath}/crew`,
-    //                     type: "GET",
-    //                     success: function(data) {
-    //                         console.log(data);
-    //                     }
-    //                 });
-    //                 break;
-    //         }
-    //     });
-    // });
+        //             $.ajax({
+        //                 url: URL + `user/${userId}`,
+        //                 type: "GET",
+        //                 success: function(data) {
+        //                     document.getElementById("user-name").innerHTML = data.firstName + ' ' + data.lastName;
+        //                     $("#modalInfoContent2").append(elem);
+        //                 },
+        //                 statusCode: {
+        //                     404: function(data) {
+        //                         const errorMsg = JSON.parse(data.responseText).Error;
+        //                         // alert(errorMsg);
+        //                     }
+        //                 }
+        //             });
                     
+        //             $("#modalInfoContent2").append(elem);
+        //         });                
+        //     },
+        //     statusCode: {
+        //         404: function(data) {
+        //             const errorMsg = JSON.parse(data.responseText).Error;
+        //             // alert(errorMsg);
+        //         }
+        //     }
+        // });
     });
 });
 
