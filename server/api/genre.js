@@ -22,6 +22,26 @@ app.use(cors());
 // ***                                                ***
 // ******************************************************
 
+/**
+* READ all Genres
+*
+* Output:   an array with all Genres and their information,
+* Errors:   There are no Genres in the DB!
+*/
+app.get("/genre", (req, res) => {
+    let sql = `SELECT * FROM genre ORDER BY id`;
+    connection.query(sql, function(err, genres) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Genres in the DB!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            res.status(200).send(genres);
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
