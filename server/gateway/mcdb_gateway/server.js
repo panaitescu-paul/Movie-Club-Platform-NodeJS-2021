@@ -12,6 +12,7 @@ require("../../api/review");
 require("../../api/movie_crew");
 require("../../api/role");
 require("../../api/genre");
+require("../../api/language");
 
 gateway()
   .load(path.join(__dirname, 'config'))
