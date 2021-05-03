@@ -24,10 +24,10 @@ app.use(express.static(path.join(__dirname, '../client')));
 // }));
 
 app.get('/',(req,res) => {
-    let sess = req.session;
-    if(sess.email) {
-        return res.redirect('/admin');
-    }
+    // let sess = req.session;
+    // if(sess.email) {
+    //     return res.redirect('/admin');
+    // }
     res.sendFile(path.join(__dirname, '../client') + '/index.html');
 });
 

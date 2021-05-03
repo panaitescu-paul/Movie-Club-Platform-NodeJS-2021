@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Policy against XSS Atacks -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'self'; child-src 'none';"> -->
+    <link rel="icon" href="../img/movie-icon.png" type="image/ico">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/bootstrap.css">
     <script src="../js/jquery-3.5.1.js"></script>
-    <script src="../js/script_p.js"></script>
+    <script src="../js/functions.js"></script>
     <script src="../js/script_c.js"></script>
+    <script src="../js/script_p.js"></script>
     <script src="../js/bootstrap.js"></script>
-    <link rel="shortcut icon" type="image/png" href="../img/favicon.png"/>
 </head>
 <body>
     <!-- -sm|-md|-lg|-xl -->
@@ -97,7 +98,7 @@
                     <button type="button" id="btnCrewTab" class="btn btn-custom1 mb-2 btnLibrary active">Crew</button>
                     <button type="button" id="btnAdminTab" class="btn btn-custom1 mb-2 btnLibrary">Admin</button>
                 </div> -->
-                <label for="txtName" id="txtNameLabel">Crew Name</label>
+                <label for="searchAlbumName" id="txtNameLabel">Crew Name</label>
                 <input type="text" id="searchAlbumName" name="Name" class="form-control" required>
                 </br>
                 <button type="button" class="btn btn-success mb-2" id="btnSearchAlbum">Search Crew</button>

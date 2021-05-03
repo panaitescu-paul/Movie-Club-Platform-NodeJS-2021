@@ -37,16 +37,18 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on("click", "#crewInfo", function(e) {
-        e.preventDefault();
+
+    $(document).on("click", "#crewInfo", function() {
         const crewId = $(this).attr("data-id");
+        console.log(crewId);
+        emptyModal();
         $.ajax({
             url: `${URLPath}/crew/${crewId}`,
             type: "GET",
             success: function(crew) {
                 let dateOfBirth = formatDate(crew.dateOfBirth);
-                $("#headerCrew").text(`${crew.name} - Information Details`);
-                $("#crewDetails").append(`
+                $("#modalTitle").text(`${crew.name} - Information Details`);
+                $("#modalInfoContent1").append(`
                     <div>
                         <p id="name"><b>Name: </b>${crew.name}</p>
                         <p id="mainActivity"><b>Main Activity: </b>${crew.mainActivity}</p>
@@ -79,16 +81,8 @@ $(document).ready(function() {
                     }
                 });
 
-                $("#crewModal").show();
-
             }
         });
     });
-
-    $("#btnCrewCancel").on("click", function() {
-        $("#crewModal").hide();
-        $("#crewDetails").empty();
-    });
-
 
 });
