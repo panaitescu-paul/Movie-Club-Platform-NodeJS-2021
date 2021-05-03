@@ -37,6 +37,9 @@ apiEndpoints:
   role:
     host: localhost
     paths: [ '/role', '/role/*' ]
+  genre:
+    host: localhost
+    paths: [ '/genre', '/genre/*' ]
 serviceEndpoints:
   adminService:
     url: 'http://localhost:5000'
@@ -60,6 +63,8 @@ serviceEndpoints:
     url: 'http://localhost:3004'
   roleService:
     url: 'http://localhost:5005'
+  genreService:
+    url: 'http://localhost:3005'
 policies:
   - basic-auth
   - cors
@@ -157,4 +162,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: roleService
+              changeOrigin: true
+  genrePipeline:
+    apiEndpoints:
+      - genre
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: genreService
               changeOrigin: true
