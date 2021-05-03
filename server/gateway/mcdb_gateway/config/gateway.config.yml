@@ -21,7 +21,7 @@ apiEndpoints:
     paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]
   crew:
     host: localhost
-    paths: [ '/crew', '/crew/*' ]
+    paths: [ '/crew', '/crew/*', '/crew/name/search' ]
   movie:
     host: localhost
     paths: [ '/movie', '/movie/*' ]

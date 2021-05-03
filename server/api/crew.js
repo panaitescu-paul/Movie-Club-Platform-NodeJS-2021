@@ -81,6 +81,28 @@ app.get("/crew/:id", (req, res) => {
     });
 });
 
+// Search Crew
+app.get("/crew/name/search", (req, res) => {
+    let stmt = `SELECT * FROM crew WHERE name LIKE ?`;
+    connection.query(stmt, ['%' + req.query.name + '%'], function (err, results) {
+        if (err) {
+            res.status(400).json({
+                message: 'The crew members could not be showed!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(results.length) {
+                res.status(200).send(results);
+            } else {
+                res.status(404).json({
+                    message: `No crew member found with the name ${req.query.name}!`
+                });
+            }
+        }
+    });
+});
+
 // Update Crew
 app.put("/crew/:id", (req, res) => {
     let getOneStmt = `SELECT * FROM crew WHERE id = ?`;

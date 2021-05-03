@@ -33,10 +33,28 @@ $(document).ready(function() {
             console.log("PAGE index");
         } else if (page === "movies.html") {
             console.log("PAGE movies");
-            ShowAllMovies();
+            showAllMovies();
         } else if (page === "crews.html") {
             console.log("PAGE crews");
-            ShowAllCrews();
+            $.ajax({
+                url: `${URL}crew`,
+                type: "GET",
+                success: function(crews) {
+                    showCrews(crews);
+                },
+                statusCode: {
+                    404: function(data) {
+                        $("#results").empty();
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    }
+                }
+            });
+            $(document).on('keypress',function(e) {
+                if(e.which === 13) {
+                    $("#btnSearchCrew").click();
+                }
+            });
         } else if (page === "admins.html") {
             console.log("PAGE admins");
             // ShowAllAdmins();

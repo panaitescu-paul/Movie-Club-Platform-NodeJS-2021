@@ -19,7 +19,7 @@ function formatDate(date) {
 }
 
 // Show all Movies in a List
-function ShowAllMovies(user = 'guest') {
+function showAllMovies(user = 'guest') {
     $.ajax({
         url: URL + "movie",
         type: "GET",
@@ -69,49 +69,23 @@ function ShowAllMovies(user = 'guest') {
 }
 
 // Show all Crews in a List
-function ShowAllCrews(user = 'guest') {
-    $.ajax({
-        url: `${URL}crew`,
-        type: "GET",
-        success: function(crews) {
-            crews.forEach(crew => {
-                // make ajax request to get the poster
-                $.ajax({
-                    url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${crew.name}`,
-                    type: "GET",
-                    success: function(data) {
-                        let person = data["results"][0];
-                        let personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
-                        if(person.profile_path === null) {
-                            personPicture = "img/notFoundPicture.jpg";
-                        }
-                        $("#results").append(`
-                            <div class="card" data-id="${crew.id}" id="crewInfo">
-                                <img class="card-img-top" src="${personPicture}" data-toggle="modal" data-target="#modal">
-                                <div class="card-body">
-                                    <h5 class="card-title">${crew.name}</h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-                                </ul>
-                            </div>
-                                     
-                            `);
-
-                        // <div className="p-2" data-id="${crew.id}" id="crewInfo">
-                        //     <p id="name"><b>Name: </b>${crew.name}</p>
-                        //     <p id="mainActivity"><b>Main Activity: </b>${crew.mainActivity}</p>
-                        //     <img src="${personPicture}" className="poster">
-                        // </div>
-                    }
-                });
-            });
-        },
-        statusCode: {
-            404: function(data) {
-                const errorMsg = JSON.parse(data.responseText).Error;
-                alert(errorMsg);
-            }
+function showCrews(data, user = 'guest') {
+    $("#results").empty();
+    data.forEach(crew => {
+        if(crew.picture === null) {
+            crew.picture = "img/notFoundPicture.jpg";
         }
+        $("#results").append(`
+            <div class="card" data-id="${crew.id}" id="crewInfo">
+                <img class="card-img-top" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                <div class="card-body">
+                    <h5 class="card-title">${crew.name}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                </ul>
+            </div>
+        `);
     });
+
 }

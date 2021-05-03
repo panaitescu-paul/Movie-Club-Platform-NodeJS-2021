@@ -1,46 +1,8 @@
 $(document).ready(function() {
     const URLPath = 'http://localhost:8000';
 
-    $('input[type=radio]').click(function() {
-        removeLists();
-        let searchType = $('input[name="searchType"]:checked').val();
-        switch (searchType) {
-            case 'crewsSearch':
-                $.ajax({
-                    url: `${URLPath}/crew`,
-                    type: "GET",
-                    success: function(crews) {
-                        crews.forEach(crew => {
-                            // make ajax request to get the poster
-                            $.ajax({
-                                url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${crew.name}`,
-                                type: "GET",
-                                success: function(data) {
-                                    let person = data["results"][0];
-                                    let personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
-                                    if(person.profile_path === null) {
-                                        personPicture = "img/notFoundPicture.jpg";
-                                    }
-                                    $("#showList").append(`
-                                        <div class="p-2" data-id="${crew.id}" id="crewInfo">
-                                            <p id="name"><b>Name: </b>${crew.name}</p>
-                                            <p id="mainActivity"><b>Main Activity: </b>${crew.mainActivity}</p>
-                                            <img src="${personPicture}" class="poster">
-                                        </div>
-                                    `);
-                                }
-                            });
-                        });
-                    }
-                });
-                break;
-        }
-    });
-
-
     $(document).on("click", "#crewInfo", function() {
         const crewId = $(this).attr("data-id");
-        console.log(crewId);
         emptyModal();
         $.ajax({
             url: `${URLPath}/crew/${crewId}`,
@@ -72,17 +34,73 @@ $(document).ready(function() {
                                     console.log(movie);
                                     let releaseDate = formatDate(movie.releaseDate);
                                     $("#listOfMovies").append(`
-                                          <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
-                                          <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                      <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                      <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
                                     `);
                                 }
                             });
-                        })
+                        });
+                    },
+                    statusCode: {
+                        404: function() {
+                            $("#listOfMovies").append(`
+                                <p><b>This person was not part in any movie yet!</b></p>
+                            `);
+                        }
                     }
                 });
-
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
             }
         });
     });
 
+    $(document).on("click", "#btnSearchCrew", function() {
+        const searchValue = $('#searchCrew').val();
+        $.ajax({
+            url: `${URLPath}/crew/name/search?name=${searchValue}`,
+            type: "GET",
+            success: function(crews) {
+                showCrews(crews);
+            },
+            statusCode: {
+                404: function() {
+                    $("#results").empty().append(`
+                        <p><b>This person does not exist in the database!</b></p>
+                    `);
+                }
+            }
+        });
+    });
+
+    // for create
+    // make ajax request to get the poster
+    // $.ajax({
+    //     url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${crew.name}`,
+    //     type: "GET",
+    //     success: function(data) {
+    //         let person = data["results"][0];
+    //         let personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
+    //         console.log(crew.picture);
+    //         if(crew.picture === null) {
+    //             crew.picture = "img/notFoundPicture.jpg";
+    //         }
+    //         $("#results").append(`
+    //             <div class="card" data-id="${crew.id}" id="crewInfo">
+    //                 <img class="card-img-top" src="${personPicture}" data-toggle="modal" data-target="#modal">
+    //                 <div class="card-body">
+    //                     <h5 class="card-title">${crew.name}</h5>
+    //                 </div>
+    //                 <ul class="list-group list-group-flush">
+    //                     <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+    //                 </ul>
+    //             </div>
+    //
+    //             `);
+    //     }
+    // });
 });
