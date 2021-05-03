@@ -141,7 +141,7 @@ app.post("/rating", (req, res) => {
 * Errors:   There are no Ratings in the DB!
 */
 app.get("/rating", (req, res) => {
-    let sql = `SELECT * FROM rating`;
+    let sql = `SELECT * FROM rating ORDER BY id`;
     connection.query(sql, function(err, ratings) {
         if (err) {
             res.status(400).json({

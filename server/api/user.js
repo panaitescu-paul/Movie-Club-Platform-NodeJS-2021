@@ -104,7 +104,7 @@ app.post("/user", (req, res) => {
 * Errors:   There are no Users in the DB!
 */
 app.get("/user", (req, res) => {
-    let sql = `SELECT * FROM user`;
+    let sql = `SELECT * FROM user ORDER BY id`;
     connection.query(sql, function (err, users) {
         if (err) {
             res.status(400).json({

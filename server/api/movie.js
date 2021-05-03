@@ -97,7 +97,7 @@ app.post("/movie", (req, res) => {
 * Errors:   There are no Movies in the DB!
 */
 app.get("/movie", (req, res) => {
-    let sql = `SELECT * FROM movie`;
+    let sql = `SELECT * FROM movie ORDER BY id`;
     connection.query(sql, function (err, movies) {
         if (err) {
             res.status(400).json({
