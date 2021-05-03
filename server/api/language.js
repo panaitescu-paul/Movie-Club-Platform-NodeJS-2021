@@ -21,6 +21,27 @@ app.use(cors());
 // ***          Language CRUD Functionality           ***
 // ***                                                ***
 // ******************************************************
+
+/**
+* READ all Languages
+*
+* Output:   an array with all Languages and their information,
+* Errors:   There are no Languages in the DB!
+*/
+app.get("/language", (req, res) => {
+    let sql = `SELECT * FROM language ORDER BY id`;
+    connection.query(sql, function(err, languages) {
+        if (err) {
+            res.status(400).json({
+                message: 'There are no Languages in the DB!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            res.status(200).send(languages);
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
