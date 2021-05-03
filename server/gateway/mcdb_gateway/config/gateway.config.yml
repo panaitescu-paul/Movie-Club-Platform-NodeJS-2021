@@ -34,6 +34,9 @@ apiEndpoints:
   moview_crew:
     host: localhost
     paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/crewId/*' ]
+  role:
+    host: localhost
+    paths: [ '/role', '/role/*' ]
 serviceEndpoints:
   adminService:
     url: 'http://localhost:5000'
@@ -55,6 +58,8 @@ serviceEndpoints:
     url: 'http://localhost:3002'
   movieCrewService:
     url: 'http://localhost:3004'
+  roleService:
+    url: 'http://localhost:5005'
 policies:
   - basic-auth
   - cors
@@ -144,4 +149,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: movieCrewService
+              changeOrigin: true
+  rolePipeline:
+    apiEndpoints:
+      - role
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: roleService
               changeOrigin: true

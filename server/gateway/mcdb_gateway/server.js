@@ -10,6 +10,7 @@ require("../../api/movie");
 require("../../api/rating");
 require("../../api/review");
 require("../../api/movie_crew");
+require("../../api/role");
 
 gateway()
   .load(path.join(__dirname, 'config'))
