@@ -36,6 +36,7 @@ $(document).ready(function() {
             showAllMovies();
         } else if (page === "crews.html") {
             console.log("PAGE crews");
+            // Call method with the Ajax function (Example: showAllCrews();) 
             $.ajax({
                 url: `${URL}crew`,
                 type: "GET",
