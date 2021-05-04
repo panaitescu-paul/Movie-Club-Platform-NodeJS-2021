@@ -98,13 +98,15 @@ policies:
   - proxy
   - rate-limit
 pipelines:
-  adminPipeline:
+
+  # Pipelines by Paul Panaitescu
+  moviePipeline:
     apiEndpoints:
-      - admin
+      - movie
     policies:
       - proxy:
           - action:
-              serviceEndpoint: adminService
+              serviceEndpoint: movieService
               changeOrigin: true
   userPipeline:
     apiEndpoints:
@@ -113,6 +115,88 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: userService
+              changeOrigin: true
+  ratingPipeline:
+    apiEndpoints:
+      - rating
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: ratingService
+              changeOrigin: true
+  reviewPipeline:
+    apiEndpoints:
+      - review
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: reviewService
+              changeOrigin: true
+  genrePipeline:
+    apiEndpoints:
+      - genre
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: genreService
+              changeOrigin: true
+  languagePipeline:
+    apiEndpoints:
+      - language
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: languageService
+              changeOrigin: true
+  movieCrewPipeline:
+    apiEndpoints:
+      - movie_crew
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieCrewService
+              changeOrigin: true
+  movieGenrePipeline:
+    apiEndpoints:
+      - movie_genre
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieGenreService
+              changeOrigin: true
+  movieLanguagePipeline:
+    apiEndpoints:
+      - movie_language
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieLanguageService
+              changeOrigin: true
+  
+  # Pipelines by Constantin Razvan Tarau
+  crewPipeline:
+    apiEndpoints:
+      - crew
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: crewService
+              changeOrigin: true
+  adminPipeline:
+    apiEndpoints:
+      - admin
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: adminService
+              changeOrigin: true
+  rolePipeline:
+    apiEndpoints:
+      - role
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: roleService
               changeOrigin: true
   roomPipeline:
     apiEndpoints:
@@ -138,67 +222,5 @@ pipelines:
           - action:
               serviceEndpoint: participantService
               changeOrigin: true
-  crewPipeline:
-    apiEndpoints:
-      - crew
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: crewService
-              changeOrigin: true
-  moviePipeline:
-    apiEndpoints:
-      - movie
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: movieService
-              changeOrigin: true
-  ratingPipeline:
-    apiEndpoints:
-      - rating
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: ratingService
-              changeOrigin: true
-  reviewPipeline:
-    apiEndpoints:
-      - review
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: reviewService
-              changeOrigin: true
-  movieCrewPipeline:
-    apiEndpoints:
-      - moview_crew
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: movieCrewService
-              changeOrigin: true
-  rolePipeline:
-    apiEndpoints:
-      - role
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: roleService
-              changeOrigin: true
-  genrePipeline:
-    apiEndpoints:
-      - genre
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: genreService
-              changeOrigin: true
-  languagePipeline:
-    apiEndpoints:
-      - language
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: languageService
-              changeOrigin: true
+
+  
