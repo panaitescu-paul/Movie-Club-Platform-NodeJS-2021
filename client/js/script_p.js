@@ -464,7 +464,50 @@ $(document).ready(function() {
 
     // Show Movie Languages
     function showMovieLanguages(id) {
+        // GET movie_languages
+        $.ajax({
+            url: URL + `movie_language/movieId/${id}`,
+            type: "GET",
+            success: function(movie_language_array) {
+                $("#modalInfoContent6").append(`
+                    <hr>
+                    <h3>Languages</h3>
+                    <p class="movie-languages">
+                        <span class="tag">Languages: </span>
+                    </p>
+                `);
 
+                movie_language_array.forEach(movie_language => {
+                    // GET language
+                    $.ajax({
+                        url: URL + `language/${movie_language.languageId}`,
+                        type: "GET",
+                        success: function(language) {
+                            console.log('language ', language);
+                            $(".movie-languages").append(`
+                                <span class="tag-info">${language.name}, </span>
+                            `);
+                        },
+                        statusCode: {
+                            404: function(data) {
+                                // const errorMsg = JSON.parse(data.responseText).Error;
+                                // alert(errorMsg);
+                            }
+                        }
+                    });
+                });                
+            },
+            statusCode: {
+                404: function(data) {
+                    $("#modalInfoContent6").append(`
+                        <hr>
+                        <p><i>No Languages are available for this Movie!</i></p>
+                    `);
+                    // const errorMsg = JSON.parse(data.responseText).Error;
+                    // alert(errorMsg);
+                }
+            }
+        });
     };
 
     // ******************************************************
