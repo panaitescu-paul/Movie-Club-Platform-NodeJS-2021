@@ -4,12 +4,46 @@ admin:
   port: 9876
   host: localhost
 apiEndpoints:
-  admin:
+  
+  # Endpoints by Paul Panaitescu
+  movie:
     host: localhost
-    paths: [ '/admin', '/admin/*', 'admin/login' ]
+    paths: [ '/movie', '/movie/*' ]
   user:
     host: localhost
     paths: [ '/user', '/user/*', '/user/login' ]
+  rating:
+    host: localhost
+    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
+  review:
+    host: localhost
+    paths: [ '/review', '/review/*', '/review/movie/*' ]
+  genre:
+    host: localhost
+    paths: [ '/genre', '/genre/*' ]
+  language:
+    host: localhost
+    paths: [ '/language', '/language/*' ]
+  movie_crew:
+    host: localhost
+    paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/movieId/*', '/movie_crew/crewId/*' ]
+  movie_genre:
+    host: localhost
+    paths: [ '/movie_genre', '/movie_genre/*', '/movie_genre/movieId/*', '/movie_genre/genreId/*' ]
+  movie_language:
+    host: localhost
+    paths: [ '/movie_language', '/movie_language/*', '/movie_language/movieId/*', '/movie_language/languageId/*' ]
+  
+  # Endpoints by Constantin Razvan Tarau
+  crew:
+    host: localhost
+    paths: [ '/crew', '/crew/*', '/crew/name/search' ]
+  admin:
+    host: localhost
+    paths: [ '/admin', '/admin/*', 'admin/login' ]
+  role:
+    host: localhost
+    paths: [ '/role', '/role/*' ]
   room:
     host: localhost
     paths: [ '/room', '/room/*' ]
@@ -19,57 +53,41 @@ apiEndpoints:
   participant:
     host: localhost
     paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]
-  crew:
-    host: localhost
-    paths: [ '/crew', '/crew/*', '/crew/name/search' ]
-  movie:
-    host: localhost
-    paths: [ '/movie', '/movie/*' ]
-  rating:
-    host: localhost
-    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
-  review:
-    host: localhost
-    paths: [ '/review', '/review/*', '/review/movie/*' ]
-  moview_crew:
-    host: localhost
-    paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/crewId/*' ]
-  role:
-    host: localhost
-    paths: [ '/role', '/role/*' ]
-  genre:
-    host: localhost
-    paths: [ '/genre', '/genre/*' ]
-  language:
-    host: localhost
-    paths: [ '/language', '/language/*' ]
 serviceEndpoints:
-  adminService:
-    url: 'http://localhost:5000'
-  userService:
-    url: 'http://localhost:3000'
-  roomService:
-    url: 'http://localhost:5001'
-  messageService:
-    url: 'http://localhost:5002'
-  participantService:
-    url: 'http://localhost:5003'
-  crewService:
-    url: 'http://localhost:5004'
+
+  # Services by Paul Panaitescu
   movieService:
-    url: 'http://localhost:3003'
-  ratingService:
+    url: 'http://localhost:3000'
+  userService:
     url: 'http://localhost:3001'
-  reviewService:
+  ratingService:
     url: 'http://localhost:3002'
-  movieCrewService:
-    url: 'http://localhost:3004'
-  roleService:
-    url: 'http://localhost:5005'
+  reviewService:
+    url: 'http://localhost:3003'
   genreService:
-    url: 'http://localhost:3005'
+    url: 'http://localhost:3004'
   languageService:
+    url: 'http://localhost:3005'
+  movieCrewService:
     url: 'http://localhost:3006'
+  movieGenreService:
+    url: 'http://localhost:3007'
+  movieLanguageService:
+    url: 'http://localhost:3008'
+  
+  # Services by Constantin Razvan Tarau
+  crewService:
+    url: 'http://localhost:5000'
+  adminService:
+    url: 'http://localhost:5001'
+  roleService:
+    url: 'http://localhost:5002'
+  roomService:
+    url: 'http://localhost:5003'
+  messageService:
+    url: 'http://localhost:5004'
+  participantService:
+    url: 'http://localhost:5005'
 policies:
   - basic-auth
   - cors
@@ -80,13 +98,15 @@ policies:
   - proxy
   - rate-limit
 pipelines:
-  adminPipeline:
+
+  # Pipelines by Paul Panaitescu
+  moviePipeline:
     apiEndpoints:
-      - admin
+      - movie
     policies:
       - proxy:
           - action:
-              serviceEndpoint: adminService
+              serviceEndpoint: movieService
               changeOrigin: true
   userPipeline:
     apiEndpoints:
@@ -95,6 +115,88 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: userService
+              changeOrigin: true
+  ratingPipeline:
+    apiEndpoints:
+      - rating
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: ratingService
+              changeOrigin: true
+  reviewPipeline:
+    apiEndpoints:
+      - review
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: reviewService
+              changeOrigin: true
+  genrePipeline:
+    apiEndpoints:
+      - genre
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: genreService
+              changeOrigin: true
+  languagePipeline:
+    apiEndpoints:
+      - language
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: languageService
+              changeOrigin: true
+  movieCrewPipeline:
+    apiEndpoints:
+      - movie_crew
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieCrewService
+              changeOrigin: true
+  movieGenrePipeline:
+    apiEndpoints:
+      - movie_genre
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieGenreService
+              changeOrigin: true
+  movieLanguagePipeline:
+    apiEndpoints:
+      - movie_language
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: movieLanguageService
+              changeOrigin: true
+  
+  # Pipelines by Constantin Razvan Tarau
+  crewPipeline:
+    apiEndpoints:
+      - crew
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: crewService
+              changeOrigin: true
+  adminPipeline:
+    apiEndpoints:
+      - admin
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: adminService
+              changeOrigin: true
+  rolePipeline:
+    apiEndpoints:
+      - role
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: roleService
               changeOrigin: true
   roomPipeline:
     apiEndpoints:
@@ -120,67 +222,5 @@ pipelines:
           - action:
               serviceEndpoint: participantService
               changeOrigin: true
-  crewPipeline:
-    apiEndpoints:
-      - crew
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: crewService
-              changeOrigin: true
-  moviePipeline:
-    apiEndpoints:
-      - movie
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: movieService
-              changeOrigin: true
-  ratingPipeline:
-    apiEndpoints:
-      - rating
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: ratingService
-              changeOrigin: true
-  reviewPipeline:
-    apiEndpoints:
-      - review
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: reviewService
-              changeOrigin: true
-  movieCrewPipeline:
-    apiEndpoints:
-      - moview_crew
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: movieCrewService
-              changeOrigin: true
-  rolePipeline:
-    apiEndpoints:
-      - role
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: roleService
-              changeOrigin: true
-  genrePipeline:
-    apiEndpoints:
-      - genre
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: genreService
-              changeOrigin: true
-  languagePipeline:
-    apiEndpoints:
-      - language
-    policies:
-      - proxy:
-          - action:
-              serviceEndpoint: languageService
-              changeOrigin: true
+
+  

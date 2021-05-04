@@ -10,7 +10,7 @@ const express = require("express");
 const axios = require('axios');
 const cors = require('cors');
 const HOSTNAME = 'localhost';
-const PORT = 3004;
+const PORT = 3006;
 let app = express();
 app.use(express.json());
 // To bypass Cors Policy error
@@ -182,34 +182,6 @@ app.get("/movie_crew/:id", (req, res) => {
 });
 
 /**
- * READ Movie_Crew by crew id
- *
- * Input:    id of the crew
- * Output:   an Movie_Crew and their information,
- * Errors:   crew with this ID does not exist!
- */
-app.get("/movie_crew/crewId/:crewId", (req, res) => {
-    let sql = `SELECT * FROM movie_crew WHERE crewId = ?`;
-
-    connection.query(sql, [req.params.crewId], function(err, movie_crew) {
-        if (err) {
-            res.status(400).json({
-                error: err.message
-            });
-            console.log(err);
-        } else {
-            if(movie_crew.length) {
-                res.status(200).send(movie_crew);
-            } else {
-                res.status(404).json({
-                    message: `Movie_Crew with the crew id (${req.params.crewId}) does not exist!`
-                });
-            }
-        }
-    });
-});
-
-/**
 * DELETE Movie_Crew by id
 *
 * Input:    Id of the Movie_Crew to delete
@@ -255,6 +227,62 @@ app.delete("/movie_crew/:id", (req, res) => {
 // ***         Movie_Crew Extra Functionality         ***
 // ***                                                ***
 // ******************************************************
+
+/**
+* READ Movie_Crew by Movie id
+*
+* Input:    id of the Movie
+* Output:   an Movie_Crew and their information,
+* Errors:   Movie_Crew with this Movie ID does not exist!
+*/
+ app.get("/movie_crew/movieId/:movieId", (req, res) => {
+    let sql = `SELECT * FROM movie_crew WHERE movieId = ?`;
+
+    connection.query(sql, [req.params.movieId], function(err, movie_crew) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_crew.length) {
+                res.status(200).send(movie_crew);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Crew with this Movie ID (${req.params.movieId}) does not exist!`
+                });
+            }
+        }
+    });
+});
+
+/**
+* READ Movie_Crew by Crew id
+*
+* Input:    id of the Crew
+* Output:   an Movie_Crew and their information,
+* Errors:   Movie_Crew with this Crew ID does not exist!
+*/
+app.get("/movie_crew/crewId/:crewId", (req, res) => {
+    let sql = `SELECT * FROM movie_crew WHERE crewId = ?`;
+
+    connection.query(sql, [req.params.crewId], function(err, movie_crew) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_crew.length) {
+                res.status(200).send(movie_crew);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Crew with this Crew ID (${req.params.crewId}) does not exist!`
+                });
+            }
+        }
+    });
+});
 
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {

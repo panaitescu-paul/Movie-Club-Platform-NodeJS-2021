@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const cors = require('cors');
 const HOSTNAME = 'localhost';
-const PORT = 5000;
+const PORT = 5001;
 let app = express();
 app.use(express.json());
 // To bypass Cors Policy error
