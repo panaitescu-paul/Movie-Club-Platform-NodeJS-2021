@@ -10,7 +10,7 @@ const express = require("express");
 const axios = require('axios');
 const cors = require('cors');
 const HOSTNAME = 'localhost';
-const PORT = 3006;
+const PORT = 3008;
 let app = express();
 app.use(express.json());
 // To bypass Cors Policy error
@@ -209,6 +209,33 @@ app.delete("/movie_language/:id", (req, res) => {
 // ***                                                ***
 // ******************************************************
 
+/**
+* READ Movie_Language by Movie id
+*
+* Input:    id of the Movie
+* Output:   an Movie_Language and their information,
+* Errors:   Movie_Language with this Movie ID does not exist!
+*/
+app.get("/movie_language/movieId/:movieId", (req, res) => {
+    let sql = `SELECT * FROM movie_language WHERE movieId = ?`;
+
+    connection.query(sql, [req.params.movieId], function(err, movie_language) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_language.length) {
+                res.status(200).send(movie_language);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Language with this Movie ID (${req.params.movieId}) does not exist!`
+                });
+            }
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
