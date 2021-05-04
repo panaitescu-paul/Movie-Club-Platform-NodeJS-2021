@@ -90,6 +90,12 @@ $(document).ready(function() {
         const id = $(this).attr("data-id");
         // ...
     });
+    
+    // Open Modal - Update Movie 
+    $(document).on("click", ".updateMovieModal", function() {
+        const id = $(this).attr("data-id");
+        // ...
+    });
     // Show all Movies in a List
     function showAllMovies(user = 'guest') {
         $.ajax({
