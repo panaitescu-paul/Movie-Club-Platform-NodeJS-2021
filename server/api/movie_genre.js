@@ -10,7 +10,7 @@ const express = require("express");
 const axios = require('axios');
 const cors = require('cors');
 const HOSTNAME = 'localhost';
-const PORT = 3005;
+const PORT = 3007;
 let app = express();
 app.use(express.json());
 
@@ -204,10 +204,37 @@ app.delete("/movie_genre/:id", (req, res) => {
 
 // ******************************************************
 // ***                                                ***
-// ***         Movie_Genre Extra Functionality         ***
+// ***         Movie_Genre Extra Functionality        ***
 // ***                                                ***
 // ******************************************************
 
+/**
+* READ Movie_Genre by Movie id
+*
+* Input:    id of the Movie
+* Output:   an Movie_Genre and their information,
+* Errors:   Movie_Genre with this Movie ID does not exist!
+*/
+app.get("/movie_genre/movieId/:movieId", (req, res) => {
+    let sql = `SELECT * FROM movie_genre WHERE movieId = ?`;
+
+    connection.query(sql, [req.params.movieId], function(err, movie_genre) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_genre.length) {
+                res.status(200).send(movie_genre);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Genre with this Movie ID (${req.params.movieId}) does not exist!`
+                });
+            }
+        }
+    });
+});
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
