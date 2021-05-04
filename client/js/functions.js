@@ -15,6 +15,14 @@ function clearModalData() {
     $("#modalInfoContent5").empty();
     $("#modalInfoContent6").empty();
 }
+
+function calculateRatingAverage(data) {
+    // Calculate the Average Rating
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) {
+        sum += data[i].value;
+    }
+    return sum/data.length;
 }
 
 function formatDate(date) {
