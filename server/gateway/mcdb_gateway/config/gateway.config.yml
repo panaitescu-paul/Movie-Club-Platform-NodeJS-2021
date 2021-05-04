@@ -54,32 +54,40 @@ apiEndpoints:
     host: localhost
     paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]
 serviceEndpoints:
-  adminService:
-    url: 'http://localhost:5000'
-  userService:
-    url: 'http://localhost:3000'
-  roomService:
-    url: 'http://localhost:5001'
-  messageService:
-    url: 'http://localhost:5002'
-  participantService:
-    url: 'http://localhost:5003'
-  crewService:
-    url: 'http://localhost:5004'
+
+  # Services by Paul Panaitescu
   movieService:
-    url: 'http://localhost:3003'
-  ratingService:
+    url: 'http://localhost:3000'
+  userService:
     url: 'http://localhost:3001'
-  reviewService:
+  ratingService:
     url: 'http://localhost:3002'
-  movieCrewService:
-    url: 'http://localhost:3004'
-  roleService:
-    url: 'http://localhost:5005'
+  reviewService:
+    url: 'http://localhost:3003'
   genreService:
-    url: 'http://localhost:3005'
+    url: 'http://localhost:3004'
   languageService:
+    url: 'http://localhost:3005'
+  movieCrewService:
     url: 'http://localhost:3006'
+  movieGenreService:
+    url: 'http://localhost:3007'
+  movieLanguageService:
+    url: 'http://localhost:3008'
+  
+  # Services by Constantin Razvan Tarau
+  crewService:
+    url: 'http://localhost:5000'
+  adminService:
+    url: 'http://localhost:5001'
+  roleService:
+    url: 'http://localhost:5002'
+  roomService:
+    url: 'http://localhost:5003'
+  messageService:
+    url: 'http://localhost:5004'
+  participantService:
+    url: 'http://localhost:5005'
 policies:
   - basic-auth
   - cors
