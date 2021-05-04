@@ -54,6 +54,7 @@ $(document).ready(function() {
                     document.querySelector(".footerContent").innerHTML = data;
                 });        } else if (page === "admins.html") {
             console.log("PAGE admins");
+            showAllMovies('admin');
             // ShowAllAdmins();
         } else if (page === "users.html") {
             console.log("PAGE users");
@@ -68,10 +69,21 @@ $(document).ready(function() {
 
     // ******************************************************
     // ***                                                ***
-    // ***                Movies Functionality            ***
+    // ***                MOVIES Functionality            ***
     // ***                                                ***
     // ******************************************************
 
+    // Open Modal - Show Movie 
+    $(document).on("click", ".showMovieModal", function() {
+        const id = $(this).attr("data-id");
+        clearModalData();
+        showMovieDetails(id);
+        showMovieRatingAverage(id);
+        showMovieReviews(id);
+        showMovieCrews(id);
+        showMovieGenres(id);
+        showMovieLanguages(id); 
+    });
     // Show all Movies in a List
     function showAllMovies(user = 'guest') {
         $.ajax({
@@ -81,34 +93,34 @@ $(document).ready(function() {
                 console.log('data: ', data);
                 if (user == 'guest') {
                     if (data.length === 0) {
-                        $("section#movieResults").html("There are no Movies matching the entered text.");
-                    } else {
+            $("section#movieResults").html("There are no Movies matching the entered text.");
+        } else {
                         data.forEach(element => {
                             if (element.releaseDate) {
                                 var releaseDate = element.releaseDate.slice(0,10);
                             } else {
                                 var releaseDate = 'Unknown';
-
+ 
                             }
-                            $("#results").append(`
-                                    <div class="card" data-id="${element.id}">
-                                        <img class="card-img-top" src="${element.overview}" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${element.title}</h5>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
+                    $("#results").append(`
+                        <div class="card" data-id="${element.id}">
+                            <img class="card-img-top" src="${element.overview}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">${element.title}</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Release date: ${releaseDate}</li>
-                                        </ul>
-                                        <div class="card-body">
-                                        <div class="table-actions">
-                                        </div>
-                                            <button data-id="${element.id}" type="button" class="btn btn-warning
-                                                    btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
-                                            <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
-                                                    btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                                        </div>
-                                    </div>
-                                `);
+                            </ul>
+                            <div class="card-body">
+                                <div class="table-actions">
+                                </div>
+                                <button data-id="${element.id}" type="button" class="btn btn-warning
+                                        btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
+                                <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
+                                        btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
+                            </div>
+                        </div>
+                    `);
                         });
                     }
                 }
@@ -118,9 +130,9 @@ $(document).ready(function() {
                     const errorMsg = JSON.parse(data.responseText).Error;
                     alert(errorMsg);
                 }
-            }
-        });
-    }
+                }
+            });
+        }
 
     // Open Modal - Show Movie 
     $(document).on("click", ".showMovieModal", function() {
@@ -218,7 +230,7 @@ $(document).ready(function() {
                     </p>
                     <hr>
                     <h3>Reviews</h3>
-                    `}))
+                `}))
                 $("#modalInfoContent2").append(elem);
             },
             statusCode: {
