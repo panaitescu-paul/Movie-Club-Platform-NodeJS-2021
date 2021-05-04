@@ -84,6 +84,12 @@ $(document).ready(function() {
         showMovieGenres(id);
         showMovieLanguages(id); 
     });
+
+    // Open Modal - Create Movie 
+    $(document).on("click", ".createMovieModal", function() {
+        const id = $(this).attr("data-id");
+        // ...
+    });
     // Show all Movies in a List
     function showAllMovies(user = 'guest') {
         $.ajax({
