@@ -357,58 +357,61 @@ $(document).ready(function() {
 
     // Show Movie Crews
     function showMovieCrews(id) {
-        // $.ajax({
-        //     url: URL + `crew/movie/${id}`,
-        //     type: "GET",
-        //     success: function(data) {
-        //         console.log('-------------data: ', data);
-        //         data.forEach(element => {
-
-        //             const elem = $("<div />");
-        //             elem.append($("<div />", { "class": "", "html": 
-        //                 `<hr>
-        //                 <p>
-        //                     <span class="tag">User name:</span>
-        //                     <span class="tag-info" id="user-name"></span>
-        //                 </p>
-        //                 <p>
-        //                     <span class="tag">Title</span>
-        //                     <span class="tag-info">${element.title}</span>
-        //                 </p>
-        //                 <p>
-        //                     <span class="tag">Content</span>
-        //                     <span class="tag-info">${element.content}</span>
-        //                 </p>
-        //                 ` }))
-        //             let userId = element.userId;
-        //             console.log('userId: ', userId);
-
-
-        //             $.ajax({
-        //                 url: URL + `user/${userId}`,
-        //                 type: "GET",
-        //                 success: function(data) {
-        //                     document.getElementById("user-name").innerHTML = data.firstName + ' ' + data.lastName;
-        //                     $("#modalInfoContent2").append(elem);
-        //                 },
-        //                 statusCode: {
-        //                     404: function(data) {
-        //                         const errorMsg = JSON.parse(data.responseText).Error;
-        //                         // alert(errorMsg);
-        //                     }
-        //                 }
-        //             });
-                    
-        //             $("#modalInfoContent2").append(elem);
-        //         });                
-        //     },
-        //     statusCode: {
-        //         404: function(data) {
-        //             const errorMsg = JSON.parse(data.responseText).Error;
-        //             // alert(errorMsg);
-        //         }
-        //     }
-        // });
+        // GET movie_crews
+        $.ajax({
+            url: URL + `movie_crew/movieId/${id}`,
+            type: "GET",
+            success: function(movie_crew_array) {
+                $("#modalInfoContent4").append(`
+                    <hr>
+                    <h3>Crews</h3>
+                `);
+                movie_crew_array.forEach(movie_crew => {
+                    // GET crew
+                    $.ajax({
+                        url: URL + `crew/${movie_crew.crewId}`,
+                        type: "GET",
+                        success: function(crew) {
+                            // GET role
+                            $.ajax({
+                                url: URL + `role/${movie_crew.roleId}`,
+                                type: "GET",
+                                success: function(role) {
+                                    $("#modalInfoContent4").append(`
+                                        <p>
+                                            <span class="tag">${role.name}</span>
+                                            <span class="tag-info">${crew.name}</span>
+                                        </p>
+                                    `);
+                                },
+                                statusCode: {
+                                    404: function(data) {
+                                        const errorMsg = JSON.parse(data.responseText).Error;
+                                        // alert(errorMsg);
+                                    }
+                                }
+                            });
+                        },
+                        statusCode: {
+                            404: function(data) {
+                                const errorMsg = JSON.parse(data.responseText).Error;
+                                // alert(errorMsg);
+                            }
+                        }
+                    });
+                });                
+            },
+            statusCode: {
+                404: function(data) {
+                    $("#modalInfoContent4").append(`
+                        <hr>
+                        <p><i>No Crews are available for this Movie!</i></p>
+                    `);
+                    // const errorMsg = JSON.parse(data.responseText).Error;
+                    // alert(errorMsg);
+                }
+            }
+        });
     };
 
     // Show Movie Genres
