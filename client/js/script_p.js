@@ -111,6 +111,16 @@ $(document).ready(function() {
     // Open Modal - Show Movie 
     $(document).on("click", ".showMovieModal", function() {
         const id = $(this).attr("data-id");
+        showMovieDetails(id);
+        showMovieRatingAverage(id);
+        showMovieReviews(id);
+        showMovieCrews(id);
+        showMovieGenres(id);
+        showMovieLanguages(id); 
+    });
+
+    // Show Movie Details
+    function showMovieDetails(id) {
         $.ajax({
             url: URL + `movie/${id}`,
             type: "GET",
@@ -167,7 +177,10 @@ $(document).ready(function() {
                 }
             }
         });
+    };
 
+    // Show Movie Rating Average
+    function showMovieRatingAverage(id) {
         $.ajax({
             url: URL + `rating/movie/${id}`,
             type: "GET",
@@ -201,7 +214,10 @@ $(document).ready(function() {
                 }
             }
         });
+    };
 
+    // Show Movie Reviews
+    function showMovieReviews(id) {
         $.ajax({
             url: URL + `review/movie/${id}`,
             type: "GET",
@@ -250,7 +266,10 @@ $(document).ready(function() {
                 }
             }
         });
+    };
 
+    // Show Movie Crews
+    function showMovieCrews(id) {
         // $.ajax({
         //     url: URL + `crew/movie/${id}`,
         //     type: "GET",
@@ -303,7 +322,24 @@ $(document).ready(function() {
         //         }
         //     }
         // });
-    });
+    };
+
+    // Show Movie Genres
+    function showMovieGenres(id) {
+
+    };
+
+    // Show Movie Languages
+    function showMovieLanguages(id) {
+
+    };
+
+    // ******************************************************
+    // ***                                                ***
+    // ***                 User Functionality             ***
+    // ***                                                ***
+    // ******************************************************
+
 });
 
 
