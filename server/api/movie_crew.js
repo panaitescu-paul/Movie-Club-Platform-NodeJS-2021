@@ -255,6 +255,35 @@ app.delete("/movie_crew/:id", (req, res) => {
         }
     });
 });
+
+/**
+* READ Movie_Crew by Crew id
+*
+* Input:    id of the Crew
+* Output:   an Movie_Crew and their information,
+* Errors:   Movie_Crew with this Crew ID does not exist!
+*/
+app.get("/movie_crew/crewId/:crewId", (req, res) => {
+    let sql = `SELECT * FROM movie_crew WHERE crewId = ?`;
+
+    connection.query(sql, [req.params.crewId], function(err, movie_crew) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_crew.length) {
+                res.status(200).send(movie_crew);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Crew with this Crew ID (${req.params.crewId}) does not exist!`
+                });
+            }
+        }
+    });
+});
+
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
