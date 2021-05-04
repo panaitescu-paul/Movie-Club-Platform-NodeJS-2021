@@ -1,17 +1,22 @@
 const connection = require("../db/db_connection");
 const express = require("express");
 const axios = require('axios');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const HOSTNAME = 'localhost';
 const PORT = 5004;
 let app = express();
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 // To bypass Cors Policy error
 app.use(cors());
 
 // CREATE Crew
 app.post("/crew", (req, res) => {
-    let name = req.body.name || null;
+    console.log("here")
+    console.log(req.body);
+    console.log(req.body.name);
+    let name = req.body.name;
     let mainActivity = req.body.mainActivity || null;
     let dateOfBirth = req.body.dateOfBirth || null;
     let birthPlace = req.body.birthPlace || null;
@@ -20,27 +25,33 @@ app.post("/crew", (req, res) => {
     let website = req.body.website || null;
     let stmt = `INSERT INTO crew(name, mainActivity, dateOfBirth, birthPlace, biography, picture, website) VALUES(?, ?, ?, ?, ?, ?, ?);`;
 
-    connection.query(stmt, [name, mainActivity, dateOfBirth, birthPlace, biography, picture, website], function (err, result) {
-        if (err) {
-            res.status(400).json({
-                message: 'The crew member could not be created!',
-                error: err.message
-            });
-            console.log(err);
-        } else {
-            console.log("A new crew record inserted, ID: " + result.insertId );
-            axios.get(`http://${HOSTNAME}:${PORT}/crew/${result.insertId}`).then(response =>{
-                res.status(201).send(response.data);
-            }).catch(err =>{
-                if(err){
-                    console.log(err);
-                }
+    if (name === null || name === '') {
+        res.status(409).json({
+            message: `The Crew must have a name!`
+        });
+    } else {
+        connection.query(stmt, [name, mainActivity, dateOfBirth, birthPlace, biography, picture, website], function (err, result) {
+            if (err) {
                 res.status(400).json({
-                    message: `There is no Crew member with the id ${result.insertId}`
+                    message: 'The crew member could not be created!',
+                    error: err.message
                 });
-            });
-        }
-    });
+                console.log(err);
+            } else {
+                console.log("A new crew record inserted, ID: " + result.insertId );
+                axios.get(`http://${HOSTNAME}:${PORT}/crew/${result.insertId}`).then(response =>{
+                    res.status(201).send(response.data);
+                }).catch(err =>{
+                    if(err){
+                        console.log(err);
+                    }
+                    res.status(400).json({
+                        message: `There is no Crew member with the id ${result.insertId}`
+                    });
+                });
+            }
+        });
+    }
 });
 
 // READ All Crew Members

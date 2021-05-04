@@ -38,7 +38,21 @@ $(document).ready(function() {
         } else if (page === "crews.html") {
             console.log("PAGE crews");
             showAllCrews();
-        } else if (page === "admins.html") {
+            fetch("../src/header.html")
+                .then(response => {
+                    return response.text()
+                })
+                .then(data => {
+                    document.querySelector(".headerContent").innerHTML = data;
+                });
+
+            fetch("../src/footer.html")
+                .then(response => {
+                    return response.text()
+                })
+                .then(data => {
+                    document.querySelector(".footerContent").innerHTML = data;
+                });        } else if (page === "admins.html") {
             console.log("PAGE admins");
             // ShowAllAdmins();
         } else if (page === "users.html") {

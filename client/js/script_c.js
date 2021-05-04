@@ -9,6 +9,9 @@ $(document).ready(function() {
             type: "GET",
             success: function(crew) {
                 let dateOfBirth = formatDate(crew.dateOfBirth);
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
                 $("#modalTitle").text(`${crew.name} - Information Details`);
                 $("#modalInfoContent1").append(`
                     <div>
@@ -91,30 +94,99 @@ $(document).ready(function() {
         });
     });
 
-    // for create
-    // make ajax request to get the poster
-    // $.ajax({
-    //     url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${crew.name}`,
-    //     type: "GET",
-    //     success: function(data) {
-    //         let person = data["results"][0];
-    //         let personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
-    //         console.log(crew.picture);
-    //         if(crew.picture === null) {
-    //             crew.picture = "img/notFoundPicture.jpg";
-    //         }
-    //         $("#results").append(`
-    //             <div class="card" data-id="${crew.id}" id="crewInfo">
-    //                 <img class="card-img-top" src="${personPicture}" data-toggle="modal" data-target="#modal">
-    //                 <div class="card-body">
-    //                     <h5 class="card-title">${crew.name}</h5>
-    //                 </div>
-    //                 <ul class="list-group list-group-flush">
-    //                     <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-    //                 </ul>
-    //             </div>
-    //
-    //             `);
-    //     }
-    // });
+    $(document).on("click", "#btnCreateCrew", function() {
+        emptyModal();
+        $("#modalTitle").text(`Create Crew`);
+        $("#modalInfoContent1").append(`
+             <form id="createCrewForm">
+                <div class="form-group">
+                    <label for="crewName">Crew Name</label>
+                    <input type="text" class="form-control" id="crewName" required>
+                </div>
+                <div class="form-group">
+                    <label for="crewMainActivity">Main Activity</label>
+                    <input type="text" class="form-control" id="crewMainActivity">
+                </div>
+                <div class="form-group">
+                    <label for="crewDateOfBirth">Date of Birth</label>
+                    <input type="date" class="form-control" id="crewDateOfBirth">
+                </div>
+                <div class="form-group">
+                    <label for="crewBirthPlace">Birth Place</label>
+                    <input type="text" class="form-control" id="crewBirthPlace">
+                </div>
+                <div class="form-group">
+                    <label for="crewBiography">Biography</label>
+                    <textarea class="form-control" id="crewBiography" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="crewWebsite">Website</label>
+                    <input type="text" class="form-control" id="crewWebsite">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Add Crew</button>
+             </form>
+        `);
+        $("#createCrewForm").on("submit", function(e) {
+            e.preventDefault();
+            const name = $("#crewName").val().trim();
+            const mainActivity = $("#crewMainActivity").val().trim();
+            const dateOfBirth = $("#crewDateOfBirth").val().trim();
+            const birthPlace = $("#crewBirthPlace").val().trim();
+            const biography = $("#crewBiography").val().trim();
+            const website = $("#crewWebsite").val().trim();
+
+            $.ajax({
+                url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${name}`,
+                type: "GET",
+                success: function(data) {
+                    let person = data["results"][0];
+                    let personPicture;
+                    if(person === undefined || person.profile_path === null) {
+                        personPicture = "../img/notFoundPicture.jpg";
+                    } else {
+                        personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
+                    }
+
+                    console.log(name);
+                    console.log(mainActivity);
+                    console.log(dateOfBirth);
+                    console.log(birthPlace);
+                    console.log(biography);
+                    console.log(personPicture);
+                    console.log(website);
+
+                    $.ajax({
+                        url: `${URLPath}/crew`,
+                        type: "POST",
+                        data: {
+                            name: name,
+                            mainActivity: mainActivity,
+                            dateOfBirth: dateOfBirth,
+                            birthPlace: birthPlace,
+                            biography: biography,
+                            picture: personPicture,
+                            website: website
+                        },
+                        success: function() {
+                            alert("The crew was successfully created!");
+                            $('#modal > div > div > div.modal-header > button').click();
+                            // scroll to the bottom of the page
+                            // scrollToTheBottom();
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = JSON.parse(data.responseText).Error;
+                                alert(data.responseJSON.message + ' ' + data.responseJSON.error);
+                            },
+                            409: function(data) {
+                                const errorMessage = JSON.parse(data.responseText).Error;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
 });

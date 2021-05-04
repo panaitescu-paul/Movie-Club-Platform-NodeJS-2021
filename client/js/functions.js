@@ -95,8 +95,8 @@ function showAllCrews(user = 'guest') {
 function showCrews(data, user = 'guest') {
     $("#results").empty();
     data.forEach(crew => {
-        if(crew.picture === null) {
-            crew.picture = "img/notFoundPicture.jpg";
+        if(crew.picture === null || crew.picture === '') {
+            crew.picture = "../img/notFoundPicture.jpg";
         }
         $("#results").append(`
             <div class="card crewInfo" data-id="${crew.id}">
@@ -110,5 +110,4 @@ function showCrews(data, user = 'guest') {
             </div>
         `);
     });
-
 }
