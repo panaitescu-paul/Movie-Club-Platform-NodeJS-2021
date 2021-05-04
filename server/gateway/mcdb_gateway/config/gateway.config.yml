@@ -4,12 +4,47 @@ admin:
   port: 9876
   host: localhost
 apiEndpoints:
-  admin:
+  
+  # Endpoints by Paul Panaitescu
+  movie:
     host: localhost
-    paths: [ '/admin', '/admin/*', 'admin/login' ]
+    paths: [ '/movie', '/movie/*' ]
   user:
     host: localhost
     paths: [ '/user', '/user/*', '/user/login' ]
+  rating:
+    host: localhost
+    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
+  review:
+    host: localhost
+    paths: [ '/review', '/review/*', '/review/movie/*' ]
+  genre:
+    host: localhost
+    paths: [ '/genre', '/genre/*' ]
+  language:
+    host: localhost
+    paths: [ '/language', '/language/*' ]
+  movie_crew:
+    host: localhost
+    paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/movieId/*', '/movie_crew/crewId/*' ]
+    paths: [ '/movie', '/movie/*' ]
+  rating:
+    host: localhost
+    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
+  review:
+    host: localhost
+    paths: [ '/review', '/review/*', '/review/movie/*' ]
+  moview_crew:
+  # Endpoints by Constantin Razvan Tarau
+  crew:
+    host: localhost
+    paths: [ '/crew', '/crew/*', '/crew/name/search' ]
+  admin:
+    host: localhost
+    paths: [ '/admin', '/admin/*', 'admin/login' ]
+  role:
+    host: localhost
+    paths: [ '/role', '/role/*' ]
   room:
     host: localhost
     paths: [ '/room', '/room/*' ]
@@ -19,30 +54,6 @@ apiEndpoints:
   participant:
     host: localhost
     paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]
-  crew:
-    host: localhost
-    paths: [ '/crew', '/crew/*', '/crew/name/search' ]
-  movie:
-    host: localhost
-    paths: [ '/movie', '/movie/*' ]
-  rating:
-    host: localhost
-    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
-  review:
-    host: localhost
-    paths: [ '/review', '/review/*', '/review/movie/*' ]
-  moview_crew:
-    host: localhost
-    paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/crewId/*' ]
-  role:
-    host: localhost
-    paths: [ '/role', '/role/*' ]
-  genre:
-    host: localhost
-    paths: [ '/genre', '/genre/*' ]
-  language:
-    host: localhost
-    paths: [ '/language', '/language/*' ]
 serviceEndpoints:
   adminService:
     url: 'http://localhost:5000'
