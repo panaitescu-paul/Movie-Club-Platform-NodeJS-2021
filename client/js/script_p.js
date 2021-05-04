@@ -134,19 +134,27 @@ $(document).ready(function() {
         $.ajax({
             url: URL + "movie",
             type: "GET",
-            success: function(data) {
-                console.log('data: ', data);
-                if (user == 'guest') {
-                    if (data.length === 0) {
+            success: function(movies) {
+                console.log('movies: ', movies);
+                displayMovies(movies, user);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
+            }
+        });
+    }
+
+    function displayMovies(movies, user = 'guest') {
+        $("section#movieResults").empty();
+        if (movies.length === 0) {
             $("section#movieResults").html("There are no Movies matching the entered text.");
         } else {
-                        data.forEach(element => {
-                            if (element.releaseDate) {
-                                var releaseDate = element.releaseDate.slice(0,10);
-                            } else {
-                                var releaseDate = 'Unknown';
- 
-                            }
+            movies.forEach(element => {
+                // TODO: Simplify
+                if (user == 'guest') {
                     $("#results").append(`
                         <div class="card" data-id="${element.id}">
                             <img class="card-img-top" src="${element.overview}" alt="Card image cap">
@@ -154,7 +162,7 @@ $(document).ready(function() {
                                 <h5 class="card-title">${element.title}</h5>
                             </div>
                             <ul class="list-group list-group-flush">
-                                            <li class="list-group-item">Release date: ${releaseDate}</li>
+                                <li class="list-group-item">Release date: ${formatDate(element.releaseDate)}</li>
                             </ul>
                             <div class="card-body">
                                 <div class="table-actions">
@@ -166,29 +174,36 @@ $(document).ready(function() {
                             </div>
                         </div>
                     `);
-                        });
-                    }
-                }
-            },
-            statusCode: {
-                404: function(data) {
-                    const errorMsg = JSON.parse(data.responseText).Error;
-                    alert(errorMsg);
-                }
+                } else if (user == 'member') {
+ 
+                } else if (user == 'admin') {
+                    $("#results").append(`
+                        <div class="card" data-id="${element.id}">
+                            <img class="card-img-top" src="${element.overview}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">${element.title}</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Release date: ${formatDate(element.releaseDate)}</li>
+                            </ul>
+                            <div class="card-body">
+                                <div class="table-actions">
+                                </div>
+                                <button data-id="${element.id}" type="button" class="btn btn-warning
+                                        btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
+                                <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
+                                        btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
+                                <button data-id="${element.id}" type="button" class="btn btn-warning
+                                    btnShow updateMovieModal" data-toggle="modal" data-target="#modal">Update</button>
+                                <button data-id="${element.id}" type="button" class="btn btn-danger
+                                    btnShow deleteMovie">Delete</button>
+                            </div>
+                        </div>
+                    `);
                 }
             });
         }
-
-    // Open Modal - Show Movie 
-    $(document).on("click", ".showMovieModal", function() {
-        const id = $(this).attr("data-id");
-        showMovieDetails(id);
-        showMovieRatingAverage(id);
-        showMovieReviews(id);
-        showMovieCrews(id);
-        showMovieGenres(id);
-        showMovieLanguages(id); 
-    });
+    }
 
     // Show Movie Details
     function showMovieDetails(id) {
