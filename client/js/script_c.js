@@ -12,10 +12,13 @@ $(document).ready(function() {
                 $("#modalTitle").text(`${crew.name} - Information Details`);
                 $("#modalInfoContent1").append(`
                     <div>
+                        <div class="card">
+                            <img class="card-img-top" src="${crew.picture}">
+                        </div>
                         <p id="name"><b>Name: </b>${crew.name}</p>
                         <p id="mainActivity"><b>Main Activity: </b>${crew.mainActivity}</p>
                         <p id="dateOfBirth"><b>Birthday: </b>${dateOfBirth}</p>
-                        <p id="birthPlace"><b>Birth place: </b>${crew.releaseDate}</p>
+                        <p id="birthPlace"><b>Birth place: </b>${crew.birthPlace}</p>
                         <p id="biography"><b>Biography: </b>${crew.biography}</p>
                         <p id="website"><b>Main Activity: </b>${crew.website}</p>
                         <p id="movies"><b>List of Movies: </b><div id="listOfMovies"></div></p>
@@ -27,16 +30,27 @@ $(document).ready(function() {
                     success: function(movie_crew_Arr) {
                         console.log(movie_crew_Arr);
                         movie_crew_Arr.forEach((movie_crew) => {
+                            console.log(movie_crew.movieId + ' - ' + movie_crew.roleId)
                             $.ajax({
                                 url: `${URLPath}/movie/${movie_crew.movieId}`,
                                 type: "GET",
                                 success: function(movie) {
-                                    console.log(movie);
-                                    let releaseDate = formatDate(movie.releaseDate);
-                                    $("#listOfMovies").append(`
-                                      <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
-                                      <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
-                                    `);
+                                    console.log(movie.id);
+                                    $.ajax({
+                                        url: `${URLPath}/role/${movie_crew.roleId}`,
+                                        type: "GET",
+                                        success: function(role) {
+                                            let releaseDate = formatDate(movie.releaseDate);
+                                            $("#listOfMovies").append(`
+                                                <div class="card movieInfo" data-id="${movie.id}">
+                                                    <img class="card-img-top poster" src="${movie.overview}">
+                                                    <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                    <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                    <p id="role"><b>Role: </b>${role.name}</p>
+                                                </div>
+                                            `);
+                                        }
+                                    });
                                 }
                             });
                         });

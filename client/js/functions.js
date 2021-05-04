@@ -1,6 +1,3 @@
-// TODO: Replace multiple instances of the same ID with instances of a CLASS in CSS 
-// (Example: id="crewInfo" to class="crewInfo")
-
 function emptyModal() {
     // Empty the previous Results
     $("#modalInfoContent1").empty();
