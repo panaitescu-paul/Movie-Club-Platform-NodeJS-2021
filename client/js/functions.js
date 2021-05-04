@@ -79,8 +79,8 @@ function showCrews(data, user = 'guest') {
             crew.picture = "img/notFoundPicture.jpg";
         }
         $("#results").append(`
-            <div class="card" data-id="${crew.id}" id="crewInfo">
-                <img class="card-img-top" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+            <div class="card crewInfo" data-id="${crew.id}">
+                <img class="card-img-top poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
                 <div class="card-body">
                     <h5 class="card-title">${crew.name}</h5>
                 </div>

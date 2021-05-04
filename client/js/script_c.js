@@ -1,7 +1,7 @@
 $(document).ready(function() {
     const URLPath = 'http://localhost:8000';
 
-    $(document).on("click", "#crewInfo", function() {
+    $(document).on("click", ".crewInfo", function() {
         const crewId = $(this).attr("data-id");
         emptyModal();
         $.ajax({
