@@ -69,6 +69,29 @@ function showAllMovies(user = 'guest') {
 }
 
 // Show all Crews in a List
+function showAllCrews(user = 'guest') {
+    $.ajax({
+        url: `${URL}crew`,
+        type: "GET",
+        success: function(crews) {
+            showCrews(crews);
+        },
+        statusCode: {
+            404: function(data) {
+                $("#results").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+                alert(errorMsg);
+            }
+        }
+    });
+    $(document).on('keypress',function(e) {
+        if(e.which === 13) {
+            $("#btnSearchCrew").click();
+        }
+    });
+}
+
+// Show all Crews in a List
 function showCrews(data, user = 'guest') {
     $("#results").empty();
     data.forEach(crew => {

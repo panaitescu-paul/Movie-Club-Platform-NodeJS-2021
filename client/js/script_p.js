@@ -1,5 +1,6 @@
 /**
 * Ajax calls that consume the RESTFUL API
+* Event listeners
 *
 * @author  Paul Panaitescu
 * @version 1.0 28 APR 2021
@@ -36,26 +37,7 @@ $(document).ready(function() {
             showAllMovies();
         } else if (page === "crews.html") {
             console.log("PAGE crews");
-            // Call method with the Ajax function (Example: showAllCrews();) 
-            $.ajax({
-                url: `${URL}crew`,
-                type: "GET",
-                success: function(crews) {
-                    showCrews(crews);
-                },
-                statusCode: {
-                    404: function(data) {
-                        $("#results").empty();
-                        const errorMsg = JSON.parse(data.responseText).Error;
-                        alert(errorMsg);
-                    }
-                }
-            });
-            $(document).on('keypress',function(e) {
-                if(e.which === 13) {
-                    $("#btnSearchCrew").click();
-                }
-            });
+            showAllCrews();
         } else if (page === "admins.html") {
             console.log("PAGE admins");
             // ShowAllAdmins();
