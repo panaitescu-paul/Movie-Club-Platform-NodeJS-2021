@@ -236,6 +236,35 @@ app.get("/movie_language/movieId/:movieId", (req, res) => {
         }
     });
 });
+
+/**
+* READ Movie_Language by Language id
+*
+* Input:    id of the Language
+* Output:   an Movie_Language and their information,
+* Errors:   Movie_Language with this Language ID does not exist!
+*/
+app.get("/movie_language/languageId/:languageId", (req, res) => {
+    let sql = `SELECT * FROM movie_language WHERE languageId = ?`;
+
+    connection.query(sql, [req.params.languageId], function(err, movie_language) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_language.length) {
+                res.status(200).send(movie_language);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Language with this Language ID (${req.params.languageId}) does not exist!`
+                });
+            }
+        }
+    });
+});
+
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
