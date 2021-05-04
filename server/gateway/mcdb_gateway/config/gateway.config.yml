@@ -27,14 +27,13 @@ apiEndpoints:
   movie_crew:
     host: localhost
     paths: [ '/movie_crew', '/movie_crew/*', '/movie_crew/movieId/*', '/movie_crew/crewId/*' ]
-    paths: [ '/movie', '/movie/*' ]
-  rating:
+  movie_genre:
     host: localhost
-    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
-  review:
+    paths: [ '/movie_genre', '/movie_genre/*', '/movie_genre/movieId/*', '/movie_genre/genreId/*' ]
+  movie_language:
     host: localhost
-    paths: [ '/review', '/review/*', '/review/movie/*' ]
-  moview_crew:
+    paths: [ '/movie_language', '/movie_language/*', '/movie_language/movieId/*', '/movie_language/languageId/*' ]
+  
   # Endpoints by Constantin Razvan Tarau
   crew:
     host: localhost
