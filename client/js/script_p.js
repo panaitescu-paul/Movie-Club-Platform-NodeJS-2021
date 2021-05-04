@@ -96,6 +96,39 @@ $(document).ready(function() {
         const id = $(this).attr("data-id");
         // ...
     });
+
+    // Delete Movie
+    $(document).on("click", ".deleteMovie", function(e) {
+        const id = $(this).attr("data-id");
+        console.log("id", id);
+
+        if (confirm("Are you sure that you want to delete this Movie?")) {
+            if (id !== null) {
+                $.ajax({
+                    url: URL + `movie/${id}`,
+                    type: "DELETE",
+                    success: function(data) {
+                        // Show the updated List of Movies
+                        showAllMovies('admin');
+                        // Scroll to the deleted Movie
+                        scrollPage(e.pageY);
+                        alert('Movie was successfully deleted!');
+                    },
+                    statusCode: {
+                        404: function(data) {
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        },
+                        409: function(data) {
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
     // Show all Movies in a List
     function showAllMovies(user = 'guest') {
         $.ajax({
