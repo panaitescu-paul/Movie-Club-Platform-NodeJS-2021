@@ -516,6 +516,20 @@ $(document).ready(function() {
     // ***                                                ***
     // ******************************************************
 
+
+
+    // ******************************************************
+    // ***                                                ***
+    // ***                Scrolling Functionality         ***
+    // ***                                                ***
+    // ******************************************************
+
+    // Scroll Up
+    $(document).on("click", ".scrollUp", function(e) {
+        e.preventDefault();
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
 });
 
 
