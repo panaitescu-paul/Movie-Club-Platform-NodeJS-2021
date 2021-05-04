@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     $(document).on("click", ".crewInfo", function() {
         const crewId = $(this).attr("data-id");
-        emptyModal();
+        clearModalData();
         $.ajax({
             url: `${URLPath}/crew/${crewId}`,
             type: "GET",

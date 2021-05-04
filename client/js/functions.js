@@ -1,7 +1,20 @@
-function emptyModal() {
-    // Empty the previous Results
+/**
+* Helper Functions
+*
+* @authors  Paul Panaitescu, Constantin Razvan Tarau
+* @version  1.0 29 APR 2021
+*/
+"use strict";
+
+function clearModalData() {
+    // Clear Modal Data from previous results
     $("#modalInfoContent1").empty();
     $("#modalInfoContent2").empty();
+    $("#modalInfoContent3").empty();
+    $("#modalInfoContent4").empty();
+    $("#modalInfoContent5").empty();
+    $("#modalInfoContent6").empty();
+}
 }
 
 function formatDate(date) {
