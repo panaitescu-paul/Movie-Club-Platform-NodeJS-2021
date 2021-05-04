@@ -2,7 +2,7 @@ const connection = require("../db/db_connection");
 const express = require("express");
 const cors = require('cors');
 const HOSTNAME = 'localhost';
-const PORT = 5005;
+const PORT = 5002;
 let app = express();
 app.use(express.json());
 // To bypass Cors Policy error

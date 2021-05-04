@@ -10,7 +10,7 @@ const express = require("express");
 const axios = require('axios');
 const cors = require('cors');
 const HOSTNAME = 'localhost';
-const PORT = 3003;
+const PORT = 3000;
 let app = express();
 app.use(express.json());
 // To bypass Cors Policy error
