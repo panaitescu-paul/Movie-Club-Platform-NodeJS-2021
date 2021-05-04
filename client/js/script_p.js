@@ -416,7 +416,50 @@ $(document).ready(function() {
 
     // Show Movie Genres
     function showMovieGenres(id) {
+        // GET movie_genres
+        $.ajax({
+            url: URL + `movie_genre/movieId/${id}`,
+            type: "GET",
+            success: function(movie_genre_array) {
+                $("#modalInfoContent5").append(`
+                    <hr>
+                    <h3>Genres</h3>
+                    <p class="movie-genres">
+                        <span class="tag">Genres: </span>
+                    </p>
+                `);
 
+                movie_genre_array.forEach(movie_genre => {
+                    // GET genre
+                    $.ajax({
+                        url: URL + `genre/${movie_genre.genreId}`,
+                        type: "GET",
+                        success: function(genre) {
+                            console.log('genre ', genre);
+                            $(".movie-genres").append(`
+                                <span class="tag-info">${genre.name}, </span>
+                            `);
+                        },
+                        statusCode: {
+                            404: function(data) {
+                                const errorMsg = JSON.parse(data.responseText).Error;
+                                // alert(errorMsg);
+                            }
+                        }
+                    });
+                });                
+            },
+            statusCode: {
+                404: function(data) {
+                    $("#modalInfoContent5").append(`
+                        <hr>
+                        <p><i>No Genres are available for this Movie!</i></p>
+                    `);
+                    // const errorMsg = JSON.parse(data.responseText).Error;
+                    // // alert(errorMsg);
+                }
+            }
+        });
     };
 
     // Show Movie Languages
