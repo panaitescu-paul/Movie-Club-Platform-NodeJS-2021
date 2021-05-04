@@ -235,6 +235,35 @@ app.get("/movie_genre/movieId/:movieId", (req, res) => {
         }
     });
 });
+
+/**
+* READ Movie_Genre by Genre id
+*
+* Input:    id of the Genre
+* Output:   an Movie_Genre and their information,
+* Errors:   Movie_Genre with this Genre ID does not exist!
+*/
+app.get("/movie_genre/genreId/:genreId", (req, res) => {
+    let sql = `SELECT * FROM movie_genre WHERE genreId = ?`;
+
+    connection.query(sql, [req.params.genreId], function(err, movie_genre) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movie_genre.length) {
+                res.status(200).send(movie_genre);
+            } else {
+                res.status(404).json({
+                    message: `Movie_Genre with this Genre ID (${req.params.genreId}) does not exist!`
+                });
+            }
+        }
+    });
+});
+
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
