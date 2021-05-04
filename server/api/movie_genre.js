@@ -13,7 +13,8 @@ const HOSTNAME = 'localhost';
 const PORT = 3007;
 let app = express();
 app.use(express.json());
-
+// To bypass Cors Policy error
+app.use(cors());
 
 // ******************************************************
 // ***                                                ***
