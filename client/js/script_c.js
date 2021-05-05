@@ -45,11 +45,15 @@ $(document).ready(function() {
                                         success: function(role) {
                                             let releaseDate = formatDate(movie.releaseDate);
                                             $("#listOfMovies").append(`
-                                                <div class="card movieInfo" data-id="${movie.id}">
-                                                    <img class="card-img-top poster" src="${movie.overview}">
+                                                <div class="card">
+                                                    <img data-id="${movie.id}" class="card-img-top poster" src="${movie.overview}"  data-toggle="modal" data-target="#modal">
                                                     <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
                                                     <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
                                                     <p id="role"><b>Role: </b>${role.name}</p>
+                                                    <div class="card-body">
+                                                        <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
+                                                    </div>
                                                 </div>
                                             `);
                                         }
@@ -136,51 +140,57 @@ $(document).ready(function() {
             const biography = $("#crewBiography").val().trim();
             const website = $("#crewWebsite").val().trim();
 
-            $.ajax({
-                url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${name}`,
-                type: "GET",
-                success: function(data) {
-                    let person = data["results"][0];
-                    let personPicture;
-                    if(person === undefined || person.profile_path === null) {
-                        personPicture = "../img/notFoundPicture.jpg";
-                    } else {
-                        personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
-                    }
-
-                    $.ajax({
-                        url: `${URLPath}/crew`,
-                        type: "POST",
-                        data: {
-                            name: name,
-                            mainActivity: mainActivity,
-                            dateOfBirth: dateOfBirth,
-                            birthPlace: birthPlace,
-                            biography: biography,
-                            picture: personPicture,
-                            website: website
-                        },
-                        success: function() {
-                            alert("The crew was successfully created!");
-                            $('#modal > div > div > div.modal-header > button').click();
-                            $('#btnCrewTab').click();
-                            setTimeout(function(){
-                                $('.scrollDown').click();
-                            }, 2000);
-                        },
-                        statusCode: {
-                            400: function(data) {
-                                const errorMessage = JSON.parse(data.responseText).Error;
-                                alert(data.responseJSON.message + ' ' + data.responseJSON.error);
-                            },
-                            409: function(data) {
-                                const errorMessage = JSON.parse(data.responseText).Error;
-                                alert(errorMessage);
-                            }
+            if (name === null || name.length === 0) {
+                alert("The crew name should not be empty!");
+            } else if(name.match('[=!@#$%^*?":{}|<>;]')) {
+                alert("The input field can't contain invalid characters!");
+            } else {
+                $.ajax({
+                    url: `https://api.themoviedb.org/3/search/person?api_key=3510eb3c9c4e835718fa818f6bbb1309&query=${name}`,
+                    type: "GET",
+                    success: function(data) {
+                        let person = data["results"][0];
+                        let personPicture;
+                        if(person === undefined || person.profile_path === null) {
+                            personPicture = "../img/notFoundPicture.jpg";
+                        } else {
+                            personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
                         }
-                    });
-                }
-            });
+
+                        $.ajax({
+                            url: `${URLPath}/crew`,
+                            type: "POST",
+                            data: {
+                                name: name,
+                                mainActivity: mainActivity,
+                                dateOfBirth: dateOfBirth,
+                                birthPlace: birthPlace,
+                                biography: biography,
+                                picture: personPicture,
+                                website: website
+                            },
+                            success: function() {
+                                alert("The crew was successfully created!");
+                                $('#modal > div > div > div.modal-header > button').click();
+                                $('#btnCrewTab').click();
+                                setTimeout(function(){
+                                    $('.scrollDown').click();
+                                }, 2000);
+                            },
+                            statusCode: {
+                                400: function(data) {
+                                    const errorMessage = JSON.parse(data.responseText).Error;
+                                    alert(data.responseJSON.message + ' ' + data.responseJSON.error);
+                                },
+                                409: function(data) {
+                                    const errorMessage = JSON.parse(data.responseText).Error;
+                                    alert(errorMessage);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
         });
     });
 

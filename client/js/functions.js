@@ -81,8 +81,6 @@ function showCrews(data, user = 'guest') {
                             <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
                         </ul>
                         <div class="card-body">
-                            <div class="table-actions">
-                            </div>
                             <button data-id="${crew.id}" type="button" class="btn btn-warning
                                     btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
                         </div>
