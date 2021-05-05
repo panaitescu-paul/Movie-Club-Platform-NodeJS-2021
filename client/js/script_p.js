@@ -37,7 +37,7 @@ $(document).ready(function() {
             showAllMovies('guest');
         } else if (page === "crews.html") {
             console.log("PAGE crews");
-            showAllCrews();
+            showAllCrews('guest');
             fetch("../src/header.html")
                 .then(response => {
                     return response.text()
@@ -52,10 +52,18 @@ $(document).ready(function() {
                 })
                 .then(data => {
                     document.querySelector(".footerContent").innerHTML = data;
-                });        } else if (page === "admins.html") {
+                });
+        } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
-            showAllMovies('admin');
-            // ShowAllAdmins();
+            $('#btnCreateCrew').hide();
+            $(document).on("click", "#btnMoviesTab", function() {
+                $('#btnCreateCrew').hide();
+                showAllMovies('admin');
+            });
+            $(document).on("click", "#btnCrewTab", function() {
+                $('#btnCreateCrew').show();
+                showAllCrews('admin');
+            });
         } else if (page === "users.html") {
             console.log("PAGE users");
             // ShowAllUsers();
@@ -149,6 +157,7 @@ $(document).ready(function() {
 
     function displayMovies(movies, user = 'guest') {
         $("section#movieResults").empty();
+        $("#results").empty();
         if (movies.length === 0) {
             $("section#movieResults").html("There are no Movies matching the entered text.");
         } else {

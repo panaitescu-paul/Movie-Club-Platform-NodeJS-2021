@@ -546,6 +546,11 @@ img.smallButton {
     cursor: pointer;
 }
 
-.crewInfo {
+.crewDiv {
     width: 220px !important;
+}
+
+.detailsBtn {
+    margin-right: 19px;
+    margin-bottom: 10px;
 }

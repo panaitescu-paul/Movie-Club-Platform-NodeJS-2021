@@ -45,7 +45,7 @@ function showAllCrews(user = 'guest') {
         url: `${URL}crew`,
         type: "GET",
         success: function(crews) {
-            showCrews(crews);
+            showCrews(crews, user);
         },
         statusCode: {
             404: function(data) {
@@ -65,20 +65,83 @@ function showAllCrews(user = 'guest') {
 // Show all Crews in a List
 function showCrews(data, user = 'guest') {
     $("#results").empty();
-    data.forEach(crew => {
-        if(crew.picture === null || crew.picture === '') {
-            crew.picture = "../img/notFoundPicture.jpg";
-        }
-        $("#results").append(`
-            <div class="card crewInfo" data-id="${crew.id}">
-                <img class="card-img-top poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
-                <div class="card-body">
-                    <h5 class="card-title">${crew.name}</h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-                </ul>
-            </div>
-        `);
-    });
+    switch (user) {
+        case 'guest':
+            data.forEach(crew => {
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
+                $("#results").append(`
+                    <div class="card crewDiv">
+                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div class="card-body">
+                            <h5 class="card-title">${crew.name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                        </ul>
+                        <div class="card-body">
+                            <div class="table-actions">
+                            </div>
+                            <button data-id="${crew.id}" type="button" class="btn btn-warning
+                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
+                        </div>
+                    </div>
+                `);
+            });
+            break;
+        case 'member':
+            data.forEach(crew => {
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
+                $("#results").append(`
+                    <div class="card crewDiv">
+                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div class="card-body">
+                            <h5 class="card-title">${crew.name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                        </ul>
+                        <div class="card-body">
+                            <div class="table-actions">
+                            </div>
+                            <button data-id="${crew.id}" type="button" class="btn btn-warning
+                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
+                        </div>
+                    </div>
+                `);
+            });
+            break;
+        case 'admin':
+            data.forEach(crew => {
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
+                $("#results").append(`
+                    <div class="card crewDiv">
+                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div class="card-body">
+                            <h5 class="card-title">${crew.name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                        </ul>
+                        <div class="card-body">
+                            <div class="table-actions">
+                            </div>
+                            <button data-id="${crew.id}" type="button" class="btn btn-warning
+                                    btnShow crewInfo" data-toggle="modal" data-target="#modal">Details</button>
+                            <button data-id="${crew.id}" type="button" class="btn btn-primary
+                                    btnShow crewUpdate" data-toggle="modal" data-target="#modal">Update</button>
+                            <button data-id="${crew.id}" type="button" class="btn btn-danger
+                                btnShow crewDelete">Delete</button>
+                        </div>
+                    </div>
+                `);
+            });
+            break;
+    }
+
 }

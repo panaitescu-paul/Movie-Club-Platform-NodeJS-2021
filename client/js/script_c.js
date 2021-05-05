@@ -23,16 +23,16 @@ $(document).ready(function() {
                         <p id="dateOfBirth"><b>Birthday: </b>${dateOfBirth}</p>
                         <p id="birthPlace"><b>Birth place: </b>${crew.birthPlace}</p>
                         <p id="biography"><b>Biography: </b>${crew.biography}</p>
-                        <p id="website"><b>Main Activity: </b>${crew.website}</p>
+                        <p id="website"><b>Website: </b>${crew.website}</p>
                         <p id="movies"><b>List of Movies: </b><div id="listOfMovies"></div></p>
                     </div>
                 `);
                 $.ajax({
                     url: `${URLPath}/movie_crew/crewId/${crewId}`,
                     type: "GET",
-                    success: function(movie_crew_Arr) {
-                        console.log(movie_crew_Arr);
-                        movie_crew_Arr.forEach((movie_crew) => {
+                    success: function(movie_crew_arr) {
+                        console.log(movie_crew_arr);
+                        movie_crew_arr.forEach((movie_crew) => {
                             console.log(movie_crew.movieId + ' - ' + movie_crew.roleId)
                             $.ajax({
                                 url: `${URLPath}/movie/${movie_crew.movieId}`,
@@ -95,7 +95,7 @@ $(document).ready(function() {
     });
 
     $(document).on("click", "#btnCreateCrew", function() {
-        emptyModal();
+        clearModalData();
         $("#modalTitle").text(`Create Crew`);
         $("#modalInfoContent1").append(`
              <form id="createCrewForm">
@@ -148,14 +148,6 @@ $(document).ready(function() {
                         personPicture = `//image.tmdb.org/t/p/w300_and_h450_bestv2${person.profile_path}`;
                     }
 
-                    console.log(name);
-                    console.log(mainActivity);
-                    console.log(dateOfBirth);
-                    console.log(birthPlace);
-                    console.log(biography);
-                    console.log(personPicture);
-                    console.log(website);
-
                     $.ajax({
                         url: `${URLPath}/crew`,
                         type: "POST",
@@ -171,8 +163,10 @@ $(document).ready(function() {
                         success: function() {
                             alert("The crew was successfully created!");
                             $('#modal > div > div > div.modal-header > button').click();
-                            // scroll to the bottom of the page
-                            // scrollToTheBottom();
+                            $('#btnCrewTab').click();
+                            setTimeout(function(){
+                                $('.scrollDown').click();
+                            }, 2000);
                         },
                         statusCode: {
                             400: function(data) {
@@ -188,5 +182,118 @@ $(document).ready(function() {
                 }
             });
         });
+    });
+
+    $(document).on("click", ".crewUpdate", function() {
+        const crewId = $(this).attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: `${URLPath}/crew/${crewId}`,
+            type: "GET",
+            success: function(crew) {
+                let dateOfBirth = formatDate(crew.dateOfBirth);
+                // if(crew.picture === null || crew.picture === '') {
+                //     crew.picture = "../img/notFoundPicture.jpg";
+                // }
+                $("#modalTitle").text(`Update Crew`);
+                $("#modalInfoContent1").append(`
+                    <form id="updateCrewForm">
+                        <div class="form-group">
+                            <label for="crewName">Crew Name</label>
+                            <input type="text" class="form-control" id="crewName" value="${crew.name}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="crewMainActivity">Main Activity</label>
+                            <input type="text" class="form-control" id="crewMainActivity" value="${crew.mainActivity}">
+                        </div>
+                        <div class="form-group">
+                            <label for="crewDateOfBirth">Date of Birth</label>
+                            <input type="date" class="form-control" id="crewDateOfBirth" value="${dateOfBirth}">
+                        </div>
+                        <div class="form-group">
+                            <label for="crewBirthPlace">Birth Place</label>
+                            <input type="text" class="form-control" id="crewBirthPlace" value="${crew.birthPlace}">
+                        </div>
+                        <div class="form-group">
+                            <label for="crewBiography">Biography</label>
+                            <textarea class="form-control" id="crewBiography" rows="3">${crew.biography}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="crewWebsite">Website</label>
+                            <input type="text" class="form-control" id="crewWebsite" value="${crew.website}">
+                        </div>
+        
+                        <button type="submit" class="btn btn-primary">Update Crew</button>
+                    </form>
+            `);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
+            },
+            complete: function () {
+                $("#updateCrewForm").on("submit", function(e) {
+                    e.preventDefault();
+                    const name = $("#crewName").val().trim();
+                    const mainActivity = $("#crewMainActivity").val().trim();
+                    const dateOfBirth = $("#crewDateOfBirth").val().trim();
+                    const birthPlace = $("#crewBirthPlace").val().trim();
+                    const biography = $("#crewBiography").val().trim();
+                    const website = $("#crewWebsite").val().trim();
+                    $.ajax({
+                        url: `${URLPath}/crew/${crewId}`,
+                        type: "PUT",
+                        data: {
+                            name: name,
+                            mainActivity: mainActivity,
+                            dateOfBirth: dateOfBirth,
+                            birthPlace: birthPlace,
+                            biography: biography,
+                            website: website
+                        },
+                        success: function() {
+                            alert("The crew was successfully updated!");
+                            $('#modal > div > div > div.modal-header > button').click();
+                            $('#btnCrewTab').click();
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = JSON.parse(data.responseText).Error;
+                                alert(data.responseJSON.message + ' ' + data.responseJSON.error);
+                            },
+                            409: function(data) {
+                                const errorMessage = JSON.parse(data.responseText).Error;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    $(document).on("click", ".crewDelete", function() {
+        const crewId = $(this).attr("data-id");
+        console.log(crewId)
+        if (confirm("Are you sure that you want to delete this crew?")) {
+            $.ajax({
+                url: `${URLPath}/crew/${crewId}`,
+                type: "DELETE",
+                success: function() {
+                    $("button[data-id=" + crewId + "]").parent().parent().remove();
+
+                    alert("The crew was successfully deleted!");
+                },
+                statusCode: {
+                    400: function(data) {
+                        const errorMessage = JSON.parse(data.responseText).Error;
+                        alert(errorMessage);
+                    }
+                }
+            });
+        }
+
     });
 });
