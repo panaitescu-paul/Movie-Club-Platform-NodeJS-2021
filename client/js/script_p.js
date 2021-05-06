@@ -55,6 +55,7 @@ $(document).ready(function() {
                 });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
+            checkAdminLogin();
             $('#btnCreateCrew').hide();
             $(document).on("click", "#btnMoviesTab", function() {
                 $('#btnCreateCrew').hide();

@@ -142,3 +142,15 @@ function showCrews(data, user = 'guest') {
             break;
     }
 }
+
+function checkAdminLogin(){
+    $.ajax({
+        url: `http://localhost:4000/admin`,
+        type: "GET",
+        success: function(response) {
+            if (response !== 'Admin session available!') {
+                window.location.href='../src/login.html';
+            }
+        }
+    });
+}

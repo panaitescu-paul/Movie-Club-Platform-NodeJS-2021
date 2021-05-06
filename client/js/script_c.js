@@ -1,6 +1,7 @@
 $(document).ready(function() {
     const URLPath = 'http://localhost:8000';
 
+    // Crew details
     $(document).on("click", ".crewInfo", function() {
         const crewId = $(this).attr("data-id");
         clearModalData();
@@ -80,6 +81,7 @@ $(document).ready(function() {
         });
     });
 
+    // Search Crew
     $(document).on("click", "#btnSearchCrew", function() {
         const searchValue = $('#searchCrew').val();
         $.ajax({
@@ -98,6 +100,7 @@ $(document).ready(function() {
         });
     });
 
+    // Create Crew
     $(document).on("click", "#btnCreateCrew", function() {
         clearModalData();
         $("#modalTitle").text(`Create Crew`);
@@ -194,6 +197,7 @@ $(document).ready(function() {
         });
     });
 
+    // Update Crew
     $(document).on("click", ".crewUpdate", function() {
         const crewId = $(this).attr("data-id");
         clearModalData();
@@ -281,9 +285,9 @@ $(document).ready(function() {
         });
     });
 
+    // Delete Crew
     $(document).on("click", ".crewDelete", function() {
         const crewId = $(this).attr("data-id");
-        console.log(crewId)
         if (confirm("Are you sure that you want to delete this crew?")) {
             $.ajax({
                 url: `${URLPath}/crew/${crewId}`,
@@ -303,19 +307,17 @@ $(document).ready(function() {
         }
     });
 
+    // Member login form submit listener
     $("#loginMemberForm").on("submit", function(e) {
         e.preventDefault();
         const memberUsername = $('#memberUsername').val().trim();
         const memberPassword = $('#memberPassword').val().trim();
-        console.log(memberUsername);
-        console.log(memberPassword);
         $.ajax({
             url: `${URLPath}/user/login`,
             type: "POST",
             data: {
-            name: name,
                 username: memberUsername,
-                password: memberPassword,
+                password: memberPassword
             },
             success: function(data) {
                 console.log(data);
@@ -339,23 +341,32 @@ $(document).ready(function() {
         });
     });
 
+    // Admin login form submit listener
     $("#loginAdminForm").on("submit", function(e) {
         e.preventDefault();
         const adminUsername = $('#adminUsername').val().trim();
         const adminPassword = $('#adminPassword').val().trim();
-        console.log(adminUsername);
-        console.log(adminPassword);
         $.ajax({
             url: `${URLPath}/admin/login`,
             type: "POST",
             data: {
-                name: name,
                 username: adminUsername,
-                password: adminPassword,
+                password: adminPassword
             },
             success: function(data) {
-                console.log(data);
-
+                $.ajax({
+                    url: `http://localhost:4000/login/admin`,
+                    type: "POST",
+                    data: {
+                        username: data.adminUser.username,
+                        password: data.adminUser.password
+                    },
+                    success: function(response) {
+                        if (response === 'Admin session created!') {
+                            window.location.href='../src/admins.html';
+                        }
+                    }
+                });
             },
             statusCode: {
                 400: function(data) {
@@ -371,6 +382,17 @@ $(document).ready(function() {
                     const errorMessage = data.responseJSON.message;
                     alert(errorMessage);
                 }
+            }
+        });
+    });
+
+    // Admin logout button
+    $(document).on("click", "#adminLogout", function() {
+        $.ajax({
+            url: `http://localhost:4000/logout`,
+            type: "GET",
+            success: function() {
+                location.reload();
             }
         });
     });
