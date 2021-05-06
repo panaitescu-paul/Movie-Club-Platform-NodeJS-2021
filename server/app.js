@@ -24,16 +24,17 @@ app.use(session({
 }));
 
 app.get('/',(req,res) => {
-    // let sess = req.session;
-    // if(sess.email) {
-    //     return res.redirect('/admin');
-    // }
     res.sendFile(path.join(__dirname, '../client') + '/index.html');
 });
 
 app.post('/login/member',(req,res) => {
+    console.log(req.body);
     req.session.loggedInMember = req.body;
-    res.end('done');
+    if(req.session.loggedInMember) {
+        res.end('Member session created!');
+    } else {
+        res.end('Member session not created!');
+    }
 });
 
 app.post('/login/admin',(req,res) => {
@@ -43,6 +44,19 @@ app.post('/login/admin',(req,res) => {
         res.end('Admin session created!');
     } else {
         res.end('Admin session not created!');
+    }
+});
+
+app.get('/member',(req,res) => {
+    console.log(req.session.loggedInMember);
+    if(req.session.loggedInMember) {
+        // res.end('Member session available!');
+        res.status(200).json({
+            message: "Member session available!",
+            member: req.session.loggedInMember
+        });
+    } else {
+        res.end('Member session not available!');
     }
 });
 

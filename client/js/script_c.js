@@ -321,7 +321,24 @@ $(document).ready(function() {
             },
             success: function(data) {
                 console.log(data);
-
+                $.ajax({
+                    url: `http://localhost:4000/login/member`,
+                    type: "POST",
+                    data: {
+                        username: data.memberUser.username,
+                        password: data.memberUser.password,
+                        firstName: data.memberUser.firstName,
+                        lastName: data.memberUser.lastName,
+                        gender: data.memberUser.gender,
+                        birthday: data.memberUser.birthday,
+                        country: data.memberUser.country
+                    },
+                    success: function(response) {
+                        if (response === 'Member session created!') {
+                            window.location.href='../src/movies.html';
+                        }
+                    }
+                });
             },
             statusCode: {
                 400: function(data) {
@@ -387,7 +404,7 @@ $(document).ready(function() {
     });
 
     // Admin logout button
-    $(document).on("click", "#adminLogout", function() {
+    $(document).on("click", "#adminLogout, #memberLogout", function() {
         $.ajax({
             url: `http://localhost:4000/logout`,
             type: "GET",

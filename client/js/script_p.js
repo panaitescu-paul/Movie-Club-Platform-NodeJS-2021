@@ -34,6 +34,7 @@ $(document).ready(function() {
             console.log("PAGE index");
         } else if (page === "movies.html") {
             console.log("PAGE movies");
+            checkMemberLogin();
             showAllMovies('guest');
         } else if (page === "crews.html") {
             console.log("PAGE crews");
