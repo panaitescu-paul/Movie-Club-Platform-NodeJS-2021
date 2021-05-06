@@ -555,3 +555,7 @@ img.smallButton {
     margin-bottom: 5px;
     margin-top: 7px;
 }
+
+#btnMemberTab, #btnAdminTab {
+    width: fit-content;
+}

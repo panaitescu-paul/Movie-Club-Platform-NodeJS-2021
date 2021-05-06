@@ -31,10 +31,6 @@ app.get('/',(req,res) => {
     res.sendFile(path.join(__dirname, '../client') + '/index.html');
 });
 
-// app.get('/crew-details/:id',(req,res) => {
-//
-// });
-
 app.post('/login',(req,res) => {
     console.log(req.session);
     req.session.email = req.body.email;

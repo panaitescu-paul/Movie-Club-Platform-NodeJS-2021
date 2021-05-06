@@ -202,9 +202,6 @@ $(document).ready(function() {
             type: "GET",
             success: function(crew) {
                 let dateOfBirth = formatDate(crew.dateOfBirth);
-                // if(crew.picture === null || crew.picture === '') {
-                //     crew.picture = "../img/notFoundPicture.jpg";
-                // }
                 $("#modalTitle").text(`Update Crew`);
                 $("#modalInfoContent1").append(`
                     <form id="updateCrewForm">
@@ -304,6 +301,77 @@ $(document).ready(function() {
                 }
             });
         }
+    });
 
+    $("#loginMemberForm").on("submit", function(e) {
+        e.preventDefault();
+        const memberUsername = $('#memberUsername').val().trim();
+        const memberPassword = $('#memberPassword').val().trim();
+        console.log(memberUsername);
+        console.log(memberPassword);
+        $.ajax({
+            url: `${URLPath}/user/login`,
+            type: "POST",
+            data: {
+            name: name,
+                username: memberUsername,
+                password: memberPassword,
+            },
+            success: function(data) {
+                console.log(data);
+
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                },
+                403: function(data) {
+                    console.log(data);
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                },
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                }
+            }
+        });
+    });
+
+    $("#loginAdminForm").on("submit", function(e) {
+        e.preventDefault();
+        const adminUsername = $('#adminUsername').val().trim();
+        const adminPassword = $('#adminPassword').val().trim();
+        console.log(adminUsername);
+        console.log(adminPassword);
+        $.ajax({
+            url: `${URLPath}/admin/login`,
+            type: "POST",
+            data: {
+                name: name,
+                username: adminUsername,
+                password: adminPassword,
+            },
+            success: function(data) {
+                console.log(data);
+
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                },
+                403: function(data) {
+                    console.log(data);
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                },
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                }
+            }
+        });
     });
 });

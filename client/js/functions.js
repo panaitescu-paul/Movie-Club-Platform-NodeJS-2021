@@ -141,5 +141,4 @@ function showCrews(data, user = 'guest') {
             });
             break;
     }
-
 }

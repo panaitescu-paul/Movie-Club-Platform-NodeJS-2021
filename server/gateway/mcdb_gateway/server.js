@@ -9,7 +9,6 @@ require("../../api/language");
 require("../../api/movie_crew");
 require("../../api/movie_genre");
 require("../../api/movie_language");
-
 require("../../api/crew");
 require("../../api/admin");
 require("../../api/role");

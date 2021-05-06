@@ -1,5 +1,3 @@
-<!-- TODO: Import the Header and Footer as fragments -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,16 +38,16 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-<!--                <li class="nav-item">-->
-<!--                    <span class="navbar-text">-->
-<!--                        <form id="frmLogout" action="../auth/login.php" method="POST">-->
-<!--                            <input type="hidden" name="logout" value="logout">-->
-<!--                            <button type="submit" id="btnLogOut" class="btn btn-success btn-custom1 mb-2 btnNav" data-toggle='modal' data-target='#modal'>-->
-<!--                                Login / Log Out from: ...-->
-<!--                            </button>-->
-<!--                        </form>-->
-<!--                    </span>-->
-<!--                </li>-->
+                <!--                <li class="nav-item">-->
+                <!--                    <span class="navbar-text">-->
+                <!--                        <form id="frmLogout" action="../auth/login.php" method="POST">-->
+                <!--                            <input type="hidden" name="logout" value="logout">-->
+                <!--                            <button type="submit" id="btnLogOut" class="btn btn-success btn-custom1 mb-2 btnNav" data-toggle='modal' data-target='#modal'>-->
+                <!--                                Login / Log Out from: ...-->
+                <!--                            </button>-->
+                <!--                        </form>-->
+                <!--                    </span>-->
+                <!--                </li>-->
                 <li class="nav-item">
                     <a class="btn btn-success btn-custom1 mb-2 btnNav" href="../src/login.html">Login</a>
                 </li>
@@ -84,7 +82,7 @@
                         <div id="modalInfoContent6">
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
@@ -98,35 +96,45 @@
     <!-- Start of Page content -->
     <div class="container" id="page-artists">
 
-        <!-- Sidebar navigation -->
-        <div class="sidebar">
-            <button type="button" class="btn btn-success btn-custom1 scrollUp">Up</button>
-            <button type="button" class="btn btn-success btn-custom1 scrollDown">Down</button>
-        </div>
-
-        <h1 class="main-title">Movies</h1>
+        <h1 class="main-title" id="loginTitle">User Login</h1>
         <div class="resultArea">
-            
+
             <div class="controls">
-                <!-- <div class="buttons">
-                    <button type="button" id="btnMoviesTab" class="btn btn-custom1 mb-2 btnLibrary">Movies</button>
-                    <button type="button" id="btnCrewTab" class="btn btn-custom1 mb-2 btnLibrary active">Crew</button>
-                    <button type="button" id="btnAdminTab" class="btn btn-custom1 mb-2 btnLibrary">Admin</button>
-                </div> -->
-                <label for="searchAlbumName" id="txtNameLabel">Movie Name</label>
-                <input type="text" id="searchAlbumName" name="Name" class="form-control" required>
-                </br>
-                <button type="button" class="btn btn-success mb-2" id="btnSearchAlbum">Search Movie</button>
+                <div class="buttons">
+                    <button type="button" id="btnMemberTab" class="btn btn-primary mb-2 btnLibrary">User Login</button>
+                    <button type="button" id="btnAdminTab" class="btn btn-primary mb-2 btnLibrary">Admin Login</button>
+                </div>
+                <div id="loginForm">
+                    <form id="loginMemberForm">
+                        <div class="form-group">
+                            <label for="memberUsername">Username</label>
+                            <input type="text" class="form-control" id="memberUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberPassword">Password</label>
+                            <input type="password" class="form-control" id="memberPassword">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <form id="loginAdminForm">
+                        <div class="form-group">
+                            <label for="adminUsername">Username</label>
+                            <input type="text" class="form-control" id="adminUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPassword">Password</label>
+                            <input type="password" class="form-control" id="adminPassword">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Login as an Admin</button>
+                    </form>
+                </div>
             </div>
-
-            <section id="results">
-            </section>
-
-<!--            Trailer link embedded -->
-<!--            <iframe width="420" height="345" src="https://www.youtube.com/embed/tgbNymZ7vqY">-->
-<!--            </iframe>-->
         </div>
     </div>
+
+
 
     <!-- End of Page content -->
 

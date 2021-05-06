@@ -70,6 +70,19 @@ $(document).ready(function() {
         } else if (page === "community.html") {
             console.log("PAGE comunity");
             // ShowCommunity();
+        } else if (page === "login.html" || page === "login.html?") {
+            console.log("PAGE login");
+            $('#loginAdminForm').hide();
+            $(document).on("click", "#btnMemberTab", function() {
+                $("#loginTitle").text(`User Login`);
+                $('#loginMemberForm').show();
+                $('#loginAdminForm').hide();
+            });
+            $(document).on("click", "#btnAdminTab", function() {
+                $("#loginTitle").text(`Admin Login`);
+                $('#loginMemberForm').hide();
+                $('#loginAdminForm').show();
+            });
         } else {
             console.log("PAGE is NOT available");
         }

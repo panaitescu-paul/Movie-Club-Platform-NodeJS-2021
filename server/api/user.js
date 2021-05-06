@@ -10,10 +10,12 @@ const express = require("express");
 const axios = require('axios');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const HOSTNAME = 'localhost';
 const PORT = 3001;
 let app = express();
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 // To bypass Cors Policy error
 app.use(cors());
 
@@ -294,7 +296,8 @@ app.post("/user/login", (req, res) => {
                 if (passwordMatch) {
                     res.status(200).json({
                         result: true,
-                        message: `Password and Username are matching!`
+                        message: `Password and Username are matching!`,
+                        memberUser: user[0]
                     });
                 } else {
                     res.status(403).json({
