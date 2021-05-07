@@ -9,7 +9,10 @@
 
 $(document).ready(function() {
     // Local version
-    URL = "http://localhost:8000/";
+    const URL = "http://localhost:8000/";
+    const INVALID_TEXT = /[`!@#$%^&*_+\=\[\]{};"\\|<>\/?~]/;
+    const INVALID_EMAIL = /[`!#$%^&*+\=\[\]{};"\\|<>\/?~]/;
+    const VALID_NUMBER = /^\d+$/;
 
     pageContent();
 
