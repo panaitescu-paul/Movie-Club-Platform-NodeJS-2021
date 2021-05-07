@@ -851,6 +851,42 @@ $(document).ready(function() {
             }
         });
     }
+
+    function displayUsers(users, user = 'guest') {
+        $("section#userResults").empty();
+        $("#results").empty();
+        if (users.length === 0) {
+            $("section#userResults").html("There are no Users matching the entered text.");
+        } else {
+            users.forEach(element => {
+                // TODO: Simplify
+                if (user == 'guest') {
+                    
+                } else if (user == 'member') {
+ 
+                } else if (user == 'admin') {
+                    $("#results").append(`
+                        <div class="card" data-id="${element.id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${element.username}</h5>
+                                <p class="card-title">${element.firstName}</p>
+                                <p class="card-title">${element.lastName}</p>
+                                <p class="card-title">${formatDate(element.birthday)}</p>
+                            </div>
+                            <div class="card-body">
+                                <button data-id="${element.id}" type="button" class="btn btn-warning
+                                        btnShow showUserModal" data-toggle="modal" data-target="#modal">Details</button>
+                                <button data-id="${element.id}" type="button" class="btn btn-warning
+                                    btnShow updateUserModal" data-toggle="modal" data-target="#modal">Update</button>
+                                <button data-id="${element.id}" type="button" class="btn btn-danger
+                                    btnShow deleteUser">Delete</button>
+                            </div>
+                        </div>
+                    `);
+                }
+            });
+        }
+    }
     // ******************************************************
     // ***                                                ***
     // ***                Scrolling Functionality         ***
