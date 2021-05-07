@@ -59,19 +59,12 @@ $(document).ready(function() {
                 });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
-            checkAdminLogin();
-            $('#btnCreateCrew').hide();
-            $(document).on("click", "#btnMoviesTab", function() {
-                $('#btnCreateCrew').hide();
-                showAllMovies('admin');
-            });
-            $(document).on("click", "#btnCrewTab", function() {
-                $('#btnCreateCrew').show();
-                showAllCrews('admin');
-            });
+            // checkAdminLogin();
+            showButtonCreate('None');
+            submenuAdmin();
         } else if (page === "users.html") {
             console.log("PAGE users");
-            // ShowAllUsers();
+            ShowAllUsers();
         } else if (page === "community.html") {
             console.log("PAGE comunity");
             // ShowCommunity();
@@ -91,6 +84,31 @@ $(document).ready(function() {
         } else {
             console.log("PAGE is NOT available");
         }
+    }
+
+    // ******************************************************
+    // ***                                                ***
+    // ***                Submenu Functionality           ***
+    // ***                                                ***
+    // ******************************************************
+
+    function submenuAdmin() {
+        $(document).on("click", "#btnMoviesTab", function() {
+            showButtonCreate('Movie');
+            showAllMovies('admin');
+        });
+        $(document).on("click", "#btnCrewsTab", function() {
+            showButtonCreate('Crew');
+            showAllCrews('admin');
+        });
+        $(document).on("click", "#btnAdminsTab", function() {
+            showButtonCreate('Admin');
+            showAllAdmins('admin');
+        });
+        $(document).on("click", "#btnUsersTab", function() {
+            showButtonCreate('User');
+            showAllUsers('admin');
+        });
     }
 
     // ******************************************************
