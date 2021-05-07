@@ -277,7 +277,62 @@ $(document).ready(function() {
             }
         });
     });
-        // ...
+
+    // Update Movie - Form Processing
+    $(document).on("click", "#updateMovie", function(e) {
+        const movieId = $("#movieId").val(); 
+        const title = $("#title").val(); 
+        const overview = $("#overview").val(); 
+        const runtime = $("#runtime").val(); 
+        const trailerLink = $("#trailerLink").val(); 
+        const poster = $("#poster").val(); 
+        const releaseDate = $("#releaseDate").val(); 
+
+        if (title === null || title.length === 0) {
+            alert("The field Title can not be empty!");
+        } else if (INVALID_TEXT.test(title)) {
+            alert("The field Title can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(overview)) {
+            alert("The field Overview can not contain invalid characters!");
+        // } else if (INVALID_TEXT.test(runtime)) {
+        //     alert("The field Runtime can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(trailerLink)) {
+            alert("The field Trailer Link can not contain invalid characters!");
+        // } else if (INVALID_TEXT.test(poster)) {
+        //     alert("The field Poster can not contain invalid characters!");
+        // } else if (INVALID_TEXT.test(releaseDate)) {
+        //     alert("The field ReleaseDate can not contain invalid characters!");
+        } else {
+            $.ajax({
+                url: URL + `movie/${movieId}`,
+                type: "PUT",
+                data: {
+                    title: title,
+                    overview: overview,
+                    runtime: runtime,
+                    trailerLink: trailerLink,
+                    poster: poster,
+                    releaseDate: releaseDate,
+                },
+                success: function(data) {
+                    // Show the updated List of Movies
+                    showAllMovies('admin');
+                    // Scroll to the updated Movie
+                    scrollPage(e.pageY);
+                    alert('Movie was successfully updated!');
+                },
+                statusCode: {
+                    404: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    },
+                    409: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    }
+                }
+            });
+        }
     });
 
     // Delete Movie
