@@ -175,7 +175,7 @@ $(document).ready(function() {
                             success: function() {
                                 alert("The crew was successfully created!");
                                 $('#modal > div > div > div.modal-header > button').click();
-                                $('#btnCrewTab').click();
+                                $('#btnCrewsTab').click();
                                 setTimeout(function(){
                                     $('.scrollDown').click();
                                 }, 2000);
@@ -267,7 +267,7 @@ $(document).ready(function() {
                         success: function() {
                             alert("The crew was successfully updated!");
                             $('#modal > div > div > div.modal-header > button').click();
-                            $('#btnCrewTab').click();
+                            $('#btnCrewsTab').click();
                         },
                         statusCode: {
                             400: function(data) {
