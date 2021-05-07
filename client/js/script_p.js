@@ -10,6 +10,8 @@
 $(document).ready(function() {
     // Local version
     const URL = "http://localhost:8000/";
+    
+    // Constants for Validation
     const INVALID_TEXT = /[`!@#$%^&*_+\=\[\]{};"\\|<>\/?~]/;
     const INVALID_EMAIL = /[`!#$%^&*+\=\[\]{};"\\|<>\/?~]/;
     const VALID_NUMBER = /^\d+$/;
@@ -88,7 +90,7 @@ $(document).ready(function() {
 
     // ******************************************************
     // ***                                                ***
-    // ***                Submenu Functionality           ***
+    // ***               Submenu Functionality            ***
     // ***                                                ***
     // ******************************************************
 
@@ -117,7 +119,7 @@ $(document).ready(function() {
     // ***                                                ***
     // ******************************************************
 
-    // Open Modal - Show Movie 
+    // Show Movie - Open Modal
     $(document).on("click", ".showMovieModal", function() {
         const id = $(this).attr("data-id");
         clearModalData();
@@ -129,13 +131,13 @@ $(document).ready(function() {
         showMovieLanguages(id); 
     });
 
-    // Open Modal - Create Movie 
+    // Create Movie - Open Modal
     $(document).on("click", ".createMovieModal", function() {
         const id = $(this).attr("data-id");
         // ...
     });
     
-    // Open Modal - Update Movie 
+    // Update Movie - Open Modal
     $(document).on("click", ".updateMovieModal", function() {
         const id = $(this).attr("data-id");
         // ...
@@ -250,7 +252,7 @@ $(document).ready(function() {
         }
     }
 
-    // Show Movie Details
+    // Show Movie Details - Open Modal
     function showMovieDetails(id) {
         $.ajax({
             url: URL + `movie/${id}`,
