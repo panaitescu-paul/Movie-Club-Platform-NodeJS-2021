@@ -26,18 +26,18 @@ function calculateRatingAverage(data) {
 }
 
 function formatDate(date) {
-    let d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        
+        return [year, month, day].join('-');
+    }
 
 // Show all Crews in a List
 function showAllCrews(user = 'guest') {
@@ -141,6 +141,12 @@ function showCrews(data, user = 'guest') {
             });
             break;
     }
+}
+
+// Show all Admins in a List
+function showAllAdmins(user = 'guest') {
+    $("#results").empty();
+    // TODO: To implement it
 }
 
 function checkAdminLogin(){
