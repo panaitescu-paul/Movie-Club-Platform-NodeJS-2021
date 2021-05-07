@@ -16,6 +16,24 @@ function clearModalData() {
     $("#modalInfoContent6").empty();
 }
 
+function showButtonCreate(button = 'None') {
+    // Show a certain Button and hide the other buttons on the Admins page
+    $('#btnCreateMovie').hide();
+    $('#btnCreateCrew').hide();
+    $('#btnCreateAdmin').hide();
+    $('#btnCreateUser').hide();
+    if (button == 'Movie') {
+        $('#btnCreateMovie').show();
+    } else if (button == 'Crew') {
+        $('#btnCreateCrew').show();
+    } else if (button == 'Admin') {
+        $('#btnCreateAdmin').show();
+    } else if (button == 'User') {
+        $('#btnCreateUser').show();
+    } else if (button == 'None') {
+    }
+}
+
 function calculateRatingAverage(data) {
     // Calculate the Average Rating
     let sum = 0;
