@@ -15,6 +15,8 @@ $(document).ready(function() {
     const INVALID_TEXT = /[`!@#$%^&*_+\=\[\]{};"\\|<>\/?~]/;
     const INVALID_EMAIL = /[`!#$%^&*+\=\[\]{};"\\|<>\/?~]/;
     const VALID_NUMBER = /^\d+$/;
+    // TODO: add valid date pattern;
+    // const VALID_DATE = '';
 
     pageContent();
 
@@ -132,6 +134,35 @@ $(document).ready(function() {
     });
 
     // Create Movie - Open Modal
+    $(document).on("click", "#btnCreateMovie", function() {
+        clearModalData();
+        $("#modalTitle").html("Create Movie");   
+        $("#modalInfoContent1").append(`
+            <form id="createMovieForm">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" class="form-control" required>
+                    </br>
+                    <label for="overview">Overview</label>
+                    <input type="text" id="overview" class="form-control" required>
+                    </br>
+                    <label for="runtime">Runtime</label>
+                    <input type="text" id="runtime" class="form-control" required>
+                    </br>
+                    <label for="trailerLink">Trailer Link</label>
+                    <input type="text" id="trailerLink" class="form-control" required>
+                    </br>
+                    <label for="poster">Poster</label>
+                    <input type="text" id="poster" class="form-control" required>
+                    </br>
+                    <label for="releaseDate">Release Date</label>
+                    <input type="date" id="releaseDate" class="form-control" required>
+                    </br>
+                    <button type="submit" id="createMovie" class="btn btn-success">Create Movie</button>
+                </div>
+            </form>
+        `);       
+    });
     $(document).on("click", ".createMovieModal", function() {
         const id = $(this).attr("data-id");
         // ...
