@@ -163,9 +163,66 @@ $(document).ready(function() {
             </form>
         `);       
     });
-    $(document).on("click", ".createMovieModal", function() {
-        const id = $(this).attr("data-id");
-        // ...
+
+    // Create Movie - Form Processing
+    $(document).on("click", "#createMovie", function(e) {
+        const title = $("#title").val(); 
+        const overview = $("#overview").val(); 
+        const runtime = $("#runtime").val(); 
+        const trailerLink = $("#trailerLink").val(); 
+        const poster = $("#poster").val(); 
+        const releaseDate = $("#releaseDate").val(); 
+
+        if (title === null || title.length === 0) {
+            alert("The field Title can not be empty!");
+        } else if (INVALID_TEXT.test(title)) {
+            alert("The field Title can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(overview)) {
+            alert("The field Overview can not contain invalid characters!");
+        // } else if (INVALID_TEXT.test(runtime)) {
+        //     alert("The field Runtime can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(trailerLink)) {
+            alert("The field Trailer Link can not contain invalid characters!");
+        // } else if (INVALID_TEXT.test(poster)) {
+        //     alert("The field Poster can not contain invalid characters!");
+        // } else if (INVALID_TEXT.test(releaseDate)) {
+        //     alert("The field Release Date can not contain invalid characters!");
+        } else {
+            $.ajax({
+                url: URL + `movie`,
+                type: "POST",
+                data: {
+                    title: title,
+                    overview: overview,
+                    runtime: runtime,
+                    trailerLink: trailerLink,
+                    poster: poster,
+                    releaseDate: releaseDate,
+                },
+                success: function(data) {
+                    // Show the updated List of Movies
+                    showAllMovies('admin');
+                    // Scroll to the created Movie
+                    scrollPage("bottomPage");
+                    alert('Movie was successfully created!');
+                },
+                statusCode: {
+                    404: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    },
+                    409: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    },
+                    500: function(data) {
+                        console.log('data: ', data);
+                        // const errorMsg = JSON.parse(data.responseText).Error;
+                        // alert(errorMsg);
+                    }
+                }
+            });
+        }
     });
     
     // Update Movie - Open Modal
