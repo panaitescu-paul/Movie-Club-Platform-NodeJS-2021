@@ -695,6 +695,64 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Update User - Form Processing
+    $(document).on("click", "#updateUser", function(e) {
+        console.log('#updateUser');
+        const userId = $("#userId").val(); 
+        const username = $("#username").val(); 
+        const firstName = $("#firstName").val(); 
+        const lastName = $("#lastName").val(); 
+        const gender = $("#gender").val(); 
+        const birthday = $("#birthday").val(); 
+        const country = $("#country").val(); 
+
+        if (username === null || username.length === 0) {
+            alert("The field User Name can not be empty!");
+        } else if (INVALID_TEXT.test(username)) {
+            alert("The field User Name can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(firstName)) {
+            alert("The field First Name can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(lastName)) {
+            alert("The field Last Name can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(gender)) {
+            alert("The field Gender can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(birthday)) {
+            alert("The field Birthday can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(country)) {
+            alert("The field Country can not contain invalid characters!");
+        } else {
+            $.ajax({
+                url: URL + `user/${userId}`,
+                type: "PUT",
+                data: {
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    gender: gender,
+                    birthday: birthday,
+                    country: country,
+                },
+                success: function(data) {
+                    // Show the updated List of Users
+                    showAllUsers('admin');
+                    // Scroll to the updated User
+                    scrollPage(e.pageY);
+                    alert('User was successfully updated!');
+                },
+                statusCode: {
+                    404: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    },
+                    409: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    }
+                }
+            });
+        }
+    });
     // ******************************************************
     // ***                                                ***
     // ***                Scrolling Functionality         ***
