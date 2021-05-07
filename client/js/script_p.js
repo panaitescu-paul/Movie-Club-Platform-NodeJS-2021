@@ -630,6 +630,71 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Update User - Open Modal
+    $(document).on("click", ".updateUserModal", function() {
+        const id = $(this).attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: URL + `user/${id}`,
+            type: "GET",
+            success: function(data) {
+                $("#modalTitle").html("Update User");   
+                $("#modalInfoContent1").append(`
+                    <form id="createUserForm">
+                        <div class="form-group">
+                            <label for="userId">User Id</label>
+                            <input type="text" id="userId" class="form-control" value="${data.id}" disabled>
+                            </br>
+                            <label for="username">User Name</label>
+                            <input type="text" id="username" class="form-control" value="${data.username}" required>
+                            </br>
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-control" value="${data.firstName}">
+                            </br>
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" value="${data.lastName}">
+                            </br>
+                            <label for="gender">Gender</label>
+                            <input type="text" id="gender" class="form-control" value="${data.gender}">
+                            </br>
+                            <label for="birthday">Birthday</label>
+                            <input type="text" id="birthday" class="form-control" value="${formatDate(data.birthday)}">
+                            </br>
+                            <label for="country">Country</label>
+                            <input type="text" id="country" class="form-control" value="${data.country}">
+                            </br>
+                            <button type="submit" id="updateUser" class="btn btn-success" data-dismiss="modal">Update User</button>
+                        </div>
+                    </form>
+                `);
+                $("#modalInfoContent2").append(`
+                    </br>
+                    <hr>
+                    </br>
+                    <form id="updatePasswordUserForm">
+                        <div class="form-group">
+                            <label for="oldPassword">OldPassword</label>
+                            <input type="password" id="oldPassword" class="form-control" required>
+                            </br>
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" class="form-control" required>
+                            </br>
+                            <button type="submit" id="updateUserPassword" class="btn btn-success" data-dismiss="modal">Update User Password</button>
+                        </div>
+                    </form>
+                `);    
+            },
+            statusCode: {
+                404: function(data) {
+                    $("#modalInfoContent1").append(`
+                        <hr>
+                        <p><i>No User Details are available for this User!</i></p>
+                    `);
+                }
+            }
+        });
+    });
     // ******************************************************
     // ***                                                ***
     // ***                Scrolling Functionality         ***
