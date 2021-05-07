@@ -26,6 +26,10 @@ function calculateRatingAverage(data) {
 }
 
 function formatDate(date) {
+    // TODO: add return for null case
+    if (date == null) { 
+        return 'Unknown';
+    } else {
         let d = new Date(date),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
@@ -38,6 +42,7 @@ function formatDate(date) {
         
         return [year, month, day].join('-');
     }
+}
 
 // Show all Crews in a List
 function showAllCrews(user = 'guest') {
