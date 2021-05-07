@@ -570,6 +570,24 @@ $(document).ready(function() {
         showUserDetails(id);
     });
 
+    // Create User - Open Modal
+    $(document).on("click", "#btnCreateUser", function() {
+        clearModalData();
+        $("#modalTitle").html("Create User");   
+        $("#modalInfoContent1").append(`
+            <form id="createUserForm">
+                <div class="form-group">
+                    <label for="username">User Name</label>
+                    <input type="text" id="username" class="form-control" required>
+                    </br>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                    </br>
+                    <button type="submit" id="createUser" class="btn btn-success" data-dismiss="modal">Create User</button>
+                </div>
+            </form>
+        `);       
+    });
 
     // ******************************************************
     // ***                                                ***
