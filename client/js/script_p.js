@@ -204,7 +204,7 @@ $(document).ready(function() {
                 if (user == 'guest') {
                     $("#results").append(`
                         <div class="card" data-id="${element.id}">
-                            <img class="card-img-top" src="${element.overview}" alt="Card image cap">
+                            <img class="card-img-top" src="${element.poster}" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">${element.title}</h5>
                             </div>
@@ -226,7 +226,7 @@ $(document).ready(function() {
                 } else if (user == 'admin') {
                     $("#results").append(`
                         <div class="card" data-id="${element.id}">
-                            <img class="card-img-top" src="${element.overview}" alt="Card image cap">
+                            <img class="card-img-top" src="${element.poster}" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">${element.title}</h5>
                             </div>
@@ -259,13 +259,15 @@ $(document).ready(function() {
             type: "GET",
             success: function(data) {
                 console.log('data: ', data);
-                $("#modalInfoContent1").append(`
-                    <h3>Overview</h3>
-                `);
                 const elem = $("<div />");
                 $("#modalTitle").html("Movie Details");           
                 elem.append($("<div />", { "class": "", "html": 
-                    `<p>
+                    `<div class="card">
+                        <img class="card-img-top" src="${data.poster}">
+                    </div>  
+                    </br>
+                    <h3>Overview</h3>
+                    <p>
                         <span class="tag">Id</span>
                         <span class="tag-info">${data.id}</span>
                     </p>
