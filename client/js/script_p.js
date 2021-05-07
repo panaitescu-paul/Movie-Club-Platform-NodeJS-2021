@@ -563,6 +563,12 @@ $(document).ready(function() {
     // ***                                                ***
     // ******************************************************
 
+    // Show User - Open Modal
+    $(document).on("click", ".showUserModal", function() {
+        const id = $(this).attr("data-id");
+        clearModalData();
+        showUserDetails(id);
+    });
 
 
     // ******************************************************
