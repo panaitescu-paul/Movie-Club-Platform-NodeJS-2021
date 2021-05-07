@@ -833,6 +833,24 @@ $(document).ready(function() {
             }
         }
     });
+
+    // Show all Users in a List
+    function showAllUsers(user = 'guest') {
+        $.ajax({
+            url: URL + "user",
+            type: "GET",
+            success: function(users) {
+                console.log('users: ', users);
+                displayUsers(users, user);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
+            }
+        });
+    }
     // ******************************************************
     // ***                                                ***
     // ***                Scrolling Functionality         ***
