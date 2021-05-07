@@ -589,6 +589,47 @@ $(document).ready(function() {
         `);       
     });
 
+    // Create User - Form Processing
+    $(document).on("click", "#createUser", function(e) {
+        const username = $("#username").val(); 
+        const password = $("#password").val(); 
+
+        if (username === null || username.length === 0) {
+            alert("The field User Name can not be empty!");
+        } else if (password === null || password.length === 0) {
+            alert("The field Password can not be empty!");
+        } else if (INVALID_TEXT.test(username)) {
+            alert("The field User Name can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(password)) {
+            alert("The field Password can not contain invalid characters!");
+        } else {
+            $.ajax({
+                url: URL + `user`,
+                type: "POST",
+                data: {
+                    username: username,
+                    password: password,
+                },
+                success: function(data) {
+                    // Show the updated List of Users
+                    showAllUsers('admin');
+                    // Scroll to the created User
+                    scrollPage("bottomPage");
+                    alert('User was successfully created!');
+                },
+                statusCode: {
+                    404: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    },
+                    409: function(data) {
+                        const errorMsg = JSON.parse(data.responseText).Error;
+                        alert(errorMsg);
+                    }
+                }
+            });
+        }
+    });
     // ******************************************************
     // ***                                                ***
     // ***                Scrolling Functionality         ***
