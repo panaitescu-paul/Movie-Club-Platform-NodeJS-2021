@@ -801,6 +801,38 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Delete User
+    $(document).on("click", ".deleteUser", function(e) {
+        const id = $(this).attr("data-id");
+        console.log("id", id);
+
+        if (confirm("Are you sure that you want to delete this User?")) {
+            if (id !== null) {
+                $.ajax({
+                    url: URL + `user/${id}`,
+                    type: "DELETE",
+                    success: function(data) {
+                        // Show the updated List of Users
+                        showAllUsers('admin');
+                        // Scroll to the deleted User
+                        scrollPage(e.pageY);
+                        alert('User was successfully deleted!');
+                    },
+                    statusCode: {
+                        404: function(data) {
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        },
+                        409: function(data) {
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        }
+                    }
+                });
+            }
+        }
+    });
     // ******************************************************
     // ***                                                ***
     // ***                Scrolling Functionality         ***
