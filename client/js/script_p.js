@@ -228,6 +228,55 @@ $(document).ready(function() {
     // Update Movie - Open Modal
     $(document).on("click", ".updateMovieModal", function() {
         const id = $(this).attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: URL + `movie/${id}`,
+            type: "GET",
+            success: function(data) {
+                $("#modalTitle").html("Update Movie");   
+                $("#modalInfoContent1").append(`
+                    <form id="createMovieForm">
+                        <div class="form-group">
+                            <div class="card">
+                                <img class="card-img-top" src="${data.poster}">
+                            </div>  
+                            </br>
+                            <label for="movieId">Movie Id</label>
+                            <input type="text" id="movieId" class="form-control" value="${data.id}" disabled>
+                            </br>
+                            <label for="title">Title</label>
+                            <input type="text" id="title" class="form-control" value="${data.title}" required>
+                            </br>
+                            <label for="overview">Overview</label>
+                            <input type="text" id="overview" class="form-control" value="${data.overview}">
+                            </br>
+                            <label for="runtime">Runtime</label>
+                            <input type="text" id="runtime" class="form-control" value="${data.runtime}">
+                            </br>
+                            <label for="trailerLink">Trailer Link</label>
+                            <input type="text" id="trailerLink" class="form-control" value="${data.trailerLink}">
+                            </br>
+                            <label for="releaseDate">Release Date</label>
+                            <input type="text" id="releaseDate" class="form-control" value="${formatDate(data.releaseDate)}">
+                            </br>
+                            <label for="poster">Poster</label>
+                            <input type="text" id="poster" class="form-control" value="${data.poster}">
+                            </br>
+                            <button type="submit" id="updateMovie" class="btn btn-success" data-dismiss="modal">Update Movie</button>
+                        </div>
+                    </form>
+                `);
+            },
+            statusCode: {
+                404: function(data) {
+                    $("#modalInfoContent1").append(`
+                        <hr>
+                        <p><i>No Movie Details are available for this Movie!</i></p>
+                    `);
+                }
+            }
+        });
+    });
         // ...
     });
 
