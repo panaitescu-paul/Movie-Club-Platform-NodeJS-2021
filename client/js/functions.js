@@ -5,6 +5,7 @@
 * @version  1.0 29 APR 2021
 */
 "use strict";
+const URLPath = 'http://localhost:8000';
 
 function clearModalData() {
     // Clear Modal Data from previous results
@@ -65,7 +66,7 @@ function formatDate(date) {
 // Show all Crews in a List
 function showAllCrews(user = 'guest') {
     $.ajax({
-        url: `${URL}crew`,
+        url: `${URLPath}/crew`,
         type: "GET",
         success: function(crews) {
             showCrews(crews, user);
