@@ -4,6 +4,8 @@ admin:
   port: 9876
   host: localhost
 apiEndpoints:
+
+  # Endpoints by Paul Panaitescu
   movie:
     host: localhost
     paths: [ '/movie', '/movie/*' ]
@@ -31,6 +33,8 @@ apiEndpoints:
   movie_language:
     host: localhost
     paths: [ '/movie_language', '/movie_language/*', '/movie_language/movieId/*', '/movie_language/languageId/*' ]
+  
+  # Endpoints by Constantin Razvan Tarau
   crew:
     host: localhost
     paths: [ '/crew', '/crew/*', '/crew/name/search' ]
@@ -50,6 +54,8 @@ apiEndpoints:
     host: localhost
     paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]
 serviceEndpoints:
+  
+  # Services by Paul Panaitescu
   movieService:
     url: 'http://localhost:3000'
   userService:
@@ -68,6 +74,8 @@ serviceEndpoints:
     url: 'http://localhost:3007'
   movieLanguageService:
     url: 'http://localhost:3008'
+  
+  # Services by Constantin Razvan Tarau
   crewService:
     url: 'http://localhost:5000'
   adminService:
@@ -90,6 +98,8 @@ policies:
   - proxy
   - rate-limit
 pipelines:
+
+  # Pipelines by Paul Panaitescu  
   moviePipeline:
     apiEndpoints:
       - movie
@@ -162,6 +172,8 @@ pipelines:
           - action:
               serviceEndpoint: movieLanguageService
               changeOrigin: true
+  
+  # Pipelines by Constantin Razvan Tarau
   crewPipeline:
     apiEndpoints:
       - crew
