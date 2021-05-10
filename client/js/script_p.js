@@ -63,7 +63,7 @@ $(document).ready(function() {
                 });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
-            // checkAdminLogin();
+            checkAdminLogin();
             showButtonCreate('None');
             submenuAdmin();
         } else if (page === "users.html") {

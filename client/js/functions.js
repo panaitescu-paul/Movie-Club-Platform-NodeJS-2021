@@ -45,7 +45,6 @@ function calculateRatingAverage(data) {
 }
 
 function formatDate(date) {
-    // TODO: add return for null case
     if (date == null) { 
         return 'Unknown';
     } else {
