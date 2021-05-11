@@ -45,13 +45,13 @@ $(document).ready(function() {
                                             let releaseDate = formatDate(movie.releaseDate);
                                             $("#listOfMovies").append(`
                                                 <div class="card">
-                                                    <img data-id="${movie.id}" class="card-img-top poster" src="${movie.poster}"  data-toggle="modal" data-target="#modal">
+                                                    <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
                                                     <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
                                                     <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
                                                     <p id="role"><b>Role: </b>${role.name}</p>
                                                     <div class="card-body">
                                                         <button data-id="${movie.id}" type="button" class="btn btn-warning
-                                                                btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
+                                                                btnShow showMovieModal">Details</button>
                                                     </div>
                                                 </div>
                                             `);
