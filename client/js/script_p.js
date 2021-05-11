@@ -43,12 +43,14 @@ $(document).ready(function() {
             console.log("PAGE movies");
             importHeaderFragment();
             importFooterFragment();
+            checkIfAdminLoggedIn();
             checkMemberLogin();
             showAllMovies('guest');
         } else if (page === "crews.html") {
             console.log("PAGE crews");
             importHeaderFragment();
             importFooterFragment();
+            checkIfAdminLoggedIn();
             checkMemberLogin();
             showAllCrews('guest');
         } else if (page === "admins.html" || page === "admins.html?") {
@@ -60,6 +62,7 @@ $(document).ready(function() {
             console.log("PAGE community");
             importHeaderFragment();
             importFooterFragment();
+            checkIfAdminLoggedIn();
             checkMemberLogin();
             // ShowCommunity();
         } else if (page === "login.html" || page === "login.html?") {
@@ -67,6 +70,7 @@ $(document).ready(function() {
             importHeaderFragment();
             importFooterFragment();
             checkIfMemberLoggedIn();
+            checkIfAdminLoggedIn();
             loginFormType();
         } else {
             console.log("PAGE is NOT available");

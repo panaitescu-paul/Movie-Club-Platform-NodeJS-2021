@@ -256,3 +256,15 @@ function checkIfMemberLoggedIn() {
         }
     });
 }
+
+function checkIfAdminLoggedIn() {
+    $.ajax({
+        url: `http://localhost:4000/admin`,
+        type: "GET",
+        success: function(response) {
+            if (response === 'Admin session available!') {
+                window.location.href='../src/admins.html';
+            }
+        }
+    });
+}
