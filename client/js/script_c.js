@@ -180,16 +180,16 @@ $(document).ready(function() {
                                 $('#modal > div > div > div.modal-header > button').click();
                                 $('#btnCrewsTab').click();
                                 setTimeout(function(){
-                                    $('.scrollDown').click();
-                                }, 2000);
+                                    scrollPage("bottomPage");
+                                }, 1000);
                             },
                             statusCode: {
                                 400: function(data) {
-                                    const errorMessage = JSON.parse(data.responseText).Error;
-                                    alert(data.responseJSON.message + ' ' + data.responseJSON.error);
+                                    const errorMessage = data.responseJSON.message;
+                                    alert(errorMessage);
                                 },
                                 409: function(data) {
-                                    const errorMessage = JSON.parse(data.responseText).Error;
+                                    const errorMessage = data.responseJSON.message;
                                     alert(errorMessage);
                                 }
                             }
@@ -274,11 +274,11 @@ $(document).ready(function() {
                         },
                         statusCode: {
                             400: function(data) {
-                                const errorMessage = JSON.parse(data.responseText).Error;
-                                alert(data.responseJSON.message + ' ' + data.responseJSON.error);
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
                             },
                             409: function(data) {
-                                const errorMessage = JSON.parse(data.responseText).Error;
+                                const errorMessage = data.responseJSON.message;
                                 alert(errorMessage);
                             }
                         }
@@ -461,6 +461,64 @@ $(document).ready(function() {
                         <p><b>${errorMessage}</b></p>
                     `);
                 }
+            }
+        });
+    });
+
+    // Create Admin
+    $(document).on("click", "#btnCreateAdmin", function() {
+        clearModalData();
+        $("#modalTitle").text(`Create Admin`);
+        $("#modalInfoContent1").append(`
+             <form id="createAdminForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Add Admin</button>
+             </form>
+        `);
+        $("#createAdminForm").on("submit", function(e) {
+            e.preventDefault();
+            const username = $("#username").val().trim();
+            const password = $("#password").val().trim();
+
+            if (username === null || username.length === 0) {
+                alert("The username should not be empty!");
+            } else if(username.match('[=!@#$%^*?":{}|<>;]')) {
+                alert("The input field can't contain invalid characters!");
+            } else {
+                $.ajax({
+                    url: `${URLPath}/admin`,
+                    type: "POST",
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function() {
+                        alert("The admin was successfully created!");
+                        $('#modal > div > div > div.modal-header > button').click();
+                        $('#btnAdminsTab').click();
+                        setTimeout(function(){
+                            scrollPage("bottomPage");
+                        }, 1000);
+                    },
+                    statusCode: {
+                        400: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        },
+                        409: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
             }
         });
     });

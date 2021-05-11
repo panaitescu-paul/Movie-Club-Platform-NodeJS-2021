@@ -226,3 +226,15 @@ function checkIfAdminLoggedIn() {
         }
     });
 }
+
+// Scroll to page position
+function scrollPage(position) {
+    if (position == "bottomPage") {
+        setTimeout(function (){
+            window.scrollTo(0, document.body.scrollHeight);
+        }, 700); // Delay in milliseconds
+    } else {
+        document.body.scrollTop = position - 100; // For Safari
+        document.documentElement.scrollTop = position; // For Chrome, Firefox, IE and Opera
+    }
+}
