@@ -55,7 +55,7 @@ $(document).ready(function() {
             showAllCrews('guest');
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
-            // checkAdminLogin();
+            checkAdminLogin();
             showSearchType('None');
             showButtonCreate('None');
             submenuAdmin();

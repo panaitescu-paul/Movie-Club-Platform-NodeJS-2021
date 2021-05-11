@@ -535,13 +535,36 @@ $(document).ready(function() {
                 $("#modalInfoContent1").append(`
                     <form id="updateAdminForm">
                         <div class="form-group">
+                            <label for="adminId">Id</label>
+                            <input type="text" class="form-control" id="adminId" value="${admin.id}" disabled>
+                        </div>
+                        <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" value="${admin.username}" required>
                         </div>
-        
+                        <div class="form-group">
+                            <label for="createdAt">Created at</label>
+                            <input type="text" class="form-control" id="createdAt" value="${formatDateTime(admin.createdAt)}" disabled>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update Admin</button>
                     </form>
-            `);
+                `);
+                $("#modalInfoContent2").append(`
+                    </br>
+                    <hr>
+                    </br>
+                    <form id="updatePasswordAdminForm">
+                        <div class="form-group">
+                            <label for="oldPassword">Old Password</label>
+                            <input type="password" id="oldPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Admin Password</button>
+                    </form>
+                `);
             },
             statusCode: {
                 404: function(data) {
@@ -569,6 +592,41 @@ $(document).ready(function() {
                             400: function(data) {
                                 const errorMessage = data.responseJSON.message;
                                 alert(errorMessage);
+                            },
+                            409: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                });
+                $("#updatePasswordAdminForm").on("submit", function(e) {
+                    e.preventDefault();
+                    const username = $("#username").val().trim();
+                    const oldPassword = $("#oldPassword").val().trim();
+                    const newPassword = $("#newPassword").val().trim();
+
+                    $.ajax({
+                        url: `${URLPath}/admin/password/${adminId}`,
+                        type: "PUT",
+                        data: {
+                            username: username,
+                            oldPassword: oldPassword,
+                            newPassword: newPassword
+                        },
+                        success: function() {
+                            alert("The admin password was successfully updated!");
+                            $('#modal > div > div > div.modal-header > button').click();
+                            $('#adminLogout').click();
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            },
+                            403: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert('Wrong password!');
                             },
                             409: function(data) {
                                 const errorMessage = data.responseJSON.message;
