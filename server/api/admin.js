@@ -129,6 +129,28 @@ app.get("/admin/:id", (req, res) => {
     });
 });
 
+// Search Admin User
+app.get("/admin/username/search", (req, res) => {
+    let stmt = `SELECT * FROM admin WHERE username LIKE ?`;
+    connection.query(stmt, ['%' + req.query.username + '%'], function (err, results) {
+        if (err) {
+            res.status(400).json({
+                message: 'The admin users could not be showed!',
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(results.length) {
+                res.status(200).send(results);
+            } else {
+                res.status(404).json({
+                    message: `No admin user found with the username ${req.query.username}!`
+                });
+            }
+        }
+    });
+});
+
 // Update Admin User
 app.put("/admin/:id", (req, res) => {
     let username = req.body.username;

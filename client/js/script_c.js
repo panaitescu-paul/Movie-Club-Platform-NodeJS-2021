@@ -93,9 +93,10 @@ $(document).ready(function() {
                 }
             },
             statusCode: {
-                404: function() {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
                     $("#results").empty().append(`
-                        <p><b>This person does not exist in the database!</b></p>
+                        <p><b>${errorMessage}</b></p>
                     `);
                 }
             }
@@ -416,7 +417,8 @@ $(document).ready(function() {
         });
     });
 
-    // Crew details
+    // ***** Admin CRUD *****
+    // Admin details
     $(document).on("click", ".adminInfo", function() {
         const adminId = $(this).attr("data-id");
         clearModalData();
@@ -428,9 +430,9 @@ $(document).ready(function() {
                 $("#modalTitle").text(`${admin.username} - Information Details`);
                 $("#modalInfoContent1").append(`
                     <div>
-                        <p id="adminId"><span class="tag">Id: </span>${admin.id}</p>
-                        <p id="username"><span class="tag">Username: </span>${admin.username}</p>
-                        <p id="createdAt"><span class="tag">Created at: </span>${createdAt}</p>
+                        <p id="adminId"><span class="tag">Id: </span><span class="tag-info">${admin.id}</span></p>
+                        <p id="username"><span class="tag">Username: </span><span class="tag-info">${admin.username}</span></p>
+                        <p id="createdAt"><span class="tag">Created at: </span><span class="tag-info">${createdAt}</span></p>
                     </div>
                 `);
             },
@@ -438,6 +440,26 @@ $(document).ready(function() {
                 404: function(data) {
                     const errorMsg = JSON.parse(data.responseText).Error;
                     alert(errorMsg);
+                }
+            }
+        });
+    });
+
+    // Search Admin
+    $(document).on("click", "#btnSearchAdmin", function() {
+        const searchValue = $('#searchAdmin').val();
+        $.ajax({
+            url: `${URLPath}/admin/username/search?username=${searchValue}`,
+            type: "GET",
+            success: function(admins) {
+                showAdmins(admins);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    $("#results").empty().append(`
+                        <p><b>${errorMessage}</b></p>
+                    `);
                 }
             }
         });
@@ -458,11 +480,6 @@ function showAllCrews(user = 'guest') {
                 const errorMsg = JSON.parse(data.responseText).Error;
                 alert(errorMsg);
             }
-        }
-    });
-    $(document).on('keypress',function(e) {
-        if(e.which === 13) {
-            $("#btnSearchCrew").click();
         }
     });
 }
@@ -562,11 +579,6 @@ function showAllAdmins() {
                 const errorMsg = JSON.parse(data.responseText).Error;
                 alert(errorMsg);
             }
-        }
-    });
-    $(document).on('keypress',function(e) {
-        if(e.which === 13) {
-            $("#btnSearchAdmin").click();
         }
     });
 }
