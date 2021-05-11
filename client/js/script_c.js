@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    const URLPath = 'http://localhost:8000';
-
     // Crew details
     $(document).on("click", ".crewInfo", function() {
         const crewId = $(this).attr("data-id");
@@ -418,3 +416,157 @@ $(document).ready(function() {
         });
     });
 });
+
+// Show all Crews in a List
+function showAllCrews(user = 'guest') {
+    $.ajax({
+        url: `${URLPath}/crew`,
+        type: "GET",
+        success: function(crews) {
+            showCrews(crews, user);
+        },
+        statusCode: {
+            404: function(data) {
+                $("#results").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+                alert(errorMsg);
+            }
+        }
+    });
+    $(document).on('keypress',function(e) {
+        if(e.which === 13) {
+            $("#btnSearchCrew").click();
+        }
+    });
+}
+
+// Show Crews in a List
+function showCrews(data, user = 'guest') {
+    $("#results").empty();
+    switch (user) {
+        case 'guest':
+            data.forEach(crew => {
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
+                $("#results").append(`
+                    <div class="card crewDiv">
+                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div class="card-body">
+                            <h5 class="card-title">${crew.name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                        </ul>
+                        <div class="card-body">
+                            <button data-id="${crew.id}" type="button" class="btn btn-warning
+                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
+                        </div>
+                    </div>
+                `);
+            });
+            break;
+        case 'member':
+            data.forEach(crew => {
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
+                $("#results").append(`
+                    <div class="card crewDiv">
+                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div class="card-body">
+                            <h5 class="card-title">${crew.name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                        </ul>
+                        <div class="card-body">
+                            <div class="table-actions">
+                            </div>
+                            <button data-id="${crew.id}" type="button" class="btn btn-warning
+                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
+                        </div>
+                    </div>
+                `);
+            });
+            break;
+        case 'admin':
+            data.forEach(crew => {
+                if(crew.picture === null || crew.picture === '') {
+                    crew.picture = "../img/notFoundPicture.jpg";
+                }
+                $("#results").append(`
+                    <div class="card crewDiv">
+                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div class="card-body">
+                            <h5 class="card-title">${crew.name}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
+                        </ul>
+                        <div class="card-body">
+                            <div class="table-actions">
+                            </div>
+                            <button data-id="${crew.id}" type="button" class="btn btn-warning
+                                    btnShow crewInfo" data-toggle="modal" data-target="#modal">Details</button>
+                            <button data-id="${crew.id}" type="button" class="btn btn-primary
+                                    btnShow crewUpdate" data-toggle="modal" data-target="#modal">Update</button>
+                            <button data-id="${crew.id}" type="button" class="btn btn-danger
+                                btnShow crewDelete">Delete</button>
+                        </div>
+                    </div>
+                `);
+            });
+            break;
+    }
+}
+
+// Show all Admins in a List
+function showAllAdmins() {
+    $.ajax({
+        url: `${URLPath}/admin`,
+        type: "GET",
+        success: function(admins) {
+            showAdmins(admins);
+        },
+        statusCode: {
+            404: function(data) {
+                $("#results").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+                alert(errorMsg);
+            }
+        }
+    });
+    $(document).on('keypress',function(e) {
+        if(e.which === 13) {
+            $("#btnSearchAdmin").click();
+        }
+    });
+}
+
+// Show Crews in a List
+function showAdmins(data) {
+    $("#results").empty();
+    data.forEach(admin => {
+        $("#results").append(`
+            <div class="card adminDiv">
+                <div class="card-body">
+                    <h5 class="card-title">${admin.username}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Created at: </b>${formatDateTime(admin.createdAt)}</li>
+                </ul>
+                <div class="card-body">
+                    <div class="table-actions">
+                    </div>
+                    <button data-id="${admin.id}" type="button" class="btn btn-warning
+                            btnShow adminInfo" data-toggle="modal" data-target="#modal">Details</button>
+                    <button data-id="${admin.id}" type="button" class="btn btn-primary
+                            btnShow adminUpdate" data-toggle="modal" data-target="#modal">Update</button>
+                    <button data-id="${admin.id}" type="button" class="btn btn-danger
+                            btnShow adminDelete">Delete</button>
+                </div>
+            </div>
+        `);
+    });
+}

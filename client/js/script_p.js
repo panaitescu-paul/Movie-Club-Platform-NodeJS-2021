@@ -98,7 +98,7 @@ $(document).ready(function() {
         $(document).on("click", "#btnAdminsTab", function() {
             showSearchType('Admin');
             showButtonCreate('Admin');
-            showAllAdmins('admin');
+            showAllAdmins();
         });
         $(document).on("click", "#btnMembersTab", function() {
             showSearchType('Member');

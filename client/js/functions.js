@@ -80,114 +80,32 @@ function formatDate(date) {
     }
 }
 
-// Show all Crews in a List
-function showAllCrews(user = 'guest') {
-    $.ajax({
-        url: `${URLPath}/crew`,
-        type: "GET",
-        success: function(crews) {
-            showCrews(crews, user);
-        },
-        statusCode: {
-            404: function(data) {
-                $("#results").empty();
-                const errorMsg = JSON.parse(data.responseText).Error;
-                alert(errorMsg);
-            }
-        }
-    });
-    $(document).on('keypress',function(e) {
-        if(e.which === 13) {
-            $("#btnSearchCrew").click();
-        }
-    });
-}
+function formatDateTime(dateTime) {
+    if (dateTime == null) {
+        return 'Unknown';
+    } else {
+        let d = new Date(dateTime),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear(),
+            hours = d.getHours(),
+            minutes = d.getMinutes(),
+            seconds = d.getSeconds();
 
-// Show all Crews in a List
-function showCrews(data, user = 'guest') {
-    $("#results").empty();
-    switch (user) {
-        case 'guest':
-            data.forEach(crew => {
-                if(crew.picture === null || crew.picture === '') {
-                    crew.picture = "../img/notFoundPicture.jpg";
-                }
-                $("#results").append(`
-                    <div class="card crewDiv">
-                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
-                        <div class="card-body">
-                            <h5 class="card-title">${crew.name}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-                        </ul>
-                        <div class="card-body">
-                            <button data-id="${crew.id}" type="button" class="btn btn-warning
-                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
-                        </div>
-                    </div>
-                `);
-            });
-            break;
-        case 'member':
-            data.forEach(crew => {
-                if(crew.picture === null || crew.picture === '') {
-                    crew.picture = "../img/notFoundPicture.jpg";
-                }
-                $("#results").append(`
-                    <div class="card crewDiv">
-                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
-                        <div class="card-body">
-                            <h5 class="card-title">${crew.name}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-                        </ul>
-                        <div class="card-body">
-                            <div class="table-actions">
-                            </div>
-                            <button data-id="${crew.id}" type="button" class="btn btn-warning
-                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
-                        </div>
-                    </div>
-                `);
-            });
-            break;
-        case 'admin':
-            data.forEach(crew => {
-                if(crew.picture === null || crew.picture === '') {
-                    crew.picture = "../img/notFoundPicture.jpg";
-                }
-                $("#results").append(`
-                    <div class="card crewDiv">
-                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
-                        <div class="card-body">
-                            <h5 class="card-title">${crew.name}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-                        </ul>
-                        <div class="card-body">
-                            <div class="table-actions">
-                            </div>
-                            <button data-id="${crew.id}" type="button" class="btn btn-warning
-                                    btnShow crewInfo" data-toggle="modal" data-target="#modal">Details</button>
-                            <button data-id="${crew.id}" type="button" class="btn btn-primary
-                                    btnShow crewUpdate" data-toggle="modal" data-target="#modal">Update</button>
-                            <button data-id="${crew.id}" type="button" class="btn btn-danger
-                                btnShow crewDelete">Delete</button>
-                        </div>
-                    </div>
-                `);
-            });
-            break;
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        if (hours < 10)
+            hours = '0' + hours;
+        if (minutes < 10)
+            minutes = '0' + minutes;
+        if (seconds < 10)
+            seconds = '0' + seconds;
+
+        return [year, month, day].join('-') + ' ' + [hours, minutes, seconds].join(':');
     }
-}
-
-// Show all Admins in a List
-function showAllAdmins(user = 'guest') {
-    $("#results").empty();
-    // TODO: To implement it
 }
 
 function checkAdminLogin(){
