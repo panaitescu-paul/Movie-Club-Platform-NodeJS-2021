@@ -1,10 +1,12 @@
 const connection = require("../db/db_connection");
 const express = require("express");
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const HOSTNAME = 'localhost';
 const PORT = 5002;
 let app = express();
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 // To bypass Cors Policy error
 app.use(cors());
 

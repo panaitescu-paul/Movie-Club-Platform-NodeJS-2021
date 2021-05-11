@@ -13,7 +13,6 @@ const bodyParser = require('body-parser');
 const HOSTNAME = 'localhost';
 const PORT = 3000;
 let app = express();
-app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 // To bypass Cors Policy error
