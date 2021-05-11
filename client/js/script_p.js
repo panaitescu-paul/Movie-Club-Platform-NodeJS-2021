@@ -41,50 +41,33 @@ $(document).ready(function() {
             console.log("PAGE index");
         } else if (page === "movies.html") {
             console.log("PAGE movies");
+            importHeaderFragment();
+            importFooterFragment();
             checkMemberLogin();
             showAllMovies('guest');
         } else if (page === "crews.html") {
             console.log("PAGE crews");
+            importHeaderFragment();
+            importFooterFragment();
+            checkMemberLogin();
             showAllCrews('guest');
-            fetch("../src/header.html")
-                .then(response => {
-                    return response.text()
-                })
-                .then(data => {
-                    document.querySelector(".headerContent").innerHTML = data;
-                });
-
-            fetch("../src/footer.html")
-                .then(response => {
-                    return response.text()
-                })
-                .then(data => {
-                    document.querySelector(".footerContent").innerHTML = data;
-                });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
             checkAdminLogin();
             showButtonCreate('None');
             submenuAdmin();
-        } else if (page === "users.html") {
-            console.log("PAGE users");
-            ShowAllUsers();
         } else if (page === "community.html") {
-            console.log("PAGE comunity");
+            console.log("PAGE community");
+            importHeaderFragment();
+            importFooterFragment();
+            checkMemberLogin();
             // ShowCommunity();
         } else if (page === "login.html" || page === "login.html?") {
             console.log("PAGE login");
-            $('#loginAdminForm').hide();
-            $(document).on("click", "#btnMemberTab", function() {
-                $("#loginTitle").text(`User Login`);
-                $('#loginMemberForm').show();
-                $('#loginAdminForm').hide();
-            });
-            $(document).on("click", "#btnAdminTab", function() {
-                $("#loginTitle").text(`Admin Login`);
-                $('#loginMemberForm').hide();
-                $('#loginAdminForm').show();
-            });
+            importHeaderFragment();
+            importFooterFragment();
+            checkIfMemberLoggedIn();
+            loginFormType();
         } else {
             console.log("PAGE is NOT available");
         }

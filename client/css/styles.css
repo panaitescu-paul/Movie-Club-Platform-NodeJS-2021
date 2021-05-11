@@ -559,3 +559,9 @@ img.smallButton {
 #btnMemberTab, #btnAdminTab {
     width: fit-content;
 }
+
+#adminLogout, #memberLogout {
+    position: absolute;
+    right: 10px;
+    top: 2px;
+}

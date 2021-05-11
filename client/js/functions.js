@@ -201,7 +201,58 @@ function checkMemberLogin(){
                 $('#loginPageBtn').show();
                 $('#loginInfo').empty();
             }
+        }
+    });
+}
 
+function importHeaderFragment() {
+    fetch("../src/header.html")
+        .then(response => {
+            return response.text()
+        })
+        .then(data => {
+            document.querySelector("header").innerHTML = data;
+        });
+
+}
+
+function importFooterFragment() {
+    fetch("../src/footer.html")
+        .then(response => {
+            return response.text()
+        })
+        .then(data => {
+            document.querySelector("footer").innerHTML = data;
+        });
+}
+
+function loginFormType() {
+    $('#loginAdminForm').hide();
+    $(document).on("click", "#btnMemberTab", function() {
+        $("#loginTitle").text(`Member Login`);
+        $('#loginMemberForm').show();
+        $('#loginAdminForm').hide();
+    });
+    $(document).on("click", "#btnAdminTab", function() {
+        $("#loginTitle").text(`Admin Login`);
+        $('#loginMemberForm').hide();
+        $('#loginAdminForm').show();
+    });
+}
+
+function checkIfMemberLoggedIn() {
+    $.ajax({
+        url: `http://localhost:4000/member`,
+        type: "GET",
+        success: function(response) {
+            console.log(response.member);
+            if (response.message === 'Member session available!') {
+                window.location.href='../src/movies.html';
+            } else {
+                $('#memberLogout').hide();
+                $('#loginPageBtn').show();
+                $('#loginInfo').empty();
+            }
         }
     });
 }
