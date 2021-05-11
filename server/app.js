@@ -50,7 +50,6 @@ app.post('/login/admin',(req,res) => {
 app.get('/member',(req,res) => {
     console.log(req.session.loggedInMember);
     if(req.session.loggedInMember) {
-        // res.end('Member session available!');
         res.status(200).json({
             message: "Member session available!",
             member: req.session.loggedInMember
@@ -63,7 +62,11 @@ app.get('/member',(req,res) => {
 app.get('/admin',(req,res) => {
     console.log(req.session.loggedInAdmin);
     if(req.session.loggedInAdmin) {
-        res.end('Admin session available!');
+        res.status(200).json({
+            message: "Admin session available!",
+            admin: req.session.loggedInAdmin
+        });
+        // res.end('Admin session available!');
     } else {
         res.end('Admin session not available!');
     }

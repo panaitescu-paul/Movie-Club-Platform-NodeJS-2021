@@ -135,8 +135,13 @@ function checkAdminLogin(){
         url: `http://localhost:4000/admin`,
         type: "GET",
         success: function(response) {
-            if (response !== 'Admin session available!') {
+            if (response.message !== 'Admin session available!') {
+                $('#adminInfo').empty();
                 window.location.href='../src/login.html';
+            } else {
+                $("#adminInfo").append(`
+                    <span id="loggedInAdmin" data-id="${response.admin.id}" class="btn btn-success btn-custom1 mb-2 btnNav">Logged in as <b>${response.admin.username}</b></span>
+                `);
             }
         }
     });
@@ -171,7 +176,6 @@ function importHeaderFragment() {
         .then(data => {
             document.querySelector("header").innerHTML = data;
         });
-
 }
 
 function importFooterFragment() {
@@ -203,7 +207,6 @@ function checkIfMemberLoggedIn() {
         url: `http://localhost:4000/member`,
         type: "GET",
         success: function(response) {
-            console.log(response.member);
             if (response.message === 'Member session available!') {
                 window.location.href='../src/movies.html';
             } else {
@@ -220,7 +223,7 @@ function checkIfAdminLoggedIn() {
         url: `http://localhost:4000/admin`,
         type: "GET",
         success: function(response) {
-            if (response === 'Admin session available!') {
+            if (response.message === 'Admin session available!') {
                 window.location.href='../src/admins.html';
             }
         }

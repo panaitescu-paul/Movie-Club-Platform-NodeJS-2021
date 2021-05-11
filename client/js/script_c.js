@@ -328,6 +328,7 @@ $(document).ready(function() {
                     url: `http://localhost:4000/login/member`,
                     type: "POST",
                     data: {
+                        id: data.memberUser.id,
                         username: data.memberUser.username,
                         password: data.memberUser.password,
                         firstName: data.memberUser.firstName,
@@ -378,6 +379,7 @@ $(document).ready(function() {
                     url: `http://localhost:4000/login/admin`,
                     type: "POST",
                     data: {
+                        id: data.adminUser.id,
                         username: data.adminUser.username,
                         password: data.adminUser.password
                     },
@@ -406,7 +408,7 @@ $(document).ready(function() {
         });
     });
 
-    // Admin logout button
+    // Logout
     $(document).on("click", "#adminLogout, #memberLogout", function() {
         $.ajax({
             url: `http://localhost:4000/logout`,
@@ -637,6 +639,49 @@ $(document).ready(function() {
                 });
             }
         });
+    });
+
+    // Delete Admin
+    $(document).on("click", ".adminDelete", function() {
+        const adminId = $(this).attr("data-id");
+        const loggedInAdminId = $('#loggedInAdmin').attr("data-id");
+        console.log(loggedInAdminId)
+        if (confirm("Are you sure that you want to delete this admin?")) {
+            if (adminId === loggedInAdminId) {
+                if (confirm("Warning! You're about to delete the account that you're logged in with. Do you want to proceed?")) {
+                    $.ajax({
+                        url: `${URLPath}/admin/${adminId}`,
+                        type: "DELETE",
+                        success: function() {
+                            $("button[data-id=" + adminId + "]").parent().parent().remove();
+                            alert("Your account was successfully deleted!");
+                            $('#adminLogout').click();
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                }
+            } else {
+                $.ajax({
+                    url: `${URLPath}/admin/${adminId}`,
+                    type: "DELETE",
+                    success: function() {
+                        $("button[data-id=" + adminId + "]").parent().parent().remove();
+                        alert("The admin was successfully deleted!");
+                    },
+                    statusCode: {
+                        400: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
+            }
+        }
     });
 });
 
