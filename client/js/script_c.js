@@ -88,7 +88,11 @@ $(document).ready(function() {
             url: `${URLPath}/crew/name/search?name=${searchValue}`,
             type: "GET",
             success: function(crews) {
-                showCrews(crews);
+                if (window.location.href === 'http://localhost:4000/src/admins.html' || window.location.href === 'http://localhost:4000/src/admins.html?') {
+                    showCrews(crews, 'admin');
+                } else {
+                    showCrews(crews, 'guest');
+                }
             },
             statusCode: {
                 404: function() {

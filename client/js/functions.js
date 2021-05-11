@@ -22,16 +22,34 @@ function showButtonCreate(button = 'None') {
     $('#btnCreateMovie').hide();
     $('#btnCreateCrew').hide();
     $('#btnCreateAdmin').hide();
-    $('#btnCreateUser').hide();
+    $('#btnCreateMember').hide();
     if (button == 'Movie') {
         $('#btnCreateMovie').show();
     } else if (button == 'Crew') {
         $('#btnCreateCrew').show();
     } else if (button == 'Admin') {
         $('#btnCreateAdmin').show();
-    } else if (button == 'User') {
-        $('#btnCreateUser').show();
+    } else if (button == 'Member') {
+        $('#btnCreateMember').show();
     } else if (button == 'None') {
+    }
+}
+
+function showSearchType(type = 'None') {
+    // Show a certain Button and hide the other buttons on the Admins page
+    $('#movieSearch').hide();
+    $('#crewSearch').hide();
+    $('#adminSearch').hide();
+    $('#memberSearch').hide();
+    if (type == 'Movie') {
+        $('#movieSearch').show();
+    } else if (type == 'Crew') {
+        $('#crewSearch').show();
+    } else if (type == 'Admin') {
+        $('#adminSearch').show();
+    } else if (type == 'Member') {
+        $('#memberSearch').show();
+    } else if (type == 'None') {
     }
 }
 

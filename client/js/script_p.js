@@ -55,7 +55,8 @@ $(document).ready(function() {
             showAllCrews('guest');
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
-            checkAdminLogin();
+            // checkAdminLogin();
+            showSearchType('None');
             showButtonCreate('None');
             submenuAdmin();
         } else if (page === "community.html") {
@@ -85,19 +86,23 @@ $(document).ready(function() {
 
     function submenuAdmin() {
         $(document).on("click", "#btnMoviesTab", function() {
+            showSearchType('Movie');
             showButtonCreate('Movie');
             showAllMovies('admin');
         });
         $(document).on("click", "#btnCrewsTab", function() {
+            showSearchType('Crew');
             showButtonCreate('Crew');
             showAllCrews('admin');
         });
         $(document).on("click", "#btnAdminsTab", function() {
+            showSearchType('Admin');
             showButtonCreate('Admin');
             showAllAdmins('admin');
         });
-        $(document).on("click", "#btnUsersTab", function() {
-            showButtonCreate('User');
+        $(document).on("click", "#btnMembersTab", function() {
+            showSearchType('Member');
+            showButtonCreate('Member');
             showAllUsers('admin');
         });
     }

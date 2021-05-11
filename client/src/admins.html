@@ -80,16 +80,38 @@
                     <button type="button" id="btnMoviesTab" class="btn btn-primary mb-2 btnLibrary">Movies</button>
                     <button type="button" id="btnCrewsTab" class="btn btn-primary mb-2 btnLibrary">Crews</button>
                     <button type="button" id="btnAdminsTab" class="btn btn-primary mb-2 btnLibrary">Admins</button>
-                    <button type="button" id="btnUsersTab" class="btn btn-primary mb-2 btnLibrary">Users</button>
+                    <button type="button" id="btnMembersTab" class="btn btn-primary mb-2 btnLibrary">Members</button>
                 </div>
-                <label for="searchAlbumName" id="txtNameLabel">Admin Name</label>
-                <input type="text" id="searchAlbumName" name="Name" class="form-control" required>
-                </br>
-                <button type="button" class="btn btn-success mb-2" id="btnSearchAlbum">Search Admin</button>
+
+                <div id="movieSearch">
+                    <label for="searchCrew">Movie Name</label>
+                    <input type="text" id="searchMovie" class="form-control" required>
+                    </br>
+                    <button type="button" class="btn btn-success mb-2" id="btnSearcMovie">Search Movie</button>
+                </div>
+                <div id="crewSearch">
+                    <label for="searchCrew">Crew Name</label>
+                    <input type="text" id="searchCrew" class="form-control" required>
+                    </br>
+                    <button type="button" class="btn btn-success mb-2" id="btnSearchCrew">Search Crew</button>
+                </div>
+                <div id="adminSearch">
+                    <label for="searchAdmin">Admin Username</label>
+                    <input type="text" id="searchAdmin" class="form-control" required>
+                    </br>
+                    <button type="button" class="btn btn-success mb-2" id="btnSearchAdmin">Search Admin</button>
+                </div>
+                <div id="memberSearch">
+                    <label for="searchMember">Member Username</label>
+                    <input type="text" id="searchMember" class="form-control" required>
+                    </br>
+                    <button type="button" class="btn btn-success mb-2" id="btnSearchMember">Search Member</button>
+                </div>
+
                 <button type="button" class="btn btn-success mb-2" id="btnCreateMovie" data-toggle="modal" data-target="#modal">Create Movie</button>
                 <button type="button" class="btn btn-success mb-2" id="btnCreateCrew" data-toggle="modal" data-target="#modal">Create Crew</button>
                 <button type="button" class="btn btn-success mb-2" id="btnCreateAdmin" data-toggle="modal" data-target="#modal">Create Admin</button>
-                <button type="button" class="btn btn-success mb-2" id="btnCreateUser" data-toggle="modal" data-target="#modal">Create User</button>
+                <button type="button" class="btn btn-success mb-2" id="btnCreateMember" data-toggle="modal" data-target="#modal">Create Member</button>
             </div>
             
             <section id="results">
