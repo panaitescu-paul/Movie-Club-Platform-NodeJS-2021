@@ -114,7 +114,6 @@ function formatDateTime(dateTime) {
             minutes = d.getMinutes(),
             seconds = d.getSeconds();
 
-
         if (month.length < 2)
             month = '0' + month;
         if (day.length < 2)
