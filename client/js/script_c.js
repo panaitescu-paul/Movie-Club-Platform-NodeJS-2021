@@ -243,8 +243,8 @@ $(document).ready(function() {
             },
             statusCode: {
                 404: function(data) {
-                    const errorMsg = JSON.parse(data.responseText).Error;
-                    alert(errorMsg);
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
                 }
             },
             complete: function () {
@@ -302,7 +302,7 @@ $(document).ready(function() {
                 },
                 statusCode: {
                     400: function(data) {
-                        const errorMessage = JSON.parse(data.responseText).Error;
+                        const errorMessage = data.responseJSON.message;
                         alert(errorMessage);
                     }
                 }
@@ -518,6 +518,64 @@ $(document).ready(function() {
                             alert(errorMessage);
                         }
                     }
+                });
+            }
+        });
+    });
+
+    // Update Admin
+    $(document).on("click", ".adminUpdate", function() {
+        const adminId = $(this).attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: `${URLPath}/admin/${adminId}`,
+            type: "GET",
+            success: function(admin) {
+                $("#modalTitle").text(`Update Admin`);
+                $("#modalInfoContent1").append(`
+                    <form id="updateAdminForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" value="${admin.username}" required>
+                        </div>
+        
+                        <button type="submit" class="btn btn-primary">Update Admin</button>
+                    </form>
+            `);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                }
+            },
+            complete: function () {
+                $("#updateAdminForm").on("submit", function(e) {
+                    e.preventDefault();
+                    const username = $("#username").val().trim();
+
+                    $.ajax({
+                        url: `${URLPath}/admin/${adminId}`,
+                        type: "PUT",
+                        data: {
+                            username: username
+                        },
+                        success: function() {
+                            alert("The admin was successfully updated!");
+                            $('#modal > div > div > div.modal-header > button').click();
+                            $('#btnAdminsTab').click();
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            },
+                            409: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
                 });
             }
         });

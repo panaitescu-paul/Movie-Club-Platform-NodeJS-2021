@@ -28,24 +28,32 @@ app.post("/admin", (req, res) => {
     let seconds = ("0" + date.getSeconds()).slice(-2);
     let currentDateAndTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 
-    connection.query(stmt, [username, hashedPassword, currentDateAndTime], function (err, result) {
-        if (err) {
-            res.status(400).json({
-                message: 'The admin user could not be created!',
-                error: err.message
+    connection.query(`SELECT COUNT(*) AS total FROM admin WHERE username = ?;`, [username], function (err, result) {
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'An admin with this Username already exists!',
             });
-            console.log(err);
         } else {
-            console.log("A new admin user record inserted, ID: " + result.insertId );
-            axios.get(`http://${HOSTNAME}:${PORT}/admin/${result.insertId}`).then(response =>{
-                res.status(201).send(response.data);
-            }).catch(err =>{
-                if(err){
+            connection.query(stmt, [username, hashedPassword, currentDateAndTime], function (err, result) {
+                if (err) {
+                    res.status(400).json({
+                        message: 'The admin user could not be created!',
+                        error: err.message
+                    });
                     console.log(err);
+                } else {
+                    console.log("A new admin user record inserted, ID: " + result.insertId );
+                    axios.get(`http://${HOSTNAME}:${PORT}/admin/${result.insertId}`).then(response =>{
+                        res.status(201).send(response.data);
+                    }).catch(err =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        res.status(400).json({
+                            message: `There is no User with the id ${result.insertId}`
+                        });
+                    });
                 }
-                res.status(400).json({
-                    message: `There is no User with the id ${result.insertId}`
-                });
             });
         }
     });
@@ -154,37 +162,105 @@ app.get("/admin/username/search", (req, res) => {
 // Update Admin User
 app.put("/admin/:id", (req, res) => {
     let username = req.body.username;
-    let password = req.body.password;
-    let hashedPassword = bcrypt.hashSync(password, 10);
     let getOneStmt = `SELECT * FROM admin WHERE id = ?`;
-    let updateStmt = `UPDATE admin SET username = ?, password = ? WHERE id = ?`;
-    connection.query(getOneStmt, [req.params.id], function (err, result) {
-        if (err) {
-            res.status(400).json({
-                message: 'The admin user could not be showed!',
-                error: err.message
+    let updateStmt = `UPDATE admin SET username = ? WHERE id = ?`;
+
+    // Check the count of Admins with this Username
+    connection.query(`SELECT COUNT(*) AS total FROM admin WHERE username = ?;`, [username], function (err, result) {
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'An admin with this Username already exists!',
             });
-            console.log(err);
         } else {
-            if(result.length) {
-                connection.query(updateStmt, [username, hashedPassword, req.params.id], function (err, result) {
+            connection.query(getOneStmt, [req.params.id], function (err, result) {
+                if (err) {
+                    res.status(400).json({
+                        message: 'The admin user could not be showed!',
+                        error: err.message
+                    });
+                    console.log(err);
+                } else {
+                    if(result.length) {
+                        connection.query(updateStmt, [username, req.params.id], function (err, result) {
+                            if (err) {
+                                res.status(400).json({
+                                    message: 'The admin user could not be updated!',
+                                    error: err.message
+                                });
+                                console.log(err);
+                            } else {
+                                res.sendStatus(204);
+                            }
+                        });
+                    } else {
+                        res.status(404).json({
+                            message: `No admin user found with the id ${req.params.id}!`
+                        });
+                    }
+                }
+            });
+        }
+    });
+});
+
+// Update Admin Password
+app.put("/admin/password/:id", (req, res) => {
+    let username = req.body.username;
+    let oldPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+    let getOneStmt = `SELECT * FROM admin WHERE id = ?`;
+    let updateStmt = `UPDATE admin SET password = ? WHERE id = ?`;
+
+    // Check if Old Password and New Password are the same
+    if(oldPassword === newPassword) {
+        res.status(409).json({
+            message: 'The old password and the new password should not be the same!'
+        });
+    } else {
+        axios.post('http://localhost:8000/admin/login', {username: username, password: oldPassword}).then(response =>{
+            if (response.status === 200) {
+                connection.query(getOneStmt, [req.params.id], function (err, result) {
                     if (err) {
                         res.status(400).json({
-                            message: 'The admin user could not be updated!',
+                            message: 'The admin user could not be showed!',
                             error: err.message
                         });
                         console.log(err);
                     } else {
-                        res.sendStatus(204);
+                        if(result.length) {
+                            let hashedPassword = bcrypt.hashSync(newPassword, 10);
+                            connection.query(updateStmt, [hashedPassword, req.params.id], function (err, result) {
+                                if (err) {
+                                    res.status(400).json({
+                                        message: 'The admin user could not be updated!',
+                                        error: err.message
+                                    });
+                                    console.log(err);
+                                } else {
+                                    res.sendStatus(204);
+                                }
+                            });
+                        } else {
+                            res.status(404).json({
+                                message: `No admin user found with the id ${req.params.id}!`
+                            });
+                        }
                     }
                 });
             } else {
-                res.status(404).json({
-                    message: `No admin user found with the id ${req.params.id}!`
+                res.status(403).json({
+                    message: "Wrong old password!"
                 });
             }
-        }
-    });
+        }).catch(err =>{
+            if(err){
+                console.log(err);
+            }
+            res.status(403).json({
+                message: "Forbidden"
+            });
+        });
+    }
 });
 
 // Delete Admin User

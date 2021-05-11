@@ -40,7 +40,7 @@ apiEndpoints:
     paths: [ '/crew', '/crew/*', '/crew/name/search' ]
   admin:
     host: localhost
-    paths: [ '/admin', '/admin/*', 'admin/login', '/admin/username/search' ]
+    paths: [ '/admin', '/admin/*', 'admin/login', '/admin/username/search', '/admin/password/*' ]
   role:
     host: localhost
     paths: [ '/role', '/role/*' ]
