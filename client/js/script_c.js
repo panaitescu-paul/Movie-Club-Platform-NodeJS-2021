@@ -17,13 +17,13 @@ $(document).ready(function() {
                         <div class="card">
                             <img class="card-img-top" src="${crew.picture}">
                         </div>
-                        <p id="name"><b>Name: </b>${crew.name}</p>
-                        <p id="mainActivity"><b>Main Activity: </b>${crew.mainActivity}</p>
-                        <p id="dateOfBirth"><b>Birthday: </b>${dateOfBirth}</p>
-                        <p id="birthPlace"><b>Birth place: </b>${crew.birthPlace}</p>
-                        <p id="biography"><b>Biography: </b>${crew.biography}</p>
-                        <p id="website"><b>Website: </b>${crew.website}</p>
-                        <p id="movies"><b>List of Movies: </b><div id="listOfMovies"></div></p>
+                        <p id="name"><span class="tag">Name: </span><span class="tag-info">${crew.name}</span></p>
+                        <p id="mainActivity"><span class="tag">Main Activity: </span><span class="tag-info">${crew.mainActivity}</span></p>
+                        <p id="dateOfBirth"><span class="tag">Birthday: </span><span class="tag-info">${dateOfBirth}</span></p>
+                        <p id="birthPlace"><span class="tag">Birth place: </span><span class="tag-info">${crew.birthPlace}</span></p>
+                        <p id="biography"><span class="tag">Biography: </span><span class="tag-info">${crew.biography}</span></p>
+                        <p id="website"><span class="tag">Website: </span><span class="tag-info">${crew.website}</span></p>
+                        <p id="movies"><span class="tag">List of Movies: </span><div id="listOfMovies"></div></p>
                     </div>
                 `);
                 $.ajax({
@@ -412,6 +412,33 @@ $(document).ready(function() {
             type: "GET",
             success: function() {
                 location.reload();
+            }
+        });
+    });
+
+    // Crew details
+    $(document).on("click", ".adminInfo", function() {
+        const adminId = $(this).attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: `${URLPath}/admin/${adminId}`,
+            type: "GET",
+            success: function(admin) {
+                let createdAt = formatDateTime(admin.createdAt);
+                $("#modalTitle").text(`${admin.username} - Information Details`);
+                $("#modalInfoContent1").append(`
+                    <div>
+                        <p id="adminId"><span class="tag">Id: </span>${admin.id}</p>
+                        <p id="username"><span class="tag">Username: </span>${admin.username}</p>
+                        <p id="createdAt"><span class="tag">Created at: </span>${createdAt}</p>
+                    </div>
+                `);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
             }
         });
     });
