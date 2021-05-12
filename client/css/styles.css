@@ -1,71 +1,9 @@
 * {
     margin: 0px;
 }
-/*
-*  CSS TABLE OF CONTENTS
-*
-*  1.0 - Reset
-*  2.0 - Fonts
-*  3.0 - Globals
-*  4.0 - Color Palette
-*  5.0 - Header
-*  6.0 - Body
-*    6.1 - Sliders
-*    6.2 - Imagery
-*  7.0 - Footer
-*/
-/*** 1.0 - Reset ***/
-/*** 2.0 - Fonts ***/
-/*** 3.0 - Globals ***/
-/*** 4.0 - Color Palette ***/
-/*** 5.0 - Header ***/
-/*** 6.0 - Body ***/
-
-/* ------------------------------------------------------------ */
-/*                         Color Palette                        */
-/* ------------------------------------------------------------ */
-
-/* .btn-custom1 {
-    background-color: #28a745 !important;
-}
-
-.bg-custom1 {
-    background-color: #28a745 !important;
-}
-
-body {
-    color: rgb(255, 255, 255) !important;
-    color: rgb(0, 0, 0) !important;
-}
-
-button, a {
-    color: rgb(0, 0, 0) !important;
-    color: rgb(255, 255, 255) !important;
-} */
-/* ------------------------------------------------------------ */
-
-/* :root {
-    --woocommerce: #a46497;
-    --wc-green: #7ad03a;
-    --wc-red: #a00;
-    --wc-orange: #ffba00;
-    --wc-blue: #2ea2cc;
-    --wc-primary: #a46497;
-    --wc-primary-text: #fff;
-    --wc-secondary: #ebe9eb;
-    --wc-secondary-text: #515151;
-    --wc-highlight: #77a464;
-    --wc-highligh-text: #fff;
-    --wc-content-bg: #fff;
-    --wc-subtext: #767676;
-} */
-
-/* ------------------------------------------------------------ */
-
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
-
 .container {
     /* max-width: 650px !important; */
     max-width: 965px !important;
@@ -83,43 +21,11 @@ body {
     margin-bottom: 20px;
     font-weight: 500;
 }
-#frmLogin {
-    margin: 30px;
-    margin-bottom: 0px;
-}
-.buttonsLogin {
-    width: 200px;
-
-}
-#txtPassword, #txtEmail {
-    width: 250px;
-    float: right;
-}
-#page-login {
-    max-width: 450px !important;
-}
-#btnLogin {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 5px;
-    display: block;
-}
-#btnSignUp {
-    width: 360px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 25px;
-    display: block;
-}
 #resultArea {
     border: 1px solid #107df5;
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 20px;
-}
-#loginArea {
-    text-align: center;
 }
 .controls {
     margin-left: auto;
@@ -147,44 +53,6 @@ body {
     display: block;
     height: 37px;
 }
-
-/* Article Item */
-article.item {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #b3bfca;
-    border-radius: 5px;
-}
-article.item:hover {
-    border: 1px solid #107df5;
-    background-color: rgba(16, 125, 245, 0.1);
-    cursor: pointer;
-}
-.btnLibrary {
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: auto;
-    padding-right: auto;
-    width: 80px;
-}
-#btnAdd {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 150px;
-}
-#frmLogout {
-    height: 20px;
-    margin-top: -11px;
-}
-.navName {
-    margin-top: 3px;
-    display: block;
-}
-.navbar-text {
-    height: 50px;
-}
 .footer {
     position: fixed;
     left: 0;
@@ -197,91 +65,10 @@ article.item:hover {
     line-height: 20px;
  }
 
-/* Table */
-#tableList {
-    margin: 30px 20px;
-    max-width: 470px;
-}
-.tableList td{
-    padding: 7px;
-}
-.table th, .table td {
-    border-top: none !important;
-}
-.small-collumn-custom {
-    max-width: 45px ;
-}
-tr:nth-child(even) {
-    background-color: rgba(234, 236, 239, 1);
-}
-tr:nth-child(odd) {
-    background-color: rgba(255, 255, 255, 1);
-}
-tr {
-    border: 1px solid rgba(16, 125, 245, 0.0);
-}
-tr:hover {
-    border: 1px solid #107df5;
-    background-color: rgba(16, 125, 245, 0.1);
-    cursor: pointer;
-}
-thead tr{
-    background-color: rgba(2, 123, 255, 1) !important;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: 700;
-    text-align: center;
-}
-.table-actions {
-    display: inline-block;
-    width: 190px;
-}
-
-/* Buttons */
-.btnAddCart  {
-    display: block;
-    margin-left: 5px;
-    margin-right: 0px;
-    width: 80px;
-    float: right;
-}
-.btnAddCart {
-    width: 110px;
-}
-.btnShow, .btnUpdate, .btnDelete, .btnAddToCart {
-    display: block;
-    margin-left: 5px;
-    margin-right: 0px;
-    float: right;
-}
-
-/* Icons */
-.icon-show, .icon-update, .icon-delete {
-    width: 22px;
-    height: 22px;
-}
-div.smallButtons {
-    float: right;
-}
-img.smallButton {
-    display: block;
-    width: 20px;
-    height: 20px;
-    margin-bottom: 2px;
-    padding: 2px;
-    border: thin solid black;
-    border-radius: 3px;
-    background-color: lightgray;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-    cursor: pointer;
-}
-
 /* Modal */
 #modalTitle {
     font-size: 2rem;
     text-align: center;
-    /* margin-left: 20px; */
     margin-left: 30px !important;
     font-weight: 600;
     margin-left: auto;
@@ -306,25 +93,6 @@ img.smallButton {
     height: 60px;
 }
 /* End Modal */
-
-/* Sidebar */
-.sidebar {
-    height: 105px;
-    width: 75px;
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 100px; /* Stay at the top */
-    left: 0;
-    background-color: rgb(2, 123, 255, 0.1);
-    overflow-x: hidden; /* Disable horizontal scroll */
-    text-align: center;
-}
-.sidebar button {
-    margin-top: 10px;
-    width: 65px;
-}
-/* End Sidebar */
-
 
 /* Navigation Toogle button */
 .navbar-toggler {
@@ -392,85 +160,9 @@ img.smallButton {
         width: 400px !important;
         height: 300px !important;
     }
-
-    /* Table */
-    .tableList {
-        max-width: 500px !important;
-        margin-right: auto;
-        margin-left: auto;
-    }
-    thead tr {
-        font-size: 1.0rem;
-    }
-    .tableList tr th:nth-child(1) {
-        max-width: 13px !important;
-    }
-    .tableList td {
-        margin: 5px 0px  !important;
-        vertical-align: inherit !important;
-    }
-    .small-collumn-custom {
-        max-width: 45px;
-        padding-right: 1px !important;
-        padding-left: 2px !important;
-    }
-    .tableList td:nth-child(2) {
-        max-width: 200px;
-    }
-    .tableList td:last-child {
-        max-width: 135px;
-        padding-right: 3px;
-        padding-left: 3px;
-    }
-    .table-actions {
-        display: inline-block;
-        width: 135px;
-        padding: 0;
-    }
-    .btnShow, .btnUpdate, .btnDelete, .btnAddToCart {
-        display: block;
-        margin-left: 3px;
-        margin-right: 0px;
-        float: right;
-        padding: 4px 8px !important;
-    }
-
-    /* Icons */
-    .icon-show, .icon-update, .icon-delete {
-        width: 22px;
-        height: 22px;
-    }
-
-    /* Library */
-    .buttons {
-        width: 260px;
-        text-align: center;
-    }
-    #loginArea .buttons {
-        width: 360px;
-    }
 }
 
 @media only screen and (max-width: 575px) {
-    /* Login Page */
-    #page-login {
-        max-width: 300px !important;
-    }
-    #loginArea .buttons {
-        width: 240px;
-    }
-    #txtEmail, #txtPassword, #btnLogin, #btnSignUp {
-        width: 235px;
-        margin: 0px;
-    }
-    #btnSignUp {
-        margin-top: 5px;
-        margin-bottom: 25px;
-        text-align: center;
-        margin-right: auto;
-        margin-left: auto;
-        width: 235px;
-    }
     .video iframe {
         width: 400px !important;
         height: 300px !important;
@@ -512,63 +204,6 @@ img.smallButton {
     .video iframe {
         width: 300px !important;
         height: 200px !important;
-    }
-    .tableList {
-        max-width: 200px !important;
-        margin-right: auto;
-        margin-left: auto;
-    }
-    thead tr {
-        font-size: 1.0rem;
-    }
-    .tableList tr th:nth-child(1) {
-        max-width: 13px !important;
-    }
-    .tableList td {
-        margin: 5px 0px  !important;
-        vertical-align: inherit !important;
-    }
-    .small-collumn-custom {
-        max-width: 45px;
-        padding-right: 1px !important;
-        padding-left: 2px !important;
-    }
-    .small-collumn-custom-2 {
-        max-width: 45px;
-        padding-right: 1px !important;
-        padding-left: 2px !important;
-    }
-
-    .tableList td:nth-child(2) {
-        max-width: 200px;
-    }
-    td.big-collumn-custom {
-        width: 200px !important;
-        padding-right: 30px !important;
-        padding-left: 10px !important;
-    }
-    .tableList td:last-child {
-        max-width: 122px;
-        padding-right: 2px;
-        padding-left: 2px;
-    }
-    .table-actions {
-        display: inline-block;
-        width: 122px;
-        padding: 0;
-    }
-    .btnShow, .btnUpdate, .btnDelete, .btnAddToCart {
-        display: block;
-        margin-left: 3px;
-        margin-right: 0px;
-        float: right;
-        padding: 4px 8px !important;
-    }
-
-    /* Icons */
-    .icon-show, .icon-update, .icon-delete {
-        width: 18px;
-        height: 18px;
     }
 }
 
