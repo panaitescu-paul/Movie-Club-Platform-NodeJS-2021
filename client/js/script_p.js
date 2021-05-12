@@ -827,19 +827,19 @@ $(document).ready(function() {
     });
 
     // Create User - Open Modal
-    $(document).on("click", "#btnCreateUser", function() {
+    $(document).on("click", "#btnCreateMember", function() {
         clearModalData();
-        $("#modalTitle").html("Create User");   
+        $("#modalTitle").html("Create Member");   
         $("#modalInfoContent1").append(`
             <form id="createUserForm">
                 <div class="form-group form-custom">
-                    <label for="username">User Name</label>
+                    <label for="username">Username</label>
                     <input type="text" id="username" class="form-control" required>
-                    </br>
                     <label for="password">Password</label>
                     <input type="password" id="password" class="form-control" required>
-                    </br>
-                    <button type="submit" id="createUser" class="btn btn-success btn-3" data-dismiss="modal">Create User</button>
+                    <div class="modal-actions">
+                        <button type="submit" id="createUser" class="btn btn-success btn-3" data-dismiss="modal">Create Member</button>
+                    </div>
                 </div>
             </form>
         `);     
