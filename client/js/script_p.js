@@ -745,9 +745,62 @@ $(document).ready(function() {
             }
         });
     };
+
+    // Show Movie Reviews
+    function showMovieReviews(id) {
+        $.ajax({
+            url: URL + `review/movie/${id}`,
+            type: "GET",
+            success: function(data) {
+                $("#modalInfoContent6").append(`
+                    <h3 class="modal-subtitle">Reviews</h3>
+                `);
+                data.forEach(element => {
+                    const elem = $("<div />");
+                    elem.append($("<div />", { "class": "", "html": 
+                        `
+                        <div class="modal-box">
+                            <p>
+                                <span>By: </span>
+                                <span class="tag" id="user-name"></span>
+                                <span>at: </span>
+                                <span class="tag">${formatDate(element.createdAt)}</span>
+                            </p>
+                            <div class="modal-review-body">
+                                <p>
+                                    <span class="review-title">${element.title}</span>
+                                </p>
+                                <p>
+                                    <span class="review-content">${element.content}</span>
+                                </p>
+                            </div>
+                        </div>
+                        ` }))
+                    let userId = element.userId;
+                    $.ajax({
+                        url: URL + `user/${userId}`,
+                        type: "GET",
+                        success: function(data) {
+                            document.getElementById("user-name").innerHTML = data.firstName + ' ' + data.lastName;
+                            $("#modalInfoContent6").append(elem);
+                        },
+                        statusCode: {
+                            404: function(data) {
+                                const errorMsg = JSON.parse(data.responseText).Error;
+                                // alert(errorMsg);
+                            }
+                        }
+                    });
+                    $("#modalInfoContent6").append(elem);
+                });                
+            },
+            statusCode: {
+                404: function(data) {
                     $("#modalInfoContent6").append(`
-                        <hr>
-                        <p><i>No Languages are available for this Movie!</i></p>
+                        <h3 class="modal-subtitle">Reviews</h3>
+                        <div class="modal-box">
+                            <p><i>No Reviews are available for this Movie!</i></p>
+                        </div>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
