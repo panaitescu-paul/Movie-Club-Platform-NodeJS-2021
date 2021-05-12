@@ -377,7 +377,7 @@ $(document).ready(function() {
         $("#modalTitle").html("Movie Trailer");    
         $("#modalInfoContent1").append(`
             <div class="video">
-                <iframe src="${link}"></iframe>
+                <iframe src="${link}" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
             </div>
         `);
     });
