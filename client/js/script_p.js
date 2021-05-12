@@ -145,7 +145,7 @@ $(document).ready(function() {
                     <label for="releaseDate">Release Date</label>
                     <input type="date" id="releaseDate" class="form-control" required>
                     <div class="modal-actions">
-                        <button type="submit" id="createMovie" class="btn btn-success btn-3">Create Movie</button>
+                        <button type="submit" id="createMovie" class="btn btn-success btn-3" data-dismiss="modal">Create Movie</button>
                     </div>
                 </div>
             </form>
@@ -244,7 +244,8 @@ $(document).ready(function() {
                             <input type="date" id="releaseDate" class="form-control" value="${formatDate(data.releaseDate)}">
                             <label for="poster">Poster</label>
                             <textarea id="poster" class="form-control" rows="3">${data.poster}</textarea>
-
+                            <label for="createdAt">Created At</label>
+                            <input type="text" id="createdAt" class="form-control" value="${formatDate(data.createdAt)}" disabled>
                             <div class="modal-actions">
                                 <button type="submit" id="updateMovie" class="btn btn-success btn-3" data-dismiss="modal">Update Movie</button>
                             </div>
@@ -255,8 +256,9 @@ $(document).ready(function() {
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
-                        <hr>
-                        <p><i>No Movie Details are available for this Movie!</i></p>
+                        <div class="modal-box">
+                            <p><i>No Movie Details are available for this Movie!</i></p>
+                        </div>
                     `);
                 }
             }
@@ -389,50 +391,7 @@ $(document).ready(function() {
             $("section#movieResults").html("There are no Movies matching the entered text.");
         } else {
             movies.forEach(element => {
-                // TODO: Simplify
                 if (user == 'guest') {
-                    // Version 1
-                    // $("#results").append(`
-                    //     <div class="card" data-id="${element.id}">
-                    //         <img class="card-img-top" src="${element.poster}" alt="Card image cap">
-                    //         <div class="card-body">
-                    //             <h5 class="card-title">${element.title}</h5>
-                    //         </div>
-                    //         <ul class="list-group list-group-flush">
-                    //             <li class="list-group-item">Release date: ${formatDate(element.releaseDate)}</li>
-                    //         </ul>
-                    //         <div class="card-body">
-                    //             <div class="table-actions">
-                    //             </div>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
-                    //             <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                    //         </div>
-                    //     </div>
-                    // `);
-                    // Version 2
-                    // $("#results").append(`
-                    //     <div class="card">
-                    //         <div class="card-body showMovieModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
-                    //             <img class="card-img-top" src="${element.poster}" alt="Card image cap">
-                    //             <h5 class="card-title">${element.title}</h5>
-                            
-                    //             <ul class="list-group list-group-flush">
-                    //                 <li class="list-group-item">
-                    //                     <span class="card-tag">Release: </span>
-                    //                     <span class="card-tag-info">${formatDate(element.releaseDate)}</span>
-                    //                 </li>
-                    //             </ul>
-                    //         </div>
-                    //         <div class="card-actions">
-                    //             <button data-link="${element.trailerLink}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieTrailerModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                    //         </div>
-                            
-                    //     </div>
-                    // `);
-
                     // Version 3
                     $("#results").append(`
                         <div class="card">
@@ -443,40 +402,24 @@ $(document).ready(function() {
                             <div class="card-actions">
                                 <button data-link="${element.trailerLink}" type="button" class="btn btn-warning showMovieTrailerModal" 
                                         data-toggle="modal" data-target="#modal">Trailer Link</button>
+                            </div>
+                        </div>
+                    `);
+                } else if (user == 'member') {
+                    // Version 3
+                    $("#results").append(`
+                        <div class="card">
+                            <div class="card-body showMovieModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
+                                <img class="card-img-top" src="${element.poster}" alt="Card image cap">
+                                <h5 class="card-title">${element.title}</h5>
+                            </div>
+                            <div class="card-actions">
                                 <button data-link="${element.trailerLink}" type="button" class="btn btn-warning showMovieTrailerModal" 
                                         data-toggle="modal" data-target="#modal">Trailer Link</button>
                             </div>
                         </div>
                     `);
-                } else if (user == 'member') {
- 
                 } else if (user == 'admin') {
-                    // Version 1
-                    // $("#results").append(`
-                    //     <div class="card" data-id="${element.id}">
-                    //         <img class="card-img-top" src="${element.poster}" alt="Card image cap">
-                    //         <div class="card-body">
-                    //             <h5 class="card-title">${element.title}</h5>
-                    //         </div>
-                    //         <ul class="list-group list-group-flush">
-                    //             <li class="list-group-item">Release date: ${formatDate(element.releaseDate)}</li>
-                    //         </ul>
-                    //         <div class="card-body">
-                    //             <div class="table-actions">
-                    //             </div>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
-                    //             <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                 btnShow updateMovieModal" data-toggle="modal" data-target="#modal">Update</button>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-danger
-                    //                 btnShow deleteMovie">Delete</button>
-                    //         </div>
-                    //     </div>
-                    // `);
-
-                    // Version 3
                     $("#results").append(`
                         <div class="card">
                             <div class="card-body showMovieModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
@@ -555,8 +498,6 @@ $(document).ready(function() {
                             <p><i>No Movie Details are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -568,9 +509,7 @@ $(document).ready(function() {
             url: URL + `rating/movie/${id}`,
             type: "GET",
             success: function(data) {
-                const elem = $("<div />");
-                elem.append($("<div />", { "class": "", "html": 
-                    `
+                $("#modalInfoContent2").append(`
                     <h3 class="modal-subtitle">Ratings</h3>
                     <div class="modal-box">
                         <p>
@@ -578,8 +517,7 @@ $(document).ready(function() {
                             <span class="tag-info">${calculateRatingAverage(data)}</span>
                         </p>
                     </div>
-                `}))
-                $("#modalInfoContent2").append(elem);
+                `)
             },
             statusCode: {
                 404: function(data) {
@@ -589,8 +527,6 @@ $(document).ready(function() {
                             <p><i>No Ratings are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -651,8 +587,6 @@ $(document).ready(function() {
                             <p><i>No Crews are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -753,8 +687,6 @@ $(document).ready(function() {
                             <p><i>No Languages are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -770,8 +702,7 @@ $(document).ready(function() {
                     <h3 class="modal-subtitle">Reviews</h3>
                 `);
                 data.forEach(element => {
-                    const elem = $("<div />");
-                    elem.append($("<div />", { "class": "", "html": 
+                    $("#modalInfoContent6").append(
                         `
                         <div class="modal-box">
                             <p>
@@ -789,7 +720,7 @@ $(document).ready(function() {
                                 </p>
                             </div>
                         </div>
-                        ` }))
+                    `)
                     let userId = element.userId;
                     $.ajax({
                         url: URL + `user/${userId}`,
@@ -805,7 +736,6 @@ $(document).ready(function() {
                             }
                         }
                     });
-                    $("#modalInfoContent6").append(elem);
                 });                
             },
             statusCode: {
@@ -816,8 +746,6 @@ $(document).ready(function() {
                             <p><i>No Reviews are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -837,22 +765,22 @@ $(document).ready(function() {
     });
 
     // Create User - Open Modal
-    $(document).on("click", "#btnCreateUser", function() {
+    $(document).on("click", "#btnCreateMember", function() {
         clearModalData();
-        $("#modalTitle").html("Create User");   
+        $("#modalTitle").html("Create Member");   
         $("#modalInfoContent1").append(`
             <form id="createUserForm">
                 <div class="form-group form-custom">
-                    <label for="username">User Name</label>
+                    <label for="username">Username</label>
                     <input type="text" id="username" class="form-control" required>
-                    </br>
                     <label for="password">Password</label>
                     <input type="password" id="password" class="form-control" required>
-                    </br>
-                    <button type="submit" id="createUser" class="btn btn-success btn-3" data-dismiss="modal">Create User</button>
+                    <div class="modal-actions">
+                        <button type="submit" id="createUser" class="btn btn-success btn-3" data-dismiss="modal">Create Member</button>
+                    </div>
                 </div>
             </form>
-        `);       
+        `);     
     });
 
     // Create User - Form Processing
@@ -905,57 +833,55 @@ $(document).ready(function() {
             url: URL + `user/${id}`,
             type: "GET",
             success: function(data) {
-                $("#modalTitle").html("Update User");   
+                $("#modalTitle").html("Update Member");   
                 $("#modalInfoContent1").append(`
                     <form id="createUserForm">
                         <div class="form-group form-custom">
                             <label for="userId">User Id</label>
                             <input type="text" id="userId" class="form-control" value="${data.id}" disabled>
-                            </br>
-                            <label for="username">User Name</label>
+                            <label for="username">Username</label>
                             <input type="text" id="username" class="form-control" value="${data.username}" required>
-                            </br>
                             <label for="firstName">First Name</label>
                             <input type="text" id="firstName" class="form-control" value="${data.firstName}">
-                            </br>
                             <label for="lastName">Last Name</label>
                             <input type="text" id="lastName" class="form-control" value="${data.lastName}">
-                            </br>
                             <label for="gender">Gender</label>
                             <input type="text" id="gender" class="form-control" value="${data.gender}">
-                            </br>
                             <label for="birthday">Birthday</label>
                             <input type="date" id="birthday" class="form-control" value="${formatDate(data.birthday)}">
-                            </br>
                             <label for="country">Country</label>
                             <input type="text" id="country" class="form-control" value="${data.country}">
-                            </br>
-                            <button type="submit" id="updateUser" class="btn btn-success btn-3" data-dismiss="modal">Update User</button>
+                            <label for="createdAt">Created At</label>
+                            <input type="text" id="createdAt" class="form-control" value="${formatDate(data.createdAt)}" disabled>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateUser" class="btn btn-success btn-3" data-dismiss="modal">Update Member</button>
+                            </div>
                         </div>
                     </form>
                 `);
-                $("#modalInfoContent2").append(`
-                    </br>
-                    <hr>
-                    </br>
-                    <form id="updatePasswordUserForm">
-                        <div class="form-group form-custom">
-                            <label for="oldPassword">OldPassword</label>
-                            <input type="password" id="oldPassword" class="form-control" required>
-                            </br>
-                            <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" class="form-control" required>
-                            </br>
-                            <button type="submit" id="updateUserPassword" class="btn btn-success btn-3" data-dismiss="modal">Update User Password</button>
-                        </div>
-                    </form>
-                `);    
+                // $("#modalInfoContent2").append(`
+                //     </br>
+                //     <hr>
+                //     </br>
+                //     <form id="updatePasswordUserForm">
+                //         <div class="form-group form-custom">
+                //             <label for="oldPassword">OldPassword</label>
+                //             <input type="password" id="oldPassword" class="form-control" required>
+                //             </br>
+                //             <label for="newPassword">New Password</label>
+                //             <input type="password" id="newPassword" class="form-control" required>
+                //             </br>
+                //             <button type="submit" id="updateUserPassword" class="btn btn-success btn-3" data-dismiss="modal">Update Member Password</button>
+                //         </div>
+                //     </form>
+                // `);    
             },
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
-                        <hr>
-                        <p><i>No User Details are available for this User!</i></p>
+                        <div class="modal-box">
+                            <p><i>No User Details are available for this User!</i></p>
+                        </div>
                     `);
                 }
             }
@@ -1132,20 +1058,14 @@ $(document).ready(function() {
  
                 } else if (user == 'admin') {
                     $("#results").append(`
-                        <div class="card" data-id="${element.id}">
-                            <div class="card-body">
-                                <h5 class="card-title">${element.username}</h5>
-                                <p class="card-title">${element.firstName}</p>
-                                <p class="card-title">${element.lastName}</p>
-                                <p class="card-title">${formatDate(element.birthday)}</p>
+                        <div class="card">
+                            <div class="card-body showUserModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
+                                <h5 class="card-title">${element.firstName} ${element.lastName} - ${element.username}</h5>
                             </div>
-                            <div class="card-body">
-                                <button data-id="${element.id}" type="button" class="btn btn-warning
-                                        btnShow showUserModal" data-toggle="modal" data-target="#modal">Details</button>
-                                <button data-id="${element.id}" type="button" class="btn btn-warning
-                                    btnShow updateUserModal" data-toggle="modal" data-target="#modal">Update</button>
-                                <button data-id="${element.id}" type="button" class="btn btn-danger
-                                    btnShow deleteUser">Delete</button>
+                            <div class="card-actions">
+                                <button data-id="${element.id}" type="button" class="btn btn-success updateUserModal" 
+                                        data-toggle="modal" data-target="#modal">Update</button>
+                                <button data-id="${element.id}" type="button" class="btn btn-danger deleteUser">Delete</button>
                             </div>
                         </div>
                     `);
@@ -1161,56 +1081,51 @@ $(document).ready(function() {
             type: "GET",
             success: function(data) {
                 console.log('data: ', data);
-                $("#modalInfoContent1").append(`
-                    <h3>Overview</h3>
-                `);
-                const elem = $("<div />");
                 $("#modalTitle").html("User Details");           
-                elem.append($("<div />", { "class": "", "html": 
-                    `<p>
-                        <span class="tag">Id</span>
-                        <span class="tag-info">${data.id}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Username</span>
-                        <span class="tag-info">${data.username}</span>
-                    </p>
-                    <p>
-                        <span class="tag">First Name</span>
-                        <span class="tag-info">${data.firstName}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Last Name</span>
-                        <span class="tag-info">${data.lastName}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Gender</span>
-                        <span class="tag-info">${data.gender}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Birthday</span>
-                        <span class="tag-info">${formatDate(data.birthday)}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Country</span>
-                        <span class="tag-info">${data.country}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Created At</span>
-                        <span class="tag-info">${formatDate(data.createdAt)}</span>
-                    </p>
-                    `
-                    }))
-                $("#modalInfoContent1").append(elem);
+                $("#modalInfoContent1").append(`
+                    <div class="modal-box">
+                        <p>
+                            <span class="tag">Id</span>
+                            <span class="tag-info">${data.id}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Username</span>
+                            <span class="tag-info">${data.username}</span>
+                        </p>
+                        <p>
+                            <span class="tag">First Name</span>
+                            <span class="tag-info">${data.firstName}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Last Name</span>
+                            <span class="tag-info">${data.lastName}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Gender</span>
+                            <span class="tag-info">${data.gender}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Birthday</span>
+                            <span class="tag-info">${formatDate(data.birthday)}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Country</span>
+                            <span class="tag-info">${data.country}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Created At</span>
+                            <span class="tag-info">${formatDate(data.createdAt)}</span>
+                        </p>
+                    </div>
+                `)
             },
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
-                        <hr>
-                        <p><i>No User Details are available for this User!</i></p>
+                        <div class="modal-box">
+                            <p><i>No User Details are available for this User!</i></p>
+                        </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
