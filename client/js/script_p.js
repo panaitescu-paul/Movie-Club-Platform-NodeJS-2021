@@ -131,7 +131,7 @@ $(document).ready(function() {
         $("#modalTitle").html("Create Movie");   
         $("#modalInfoContent1").append(`
             <form id="createMovieForm">
-                <div class="form-group">
+                <div class="form-group form-custom">
                     <label for="title">Title</label>
                     <input type="text" id="title" class="form-control" required>
                     <label for="overview">Overview</label>
@@ -145,7 +145,7 @@ $(document).ready(function() {
                     <label for="releaseDate">Release Date</label>
                     <input type="date" id="releaseDate" class="form-control" required>
                     <div class="modal-actions">
-                        <button type="submit" id="createMovie" class="btn btn-success modal-button">Create Movie</button>
+                        <button type="submit" id="createMovie" class="btn btn-success btn-3">Create Movie</button>
                     </div>
                 </div>
             </form>
@@ -451,7 +451,7 @@ $(document).ready(function() {
                 } else if (user == 'admin') {
                     $("#results").append(`
                         <div class="card" data-id="${element.id}">
-                            <img class="card-img-top" src="${element.poster}" alt="Card image cap">
+                                <img class="card-img-top" src="${element.poster}" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">${element.title}</h5>
                             </div>
