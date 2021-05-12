@@ -239,3 +239,41 @@ function scrollPage(position) {
         document.documentElement.scrollTop = position; // For Chrome, Firefox, IE and Opera
     }
 }
+
+// Rating stars functionality
+function ratingStarsSelection() {
+    const ratingStars = [...document.getElementsByClassName("rating__star")];
+    const ratingResult = document.querySelector(".rating__result");
+    const loggedInMemberId = $('#loggedInMember').attr("data-id");
+
+    printRatingResult(ratingResult);
+
+    function executeRating(stars, result) {
+        const starClassActive = "rating__star fas fa-star";
+        const starClassUnactive = "rating__star far fa-star";
+        const starsLength = stars.length;
+        let i;
+        stars.map((star) => {
+            star.onclick = () => {
+                i = stars.indexOf(star);
+                if (loggedInMemberId === undefined) {
+                    alert("You must be logged in to be able to leave a rating!");
+                } else {
+                    if (star.className.indexOf(starClassUnactive) !== -1) {
+                        printRatingResult(result, i + 1);
+                        for (i; i >= 0; --i) stars[i].className = starClassActive;
+                    } else {
+                        printRatingResult(result, i);
+                        for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
+                    }
+                }
+            };
+        });
+    }
+
+    function printRatingResult(result, num = 0) {
+        result.textContent = `${num}/10`;
+    }
+
+    executeRating(ratingStars, ratingResult);
+}

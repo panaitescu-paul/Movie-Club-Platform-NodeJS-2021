@@ -411,3 +411,12 @@ body {
     right: 10px;
     top: 8px;
 }
+
+.rating {
+    width: 280px;
+}
+
+.rating__star {
+    cursor: pointer;
+    color: #dabd18b2;
+}

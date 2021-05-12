@@ -514,10 +514,24 @@ $(document).ready(function() {
                     <div class="modal-box">
                         <p>
                             <span class="tag">Rating Average</span>
-                            <span class="tag-info">${calculateRatingAverage(data)}</span>
+                            <span id="ratingAverage" class="tag-info">${calculateRatingAverage(data)}</span>
                         </p>
+                        <div class="rating">
+                            <span class="rating__result"></span>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                        </div>
                     </div>
                 `)
+                ratingStarsSelection();
             },
             statusCode: {
                 404: function(data) {

@@ -794,6 +794,53 @@ $(document).ready(function() {
             }
         }
     });
+
+    $(document).on("click", ".rating", function() {
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
+        const movieId = $('.showMovieModal').attr("data-id");
+        const ratingResult = $('.rating__result').text().split('/')[0];
+
+        if (ratingResult > 0) {
+            $.ajax({
+                url: `${URLPath}/rating`,
+                type: "POST",
+                data: {
+                    userId: loggedInMemberId,
+                    movieId: movieId,
+                    value: ratingResult
+                },
+                success: function() {
+                    alert("The rating was successfully created!");
+                    $.ajax({
+                        url: `${URLPath}/rating/movie/${movieId}`,
+                        type: "GET",
+                        success: function(data) {
+                            $('#ratingAverage').text(calculateRatingAverage(data));
+                        },
+                        statusCode: {
+                            404: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                },
+                statusCode: {
+                    400: function(data) {
+                        const errorMessage = data.responseJSON.message;
+                        alert(errorMessage);
+                    },
+                    409: function(data) {
+                        const errorMessage = data.responseJSON.message;
+                        alert(errorMessage);
+                    }
+                }
+            });
+        } else if (ratingResult === 0) {
+            // delete rating
+        }
+
+    });
 });
 
 // Show all Crews in a List
@@ -825,8 +872,8 @@ function showCrews(data, user = 'guest') {
                 }
                 $("#results").append(`
                     <div class="card crewDiv">
-                        <div class="card-body">
-                            <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div data-id="${crew.id}" class="card-body crewInfo" data-toggle="modal" data-target="#modal">
+                            <img  class="card-img-top poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
                             <h5 class="card-title">${crew.name}</h5>
                         </div>
                         <ul class="list-group list-group-flush">
@@ -834,7 +881,7 @@ function showCrews(data, user = 'guest') {
                         </ul>
                         <div class="card-actions">
                             <button data-id="${crew.id}" type="button" class="btn btn-warning
-                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
+                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">Details</button>
                         </div>
                     </div>
                 `);
@@ -847,16 +894,14 @@ function showCrews(data, user = 'guest') {
                 }
                 $("#results").append(`
                     <div class="card crewDiv">
-                        <div class="card-body">
-                            <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
+                        <div data-id="${crew.id}" class="card-body crewInfo" data-toggle="modal" data-target="#modal">
+                            <img  class="card-img-top poster" src="${crew.picture}">
                             <h5 class="card-title">${crew.name}</h5>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
                         </ul>
                         <div class="card-actions">
-                            <button data-id="${crew.id}" type="button" class="btn btn-warning
-                                    btnShow crewInfo" data-toggle="modal" data-target="#modal">Details</button>
                             <button data-id="${crew.id}" type="button" class="btn btn-success
                                     btnShow crewUpdate" data-toggle="modal" data-target="#modal">Update</button>
                             <button data-id="${crew.id}" type="button" class="btn btn-danger
@@ -893,15 +938,13 @@ function showAdmins(data) {
     data.forEach(admin => {
         $("#results").append(`
             <div class="card adminDiv">
-                <div class="card-body">
+                <div data-id="${admin.id}" class="card-body adminInfo" data-toggle="modal" data-target="#modal">
                     <h5 class="card-title">${admin.username}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Created at: </b>${formatDateTime(admin.createdAt)}</li>
                 </ul>
                 <div class="card-actions">
-                    <button data-id="${admin.id}" type="button" class="btn btn-warning
-                            btnShow adminInfo" data-toggle="modal" data-target="#modal">Details</button>
                     <button data-id="${admin.id}" type="button" class="btn btn-success
                             btnShow adminUpdate" data-toggle="modal" data-target="#modal">Update</button>
                     <button data-id="${admin.id}" type="button" class="btn btn-danger
