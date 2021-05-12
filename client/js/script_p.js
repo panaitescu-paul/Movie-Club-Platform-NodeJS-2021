@@ -555,8 +555,6 @@ $(document).ready(function() {
                             <p><i>No Movie Details are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -589,8 +587,6 @@ $(document).ready(function() {
                             <p><i>No Ratings are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -651,8 +647,6 @@ $(document).ready(function() {
                             <p><i>No Crews are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -753,8 +747,6 @@ $(document).ready(function() {
                             <p><i>No Languages are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
@@ -816,8 +808,6 @@ $(document).ready(function() {
                             <p><i>No Reviews are available for this Movie!</i></p>
                         </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
