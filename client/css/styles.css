@@ -637,6 +637,10 @@ img.smallButton {
 .card button {
     margin-top: 5px;
     margin-bottom: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 110px;
 }
 
 .video {
@@ -645,8 +649,8 @@ img.smallButton {
 
 .video iframe {
     border: none;
-    width: 400px;
-    height: 300px;
+    width: 600px;
+    height: 500px;
 }
 
 /* Modal */
@@ -671,7 +675,6 @@ img.smallButton {
     margin: 0px;
     padding-top: 15px;
     padding-bottom: 15px;
-    /* font-family: "Times New Roman", Times, serif; */
     font-size: 2rem;
     text-align: center;
     font-weight: 500;
@@ -690,17 +693,14 @@ img.smallButton {
 }
 
 .review-title {
-    /* background-color: red; */
     margin-top: 20px;
     padding-top: 15px;
     padding-bottom: 15px;
-    /* font-family: "Times New Roman", Times, serif; */
     font-size: 1.2rem;
     font-weight: 600;
 }
 
 .review-content {
-    /* background-color: red; */
     padding-top: 15px;
     padding-bottom: 15px;
 }
@@ -720,14 +720,46 @@ img.smallButton {
     margin-bottom: 0px !important;
 }
 
-.form-group label {
+.form-custom label {
     margin-top: 25px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .form-group textarea {
     min-height: 90px;
 }
+
+/* Controls - Buttons */
+
+.btn-1 {
+    width: 100px;
+}
+
+.btn-2 {
+    width: 200px;
+}
+
+.btn-3 {
+    width: 200px;
+    height: 50px;
+    font-weight: 600 !important;
+}
+
+.panel-actions {
+    margin-top: 20px;
+}
+
+.panel-actions button {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+#movieSearch, #crewSearch, #adminSearch, #memberSearch {
+    margin-top: 10px;
+} 
+
+/*  */
 
 .poster {
     cursor: pointer;
@@ -743,9 +775,9 @@ img.smallButton {
     margin-top: 7px;
 }
 
-#btnMemberTab, #btnAdminTab {
+/* #btnMoviesTab, #btnCruesTab, #btnMemberTab, #btnAdminTab {
     width: fit-content;
-}
+} */
 
 #adminLogout, #memberLogout {
     position: absolute;
