@@ -41,18 +41,20 @@ $(document).ready(function() {
             console.log("PAGE index");
         } else if (page === "movies.html") {
             console.log("PAGE movies");
-            importHeaderFragment();
-            importFooterFragment();
-            checkIfAdminLoggedIn();
-            checkMemberLogin();
-            showAllMovies('guest');
+            importHeaderFragment().then( () => {
+                importFooterFragment();
+                checkIfAdminLoggedIn();
+                checkMemberLogin();
+                showAllMovies('guest');
+            });
         } else if (page === "crews.html") {
             console.log("PAGE crews");
-            importHeaderFragment();
-            importFooterFragment();
-            checkIfAdminLoggedIn();
-            checkMemberLogin();
-            showAllCrews('guest');
+            importHeaderFragment().then( () => {
+                importFooterFragment();
+                checkIfAdminLoggedIn();
+                checkMemberLogin();
+                showAllCrews('guest');
+            });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
             checkAdminLogin();
@@ -61,18 +63,20 @@ $(document).ready(function() {
             submenuAdmin();
         } else if (page === "community.html") {
             console.log("PAGE community");
-            importHeaderFragment();
-            importFooterFragment();
-            checkIfAdminLoggedIn();
-            checkMemberLogin();
+            importHeaderFragment().then( () => {
+                importFooterFragment();
+                checkIfAdminLoggedIn();
+                checkMemberLogin();
+            });
             // ShowCommunity();
         } else if (page === "login.html" || page === "login.html?") {
             console.log("PAGE login");
-            importHeaderFragment();
-            importFooterFragment();
-            checkIfMemberLoggedIn();
-            checkIfAdminLoggedIn();
-            loginFormType();
+            importHeaderFragment().then( () => {
+                importFooterFragment();
+                checkIfMemberLoggedIn();
+                checkIfAdminLoggedIn();
+                loginFormType();
+            });
         } else {
             console.log("PAGE is NOT available");
         }
@@ -511,7 +515,7 @@ $(document).ready(function() {
             success: function(data) {
                 $("#modalInfoContent2").append(`
                     <h3 class="modal-subtitle">Ratings</h3>
-                    <div class="modal-box">
+                    <div data-movieid="${id}" class="modal-box">
                         <p>
                             <span class="tag">Rating Average</span>
                             <span id="ratingAverage" class="tag-info">${calculateRatingAverage(data)}</span>
@@ -528,6 +532,7 @@ $(document).ready(function() {
                             <i class="rating__star far fa-star"></i>
                             <i class="rating__star far fa-star"></i>
                             <i class="rating__star far fa-star"></i>
+                            <i class="fas fa-times-circle" id="removeRating"></i>
                         </div>
                     </div>
                 `)
@@ -537,10 +542,25 @@ $(document).ready(function() {
                 404: function(data) {
                     $("#modalInfoContent2").append(`
                         <h3 class="modal-subtitle">Ratings</h3>
-                        <div class="modal-box">
+                        <div data-movieid="${id}" class="modal-box">
                             <p><i>No Ratings are available for this Movie!</i></p>
                         </div>
+                        <div class="rating">
+                            <span class="rating__result"></span>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="rating__star far fa-star"></i>
+                            <i class="fas fa-times-circle" id="removeRating"></i>
+                        </div>
                     `);
+                    ratingStarsSelection();
                 }
             }
         });

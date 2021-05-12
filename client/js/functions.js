@@ -81,7 +81,7 @@ function calculateRatingAverage(data) {
     for (let i = 0; i < data.length; i++) {
         sum += data[i].value;
     }
-    return sum/data.length;
+    return (sum/data.length).toFixed(2);;
 }
 
 function formatDate(date) {
@@ -166,8 +166,8 @@ function checkMemberLogin(){
     });
 }
 
-function importHeaderFragment() {
-    fetch("../src/header.html")
+async function importHeaderFragment() {
+    return await fetch("../src/header.html")
         .then(response => {
             return response.text()
         })
@@ -245,7 +245,8 @@ function ratingStarsSelection() {
     const ratingStars = [...document.getElementsByClassName("rating__star")];
     const ratingResult = document.querySelector(".rating__result");
     const loggedInMemberId = $('#loggedInMember').attr("data-id");
-
+    const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
+    console.log(movieId);
     printRatingResult(ratingResult);
 
     function executeRating(stars, result) {
@@ -256,6 +257,7 @@ function ratingStarsSelection() {
         stars.map((star) => {
             star.onclick = () => {
                 i = stars.indexOf(star);
+
                 if (loggedInMemberId === undefined) {
                     alert("You must be logged in to be able to leave a rating!");
                 } else {
@@ -269,6 +271,28 @@ function ratingStarsSelection() {
                 }
             };
         });
+        $.ajax({
+            url: `${URLPath}/rating/movie/${movieId}/user/${loggedInMemberId}`,
+            type: "GET",
+            success: function(rating) {
+                console.log(rating);
+                for (let i = 0; i < rating.value; i++) {
+                    $(stars[i]).attr('class', starClassActive);
+                }
+                printRatingResult(ratingResult, rating.value);
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                },
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    // alert(errorMessage);
+                }
+            }
+        });
+
     }
 
     function printRatingResult(result, num = 0) {

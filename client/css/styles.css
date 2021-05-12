@@ -423,3 +423,11 @@ body {
     cursor: pointer;
     color: #dabd18b2;
 }
+
+#removeRating {
+    cursor: pointer;
+}
+
+#removeRating:hover {
+    opacity: .4;
+}

@@ -368,9 +368,6 @@ $(document).ready(function() {
                     e.preventDefault();
                     const movieId = $("#moviesDropdown option:selected").val()
                     const roleId = $("#rolesDropdown option:selected").val();
-                    console.log("Movie id: ", movieId);
-                    console.log("Crew id: ", crewId);
-                    console.log("Role id: ", roleId);
 
                     $.ajax({
                         url: `${URLPath}/movie_crew`,
@@ -797,82 +794,155 @@ $(document).ready(function() {
 
     $(document).on("click", ".rating", function() {
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
-        const movieId = $('.showMovieModal').attr("data-id");
+        const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
         const ratingResult = $('.rating__result').text().split('/')[0];
-
-        if (ratingResult > 0) {
-            $.ajax({
-                url: `${URLPath}/rating`,
-                type: "POST",
-                data: {
-                    userId: loggedInMemberId,
-                    movieId: movieId,
-                    value: ratingResult
-                },
-                success: function() {
-                    alert("The rating was successfully created!");
-                    $.ajax({
-                        url: `${URLPath}/rating/movie/${movieId}`,
-                        type: "GET",
-                        success: function(data) {
-                            $('#ratingAverage').text(calculateRatingAverage(data));
-                        },
-                        statusCode: {
-                            404: function(data) {
-                                const errorMessage = data.responseJSON.message;
-                                alert(errorMessage);
-                            }
-                        }
-                    });
-                },
-                statusCode: {
-                    400: function(data) {
-                        const errorMessage = data.responseJSON.message;
-                        alert(errorMessage);
+        console.log(ratingResult)
+        $.ajax({
+            url: `${URLPath}/rating`,
+            type: "POST",
+            data: {
+                userId: loggedInMemberId,
+                movieId: movieId,
+                value: ratingResult
+            },
+            success: function() {
+                $.ajax({
+                    url: `${URLPath}/rating/movie/${movieId}`,
+                    type: "GET",
+                    success: function(data) {
+                        $('#ratingAverage').text(calculateRatingAverage(data));
                     },
-                    409: function(data) {
-                        const errorMessage = data.responseJSON.message;
+                    statusCode: {
+                        404: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                },
+                409: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    // alert(errorMessage);
+
+                    if (errorMessage === 'Rating from this User is already attached to this Movie!') {
+                        $.ajax({
+                            url: `${URLPath}/rating/movie/${movieId}/user/${loggedInMemberId}`,
+                            type: "GET",
+                            success: function(rating) {
+                                // Update the rating
+                                $.ajax({
+                                    url: `${URLPath}/rating/${rating.id}`,
+                                    type: "PUT",
+                                    data: {
+                                        value: ratingResult
+                                    },
+                                    success: function() {
+                                        $.ajax({
+                                            url: `${URLPath}/rating/movie/${movieId}`,
+                                            type: "GET",
+                                            success: function(data) {
+                                                $('#ratingAverage').text(calculateRatingAverage(data));
+                                            },
+                                            statusCode: {
+                                                404: function(data) {
+                                                    const errorMessage = data.responseJSON.message;
+                                                    alert(errorMessage);
+                                                }
+                                            }
+                                        });
+
+                                    },
+                                    statusCode: {
+                                        400: function(data) {
+                                            const errorMessage = data.responseJSON.message;
+                                            alert(errorMessage);
+                                        },
+                                        403: function(data) {
+                                            const errorMessage = data.responseJSON.message;
+                                            alert(errorMessage);
+                                        },
+                                        409: function(data) {
+                                            const errorMessage = data.responseJSON.message;
+                                            alert(errorMessage);
+                                        }
+                                    }
+                                });
+                            },
+                            statusCode: {
+                                400: function(data) {
+                                    const errorMessage = data.responseJSON.message;
+                                    alert(errorMessage);
+                                },
+                                404: function(data) {
+                                    const errorMessage = data.responseJSON.message;
+                                    // alert(errorMessage);
+                                }
+                            }
+                        });
+                    } else {
                         alert(errorMessage);
-                        // if (errorMessage === 'Rating from this User is already attached to this Movie!') {
-                        //     // Update the rating
-                        //     $.ajax({
-                        //         url: `${URLPath}/rating/${ratingId}`,
-                        //         type: "PUT",
-                        //         data: {
-                        //             username: username,
-                        //             oldPassword: oldPassword,
-                        //             newPassword: newPassword
-                        //         },
-                        //         success: function() {
-                        //             alert("The admin password was successfully updated!");
-                        //             $('#modal > div > div > div.modal-header > button').click();
-                        //             $('#adminLogout').click();
-                        //         },
-                        //         statusCode: {
-                        //             400: function(data) {
-                        //                 const errorMessage = data.responseJSON.message;
-                        //                 alert(errorMessage);
-                        //             },
-                        //             403: function(data) {
-                        //                 const errorMessage = data.responseJSON.message;
-                        //                 alert(errorMessage);
-                        //             },
-                        //             409: function(data) {
-                        //                 const errorMessage = data.responseJSON.message;
-                        //                 alert(errorMessage);
-                        //             }
-                        //         }
-                        //     });
-                        // } else {
-                        //     alert(errorMessage);
-                        // }
                     }
                 }
-            });
-        } else if (ratingResult === 0) {
-            // delete rating
-        }
+            }
+        });
+    });
 
+    // Remove rating
+    $(document).on("click", "#removeRating", function() {
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
+        const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
+        if (loggedInMemberId === undefined) {
+            alert("You must be logged in to be able to remove a rating!");
+        } else {
+            if (confirm( "Are you sure that you want to delete your rating?" )) {
+                $.ajax( {
+                    url: `${URLPath}/rating/movie/${movieId}/user/${loggedInMemberId}`,
+                    type: "GET",
+                    success: function (rating) {
+                        $.ajax( {
+                            url: `${URLPath}/rating/${rating.id}`,
+                            type: "DELETE",
+                            success: function () {
+                                $.ajax( {
+                                    url: `${URLPath}/rating/movie/${movieId}`,
+                                    type: "GET",
+                                    success: function (data) {
+                                        $( '#ratingAverage' ).text( calculateRatingAverage( data ) );
+                                    },
+                                    statusCode: {
+                                        404: function (data) {
+                                            const errorMessage = data.responseJSON.message;
+                                            alert( errorMessage );
+                                        }
+                                    }
+                                } );
+                            },
+                            statusCode: {
+                                400: function (data) {
+                                    const errorMessage = data.responseJSON.message;
+                                    alert( errorMessage );
+                                }
+                            }
+                        } );
+                    },
+                    statusCode: {
+                        400: function (data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert( errorMessage );
+                        },
+                        404: function (data) {
+                            const errorMessage = data.responseJSON.message;
+                            // alert(errorMessage);
+                        }
+                    }
+                } );
+            }
+        }
     });
 });
 
