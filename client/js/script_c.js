@@ -13,10 +13,12 @@ $(document).ready(function() {
                 }
                 $("#modalTitle").text(`${crew.name} - Information Details`);
                 $("#modalInfoContent1").append(`
-                    <div>
-                        <div class="card">
-                            <img class="card-img-top" src="${crew.picture}">
-                        </div>
+                    <div class="modal-image">
+                        <img class="card-img-top" src="${crew.picture}">
+                    </div>
+                    <br>
+                    <h3 class="modal-subtitle">Overview</h3>
+                    <div class="modal-box">
                         <p id="name"><span class="tag">Name: </span><span class="tag-info">${crew.name}</span></p>
                         <p id="mainActivity"><span class="tag">Main Activity: </span><span class="tag-info">${crew.mainActivity}</span></p>
                         <p id="dateOfBirth"><span class="tag">Birthday: </span><span class="tag-info">${dateOfBirth}</span></p>
@@ -45,11 +47,13 @@ $(document).ready(function() {
                                             let releaseDate = formatDate(movie.releaseDate);
                                             $("#listOfMovies").append(`
                                                 <div class="card">
-                                                    <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
-                                                    <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
-                                                    <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
-                                                    <p id="role"><b>Role: </b>${role.name}</p>
                                                     <div class="card-body">
+                                                        <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                        <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                        <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                        <p id="role"><b>Role: </b>${role.name}</p>
+                                                    </div>
+                                                    <div class="card-actions">
                                                         <button data-id="${movie.id}" type="button" class="btn btn-warning
                                                                 btnShow showMovieModal">Details</button>
                                                     </div>
@@ -109,32 +113,23 @@ $(document).ready(function() {
         $("#modalTitle").text(`Create Crew`);
         $("#modalInfoContent1").append(`
              <form id="createCrewForm">
-                <div class="form-group">
+                <div class="form-group form-custom">
                     <label for="crewName">Crew Name</label>
                     <input type="text" class="form-control" id="crewName" required>
-                </div>
-                <div class="form-group">
                     <label for="crewMainActivity">Main Activity</label>
                     <input type="text" class="form-control" id="crewMainActivity">
-                </div>
-                <div class="form-group">
                     <label for="crewDateOfBirth">Date of Birth</label>
                     <input type="date" class="form-control" id="crewDateOfBirth">
-                </div>
-                <div class="form-group">
                     <label for="crewBirthPlace">Birth Place</label>
                     <input type="text" class="form-control" id="crewBirthPlace">
-                </div>
-                <div class="form-group">
                     <label for="crewBiography">Biography</label>
                     <textarea class="form-control" id="crewBiography" rows="3"></textarea>
-                </div>
-                <div class="form-group">
                     <label for="crewWebsite">Website</label>
                     <input type="text" class="form-control" id="crewWebsite">
                 </div>
-                
-                <button type="submit" class="btn btn-primary">Add Crew</button>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-success btn-3">Create Crew</button>
+                </div>
              </form>
         `);
         $("#createCrewForm").on("submit", function(e) {
@@ -212,32 +207,23 @@ $(document).ready(function() {
                 $("#modalTitle").text(`Update Crew`);
                 $("#modalInfoContent1").append(`
                     <form id="updateCrewForm">
-                        <div class="form-group">
+                        <div class="form-group form-custom">
                             <label for="crewName">Crew Name</label>
                             <input type="text" class="form-control" id="crewName" value="${crew.name}" required>
-                        </div>
-                        <div class="form-group">
                             <label for="crewMainActivity">Main Activity</label>
                             <input type="text" class="form-control" id="crewMainActivity" value="${crew.mainActivity}">
-                        </div>
-                        <div class="form-group">
                             <label for="crewDateOfBirth">Date of Birth</label>
                             <input type="date" class="form-control" id="crewDateOfBirth" value="${dateOfBirth}">
-                        </div>
-                        <div class="form-group">
                             <label for="crewBirthPlace">Birth Place</label>
                             <input type="text" class="form-control" id="crewBirthPlace" value="${crew.birthPlace}">
-                        </div>
-                        <div class="form-group">
                             <label for="crewBiography">Biography</label>
                             <textarea class="form-control" id="crewBiography" rows="3">${crew.biography}</textarea>
-                        </div>
-                        <div class="form-group">
                             <label for="crewWebsite">Website</label>
                             <input type="text" class="form-control" id="crewWebsite" value="${crew.website}">
                         </div>
-        
-                        <button type="submit" class="btn btn-primary">Update Crew</button>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-success btn-3">Update Crew</button>
+                        </div>
                     </form>
             `);
             },
@@ -431,7 +417,7 @@ $(document).ready(function() {
                 let createdAt = formatDateTime(admin.createdAt);
                 $("#modalTitle").text(`${admin.username} - Information Details`);
                 $("#modalInfoContent1").append(`
-                    <div>
+                    <div class="modal-box">
                         <p id="adminId"><span class="tag">Id: </span><span class="tag-info">${admin.id}</span></p>
                         <p id="username"><span class="tag">Username: </span><span class="tag-info">${admin.username}</span></p>
                         <p id="createdAt"><span class="tag">Created at: </span><span class="tag-info">${createdAt}</span></p>
@@ -473,16 +459,15 @@ $(document).ready(function() {
         $("#modalTitle").text(`Create Admin`);
         $("#modalInfoContent1").append(`
              <form id="createAdminForm">
-                <div class="form-group">
+                <div class="form-group form-custom">
                     <label for="username">Username</label>
                     <input type="text" class="form-control" id="username" required>
-                </div>
-                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password">
                 </div>
-                
-                <button type="submit" class="btn btn-primary">Add Admin</button>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-success btn-3">Create Admin</button>
+                </div>
              </form>
         `);
         $("#createAdminForm").on("submit", function(e) {
@@ -536,19 +521,17 @@ $(document).ready(function() {
                 $("#modalTitle").text(`Update Admin`);
                 $("#modalInfoContent1").append(`
                     <form id="updateAdminForm">
-                        <div class="form-group">
+                        <div class="form-group form-custom">
                             <label for="adminId">Id</label>
                             <input type="text" class="form-control" id="adminId" value="${admin.id}" disabled>
-                        </div>
-                        <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" value="${admin.username}" required>
-                        </div>
-                        <div class="form-group">
                             <label for="createdAt">Created at</label>
                             <input type="text" class="form-control" id="createdAt" value="${formatDateTime(admin.createdAt)}" disabled>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Admin</button>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-success btn-3">Update Admin</button>
+                        </div>
                     </form>
                 `);
                 $("#modalInfoContent2").append(`
@@ -556,15 +539,15 @@ $(document).ready(function() {
                     <hr>
                     </br>
                     <form id="updatePasswordAdminForm">
-                        <div class="form-group">
+                        <div class="form-group form-custom">
                             <label for="oldPassword">Old Password</label>
                             <input type="password" id="oldPassword" class="form-control" required>
-                        </div>
-                        <div class="form-group">
                             <label for="newPassword">New Password</label>
                             <input type="password" id="newPassword" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Admin Password</button>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-success btn-3">Update Password</button>
+                        </div>
                     </form>
                 `);
             },
@@ -714,38 +697,14 @@ function showCrews(data, user = 'guest') {
                 }
                 $("#results").append(`
                     <div class="card crewDiv">
-                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
                         <div class="card-body">
+                            <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
                             <h5 class="card-title">${crew.name}</h5>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
                         </ul>
-                        <div class="card-body">
-                            <button data-id="${crew.id}" type="button" class="btn btn-warning
-                                    btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
-                        </div>
-                    </div>
-                `);
-            });
-            break;
-        case 'member':
-            data.forEach(crew => {
-                if(crew.picture === null || crew.picture === '') {
-                    crew.picture = "../img/notFoundPicture.jpg";
-                }
-                $("#results").append(`
-                    <div class="card crewDiv">
-                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
-                        <div class="card-body">
-                            <h5 class="card-title">${crew.name}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
-                        </ul>
-                        <div class="card-body">
-                            <div class="table-actions">
-                            </div>
+                        <div class="card-actions">
                             <button data-id="${crew.id}" type="button" class="btn btn-warning
                                     btnShow crewInfo detailsBtn" data-toggle="modal" data-target="#modal">See more details</button>
                         </div>
@@ -760,19 +719,17 @@ function showCrews(data, user = 'guest') {
                 }
                 $("#results").append(`
                     <div class="card crewDiv">
-                        <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
                         <div class="card-body">
+                            <img data-id="${crew.id}" class="card-img-top crewInfo poster" src="${crew.picture}" data-toggle="modal" data-target="#modal">
                             <h5 class="card-title">${crew.name}</h5>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>Main Activity: </b>${crew.mainActivity}</li>
                         </ul>
-                        <div class="card-body">
-                            <div class="table-actions">
-                            </div>
+                        <div class="card-actions">
                             <button data-id="${crew.id}" type="button" class="btn btn-warning
                                     btnShow crewInfo" data-toggle="modal" data-target="#modal">Details</button>
-                            <button data-id="${crew.id}" type="button" class="btn btn-primary
+                            <button data-id="${crew.id}" type="button" class="btn btn-success
                                     btnShow crewUpdate" data-toggle="modal" data-target="#modal">Update</button>
                             <button data-id="${crew.id}" type="button" class="btn btn-danger
                                 btnShow crewDelete">Delete</button>
@@ -802,7 +759,7 @@ function showAllAdmins() {
     });
 }
 
-// Show Crews in a List
+// Show Admins in a List
 function showAdmins(data) {
     $("#results").empty();
     data.forEach(admin => {
@@ -814,12 +771,10 @@ function showAdmins(data) {
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Created at: </b>${formatDateTime(admin.createdAt)}</li>
                 </ul>
-                <div class="card-body">
-                    <div class="table-actions">
-                    </div>
+                <div class="card-actions">
                     <button data-id="${admin.id}" type="button" class="btn btn-warning
                             btnShow adminInfo" data-toggle="modal" data-target="#modal">Details</button>
-                    <button data-id="${admin.id}" type="button" class="btn btn-primary
+                    <button data-id="${admin.id}" type="button" class="btn btn-success
                             btnShow adminUpdate" data-toggle="modal" data-target="#modal">Update</button>
                     <button data-id="${admin.id}" type="button" class="btn btn-danger
                             btnShow adminDelete">Delete</button>
