@@ -759,6 +759,12 @@ img.smallButton {
     margin-top: 10px;
 } 
 
+#searchMovie, #searchCrew, #searchAdmin, #searchMember {
+    width: 416px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+}
 /*  */
 
 .poster {
@@ -774,10 +780,6 @@ img.smallButton {
     margin-bottom: 5px;
     margin-top: 7px;
 }
-
-/* #btnMoviesTab, #btnCruesTab, #btnMemberTab, #btnAdminTab {
-    width: fit-content;
-} */
 
 #adminLogout, #memberLogout {
     position: absolute;
