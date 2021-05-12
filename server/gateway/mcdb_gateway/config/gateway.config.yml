@@ -14,7 +14,7 @@ apiEndpoints:
     paths: [ '/user', '/user/*', '/user/login' ]
   rating:
     host: localhost
-    paths: [ '/rating', '/rating/*', '/rating/movie/*' ]
+    paths: [ '/rating', '/rating/*', '/rating/movie/*', '/rating/movie/*/user/*' ]
   review:
     host: localhost
     paths: [ '/review', '/review/*', '/review/movie/*' ]

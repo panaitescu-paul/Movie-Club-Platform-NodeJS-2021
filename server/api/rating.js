@@ -312,6 +312,64 @@ app.get("/rating/movie/:id", (req, res) => {
     });
 });
 
+/**
+ * READ Rating by movieId and userId
+ *
+ * Input:    id of the Movie and id of the User
+ * Output:   an Rating and their information
+ * Errors:   Movie or User with this ID does not exist!
+ */
+app.get("/rating/movie/:movieId/user/:userId", (req, res) => {
+    console.log("req.params.movieId: ", req.params.movieId);
+    console.log("req.params.userId: ", req.params.userId);
+    let sql = `SELECT * FROM rating WHERE movieId = ? AND userId = ?`;
+    let sqlGetUser = `SELECT * FROM user WHERE id = ?`;
+    let sqlGetMovie = `SELECT * FROM movie WHERE id = ?`;
+
+    // Check if there is a Movie with this id
+    connection.query(sqlGetMovie, [req.params.movieId], function(err, movie) {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if(!movie.length) {
+                res.status(404).json({
+                    message: `Movie with this ID (${req.params.movieId}) does not exist!`
+                });
+            } else {
+                // Check if there is a User with this id
+                connection.query(sqlGetUser, [req.params.userId], function (err, user) {
+                    if (err) {
+                        res.status(400).json({
+                            error: err
+                        });
+                        console.log(err);
+                    } else {
+                        if(!user.length) {
+                            res.status(404).json({
+                                message: `User with this ID (${req.params.userId}) does not exist!`
+                            });
+                        } else {
+                            connection.query(sql, [req.params.movieId, req.params.userId], function(err, rating) {
+                                if (err) {
+                                    res.status(400).json({
+                                        error: err.message
+                                    });
+                                    console.log(err);
+                                } else {
+                                    res.status(200).send(rating[0]);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
+});
+
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){

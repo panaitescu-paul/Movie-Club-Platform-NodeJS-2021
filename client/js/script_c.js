@@ -833,6 +833,39 @@ $(document).ready(function() {
                     409: function(data) {
                         const errorMessage = data.responseJSON.message;
                         alert(errorMessage);
+                        // if (errorMessage === 'Rating from this User is already attached to this Movie!') {
+                        //     // Update the rating
+                        //     $.ajax({
+                        //         url: `${URLPath}/rating/${ratingId}`,
+                        //         type: "PUT",
+                        //         data: {
+                        //             username: username,
+                        //             oldPassword: oldPassword,
+                        //             newPassword: newPassword
+                        //         },
+                        //         success: function() {
+                        //             alert("The admin password was successfully updated!");
+                        //             $('#modal > div > div > div.modal-header > button').click();
+                        //             $('#adminLogout').click();
+                        //         },
+                        //         statusCode: {
+                        //             400: function(data) {
+                        //                 const errorMessage = data.responseJSON.message;
+                        //                 alert(errorMessage);
+                        //             },
+                        //             403: function(data) {
+                        //                 const errorMessage = data.responseJSON.message;
+                        //                 alert(errorMessage);
+                        //             },
+                        //             409: function(data) {
+                        //                 const errorMessage = data.responseJSON.message;
+                        //                 alert(errorMessage);
+                        //             }
+                        //         }
+                        //     });
+                        // } else {
+                        //     alert(errorMessage);
+                        // }
                     }
                 }
             });
