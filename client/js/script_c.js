@@ -32,14 +32,11 @@ $(document).ready(function() {
                     url: `${URLPath}/movie_crew/crewId/${crewId}`,
                     type: "GET",
                     success: function(movie_crew_arr) {
-                        console.log(movie_crew_arr);
                         movie_crew_arr.forEach((movie_crew) => {
-                            console.log(movie_crew.movieId + ' - ' + movie_crew.roleId)
                             $.ajax({
                                 url: `${URLPath}/movie/${movie_crew.movieId}`,
                                 type: "GET",
                                 success: function(movie) {
-                                    console.log(movie.id);
                                     $.ajax({
                                         url: `${URLPath}/role/${movie_crew.roleId}`,
                                         type: "GET",
@@ -225,7 +222,104 @@ $(document).ready(function() {
                             <button type="submit" class="btn btn-success btn-3">Update Crew</button>
                         </div>
                     </form>
-            `);
+                `);
+                $("#modalInfoContent2").append(`
+                    </br>
+                    <hr>
+                    </br>
+                    <form id="crewMovieForm">
+                        <div class="form-group form-custom">
+                            <div class="modal-box">
+                                <p id="movies"><span class="tag">List of Movies: </span><div id="listOfMovies"></div></p>
+                            </div>
+                            </br>
+                            <hr>
+                            </br>
+                            <label for="moviesDropdown">Movie</label>
+                            <select name="moviesDropdown" id="moviesDropdown" class="form-control"></select>
+                            <label for="rolesDropdown">Role</label>
+                            <select name="rolesDropdown" id="rolesDropdown" class="form-control"></select>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-success btn-3">Add Movie and Role</button>
+                        </div>
+                    </form>
+                `);
+                // Get the list of movies
+                $.ajax({
+                    url: `${URLPath}/movie_crew/crewId/${crewId}`,
+                    type: "GET",
+                    success: function(movie_crew_arr) {
+                        movie_crew_arr.forEach((movie_crew) => {
+                            $.ajax({
+                                url: `${URLPath}/movie/${movie_crew.movieId}`,
+                                type: "GET",
+                                success: function(movie) {
+                                    $.ajax({
+                                        url: `${URLPath}/role/${movie_crew.roleId}`,
+                                        type: "GET",
+                                        success: function(role) {
+                                            let releaseDate = formatDate(movie.releaseDate);
+                                            $("#listOfMovies").append(`
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                        <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                        <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                        <p id="role"><b>Role: </b>${role.name}</p>
+                                                    </div>
+                                                </div>
+                                            `);
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    },
+                    statusCode: {
+                        404: function() {
+                            $("#listOfMovies").append(`
+                                <p><b>This person was not part in any movie yet!</b></p>
+                            `);
+                        }
+                    }
+                });
+                // Populate the movies dropdown
+                $.ajax({
+                    url: `${URLPath}/movie`,
+                    type: "GET",
+                    success: function(movies) {
+                        movies.forEach((movie) => {
+                            $('#moviesDropdown').append(`
+                                <option value="${movie.id}">${movie.title}</option>
+                            `);
+                        })
+                    },
+                    statusCode: {
+                        404: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
+                // Populate the roles dropdown
+                $.ajax({
+                    url: `${URLPath}/role`,
+                    type: "GET",
+                    success: function(roles) {
+                        roles.forEach((role) => {
+                            $('#rolesDropdown').append(`
+                                <option value="${role.id}">${role.name}</option>
+                            `);
+                        })
+                    },
+                    statusCode: {
+                        404: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
             },
             statusCode: {
                 404: function(data) {
@@ -260,6 +354,43 @@ $(document).ready(function() {
                         },
                         statusCode: {
                             400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            },
+                            409: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                });
+                $("#crewMovieForm").on("submit", function(e) {
+                    e.preventDefault();
+                    const movieId = $("#moviesDropdown option:selected").val()
+                    const roleId = $("#rolesDropdown option:selected").val();
+                    console.log("Movie id: ", movieId);
+                    console.log("Crew id: ", crewId);
+                    console.log("Role id: ", roleId);
+
+                    $.ajax({
+                        url: `${URLPath}/movie_crew`,
+                        type: "POST",
+                        data: {
+                            movieId: movieId,
+                            crewId: crewId,
+                            roleId: roleId
+                        },
+                        success: function() {
+                            alert("The movie and role were successfully linked with this crew member!");
+                            $('#modal > div > div > div.modal-header > button').click();
+
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            },
+                            404: function(data) {
                                 const errorMessage = data.responseJSON.message;
                                 alert(errorMessage);
                             },
@@ -309,7 +440,6 @@ $(document).ready(function() {
                 password: memberPassword
             },
             success: function(data) {
-                console.log(data);
                 $.ajax({
                     url: `http://localhost:4000/login/member`,
                     type: "POST",
@@ -336,7 +466,6 @@ $(document).ready(function() {
                     alert(errorMessage);
                 },
                 403: function(data) {
-                    console.log(data);
                     const errorMessage = data.responseJSON.message;
                     alert(errorMessage);
                 },
@@ -382,7 +511,6 @@ $(document).ready(function() {
                     alert(errorMessage);
                 },
                 403: function(data) {
-                    console.log(data);
                     const errorMessage = data.responseJSON.message;
                     alert(errorMessage);
                 },
@@ -572,6 +700,7 @@ $(document).ready(function() {
                             alert("The admin was successfully updated!");
                             $('#modal > div > div > div.modal-header > button').click();
                             $('#btnAdminsTab').click();
+                            $('#adminLogout').click();
                         },
                         statusCode: {
                             400: function(data) {
@@ -628,7 +757,6 @@ $(document).ready(function() {
     $(document).on("click", ".adminDelete", function() {
         const adminId = $(this).attr("data-id");
         const loggedInAdminId = $('#loggedInAdmin').attr("data-id");
-        console.log(loggedInAdminId)
         if (confirm("Are you sure that you want to delete this admin?")) {
             if (adminId === loggedInAdminId) {
                 if (confirm("Warning! You're about to delete the account that you're logged in with. Do you want to proceed?")) {

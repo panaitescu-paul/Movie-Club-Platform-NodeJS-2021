@@ -151,12 +151,11 @@ function checkMemberLogin(){
         url: `http://localhost:4000/member`,
         type: "GET",
         success: function(response) {
-            console.log(response.member);
             if (response.message === 'Member session available!') {
                 $('#memberLogout').show();
                 $('#loginPageBtn').hide();
                 $("#loginInfo").append(`
-                    <span class="btn btn-success btn-custom1 mb-2 btnNav">Logged in as <b>${response.member.username}</b></span>
+                    <span id="loggedInMember" data-id="${response.member.id}" class="btn btn-success btn-custom1 mb-2 btnNav">Logged in as <b>${response.member.username}</b></span>
                 `);
             } else {
                 $('#memberLogout').hide();
