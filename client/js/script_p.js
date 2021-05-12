@@ -391,50 +391,7 @@ $(document).ready(function() {
             $("section#movieResults").html("There are no Movies matching the entered text.");
         } else {
             movies.forEach(element => {
-                // TODO: Simplify
                 if (user == 'guest') {
-                    // Version 1
-                    // $("#results").append(`
-                    //     <div class="card" data-id="${element.id}">
-                    //         <img class="card-img-top" src="${element.poster}" alt="Card image cap">
-                    //         <div class="card-body">
-                    //             <h5 class="card-title">${element.title}</h5>
-                    //         </div>
-                    //         <ul class="list-group list-group-flush">
-                    //             <li class="list-group-item">Release date: ${formatDate(element.releaseDate)}</li>
-                    //         </ul>
-                    //         <div class="card-body">
-                    //             <div class="table-actions">
-                    //             </div>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
-                    //             <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                    //         </div>
-                    //     </div>
-                    // `);
-                    // Version 2
-                    // $("#results").append(`
-                    //     <div class="card">
-                    //         <div class="card-body showMovieModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
-                    //             <img class="card-img-top" src="${element.poster}" alt="Card image cap">
-                    //             <h5 class="card-title">${element.title}</h5>
-                            
-                    //             <ul class="list-group list-group-flush">
-                    //                 <li class="list-group-item">
-                    //                     <span class="card-tag">Release: </span>
-                    //                     <span class="card-tag-info">${formatDate(element.releaseDate)}</span>
-                    //                 </li>
-                    //             </ul>
-                    //         </div>
-                    //         <div class="card-actions">
-                    //             <button data-link="${element.trailerLink}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieTrailerModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                    //         </div>
-                            
-                    //     </div>
-                    // `);
-
                     // Version 3
                     $("#results").append(`
                         <div class="card">
@@ -445,40 +402,24 @@ $(document).ready(function() {
                             <div class="card-actions">
                                 <button data-link="${element.trailerLink}" type="button" class="btn btn-warning showMovieTrailerModal" 
                                         data-toggle="modal" data-target="#modal">Trailer Link</button>
+                            </div>
+                        </div>
+                    `);
+                } else if (user == 'member') {
+                    // Version 3
+                    $("#results").append(`
+                        <div class="card">
+                            <div class="card-body showMovieModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
+                                <img class="card-img-top" src="${element.poster}" alt="Card image cap">
+                                <h5 class="card-title">${element.title}</h5>
+                            </div>
+                            <div class="card-actions">
                                 <button data-link="${element.trailerLink}" type="button" class="btn btn-warning showMovieTrailerModal" 
                                         data-toggle="modal" data-target="#modal">Trailer Link</button>
                             </div>
                         </div>
                     `);
-                } else if (user == 'member') {
- 
                 } else if (user == 'admin') {
-                    // Version 1
-                    // $("#results").append(`
-                    //     <div class="card" data-id="${element.id}">
-                    //         <img class="card-img-top" src="${element.poster}" alt="Card image cap">
-                    //         <div class="card-body">
-                    //             <h5 class="card-title">${element.title}</h5>
-                    //         </div>
-                    //         <ul class="list-group list-group-flush">
-                    //             <li class="list-group-item">Release date: ${formatDate(element.releaseDate)}</li>
-                    //         </ul>
-                    //         <div class="card-body">
-                    //             <div class="table-actions">
-                    //             </div>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Details</button>
-                    //             <button data-trailer="${element.trailerLink}" type="button" class="btn btn-warning
-                    //                     btnShow showMovieModal" data-toggle="modal" data-target="#modal">Trailer Link</button>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                 btnShow updateMovieModal" data-toggle="modal" data-target="#modal">Update</button>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-danger
-                    //                 btnShow deleteMovie">Delete</button>
-                    //         </div>
-                    //     </div>
-                    // `);
-
-                    // Version 3
                     $("#results").append(`
                         <div class="card">
                             <div class="card-body showMovieModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
