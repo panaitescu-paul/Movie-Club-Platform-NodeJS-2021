@@ -73,50 +73,49 @@
     <!-- End of Header -->
 
     <!-- Start of Page content -->
-    <div class="container" id="page-artists">
-
+    <div class="container">
         <h1 class="main-title">Admins</h1>
         <div class="resultArea">
-            
             <div class="controls">
                 <div class="buttons">
-                    <button type="button" id="btnMoviesTab" class="btn btn-primary mb-2 btnLibrary">Movies</button>
-                    <button type="button" id="btnCrewsTab" class="btn btn-primary mb-2 btnLibrary">Crews</button>
-                    <button type="button" id="btnAdminsTab" class="btn btn-primary mb-2 btnLibrary">Admins</button>
-                    <button type="button" id="btnMembersTab" class="btn btn-primary mb-2 btnLibrary">Members</button>
+                    <button type="button" id="btnMoviesTab" class="btn btn-primary mb-2 btn-1">Movies</button>
+                    <button type="button" id="btnCrewsTab" class="btn btn-primary mb-2 btn-1">Crews</button>
+                    <button type="button" id="btnAdminsTab" class="btn btn-primary mb-2 btn-1">Admins</button>
+                    <button type="button" id="btnMembersTab" class="btn btn-primary mb-2 btn-1">Members</button>
                 </div>
-
                 <div id="movieSearch">
-                    <label for="searchCrew">Movie Name</label>
+                    <label for="searchMovie">Movie Name</label>
                     <input type="text" id="searchMovie" class="form-control" required>
-                    </br>
-                    <button type="button" class="btn btn-success mb-2" id="btnSearcMovie">Search Movie</button>
+                    <div class="panel-actions">
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnSearchMovie">Search Movie</button>
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnCreateMovie" data-toggle="modal" data-target="#modal">Create Movie</button>
+                    </div>
                 </div>
                 <div id="crewSearch">
                     <label for="searchCrew">Crew Name</label>
                     <input type="text" id="searchCrew" class="form-control" required>
-                    </br>
-                    <button type="button" class="btn btn-success mb-2" id="btnSearchCrew">Search Crew</button>
+                    <div class="panel-actions">
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnSearchCrew">Search Crew</button>
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnCreateCrew" data-toggle="modal" data-target="#modal">Create Crew</button>
+                    </div>
                 </div>
                 <div id="adminSearch">
                     <label for="searchAdmin">Admin Username</label>
                     <input type="text" id="searchAdmin" class="form-control" required>
-                    </br>
-                    <button type="button" class="btn btn-success mb-2" id="btnSearchAdmin">Search Admin</button>
+                    <div class="panel-actions">
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnSearchAdmin">Search Admin</button>
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnCreateAdmin" data-toggle="modal" data-target="#modal">Create Admin</button>
+                    </div>
                 </div>
                 <div id="memberSearch">
                     <label for="searchMember">Member Username</label>
                     <input type="text" id="searchMember" class="form-control" required>
-                    </br>
-                    <button type="button" class="btn btn-success mb-2" id="btnSearchMember">Search Member</button>
+                    <div class="panel-actions">
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnSearchMember">Search Member</button>
+                        <button type="button" class="btn btn-success mb-2 btn-2" id="btnCreateMember" data-toggle="modal" data-target="#modal">Create Member</button>
+                    </div>
                 </div>
-
-                <button type="button" class="btn btn-success mb-2" id="btnCreateMovie" data-toggle="modal" data-target="#modal">Create Movie</button>
-                <button type="button" class="btn btn-success mb-2" id="btnCreateCrew" data-toggle="modal" data-target="#modal">Create Crew</button>
-                <button type="button" class="btn btn-success mb-2" id="btnCreateAdmin" data-toggle="modal" data-target="#modal">Create Admin</button>
-                <button type="button" class="btn btn-success mb-2" id="btnCreateMember" data-toggle="modal" data-target="#modal">Create Member</button>
             </div>
-            
             <section id="results">
             </section>
         </div>
