@@ -810,7 +810,17 @@ $(document).ready(function() {
                     url: `${URLPath}/rating/movie/${movieId}`,
                     type: "GET",
                     success: function(data) {
-                        $('#ratingAverage').text(calculateRatingAverage(data));
+                        if ($("#modalInfoContent2 > div.modal-box > p > i").text() === "No Ratings are available for this Movie!") {
+                            $("#modalInfoContent2 > div.modal-box").empty();
+                            $("#modalInfoContent2 > div.modal-box").append(`
+                            <p>
+                                <span class="tag">Rating Average</span>
+                                <span id="ratingAverage" class="tag-info">${calculateRatingAverage( data )}</span>
+                            </p>
+                            `);
+
+                        }
+                        ratingStarsSelection()
                     },
                     statusCode: {
                         404: function(data) {
@@ -847,6 +857,7 @@ $(document).ready(function() {
                                             type: "GET",
                                             success: function(data) {
                                                 $('#ratingAverage').text(calculateRatingAverage(data));
+                                                ratingStarsSelection()
                                             },
                                             statusCode: {
                                                 404: function(data) {
@@ -908,19 +919,7 @@ $(document).ready(function() {
                             url: `${URLPath}/rating/${rating.id}`,
                             type: "DELETE",
                             success: function () {
-                                $.ajax( {
-                                    url: `${URLPath}/rating/movie/${movieId}`,
-                                    type: "GET",
-                                    success: function (data) {
-                                        $( '#ratingAverage' ).text( calculateRatingAverage( data ) );
-                                    },
-                                    statusCode: {
-                                        404: function (data) {
-                                            const errorMessage = data.responseJSON.message;
-                                            alert( errorMessage );
-                                        }
-                                    }
-                                } );
+                                $('#modal > div > div > div.modal-header > button').click();
                             },
                             statusCode: {
                                 400: function (data) {

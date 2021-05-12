@@ -249,9 +249,6 @@ function ratingStarsSelection() {
     console.log(movieId);
     printRatingResult(ratingResult);
 
-
-
-
     function executeRating(stars, result) {
         const starClassActive = "rating__star fas fa-star";
         const starClassUnactive = "rating__star far fa-star";
@@ -266,6 +263,7 @@ function ratingStarsSelection() {
                 if (star.className.indexOf(starClassUnactive) !== -1) {
                     for (i; i >= 0; --i) stars[i].className = starClassActive;
                 } else {
+                    i = i + 1;
                     for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
                 }
             };
@@ -283,6 +281,7 @@ function ratingStarsSelection() {
                         printRatingResult(result, i + 1);
                         for (i; i >= 0; --i) stars[i].className = starClassActive;
                     } else {
+                        i = i + 1;
                         printRatingResult(result, i);
                         for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
                     }
