@@ -491,14 +491,13 @@ $(document).ready(function() {
             type: "GET",
             success: function(data) {
                 console.log('data: ', data);
-                const elem = $("<div />");
                 $("#modalTitle").html("Movie Details");  
-                elem.append($("<div />", { "class": "", "html": 
-                    `<div class="card">
+                $("#modalInfoContent1").append(`
+                    <div class="modal-image">
                         <img class="card-img-top" src="${data.poster}"> 
                     </div>
-                    </br>
-                    <h3>Overview</h3>
+                    <h3 class="modal-subtitle">Overview</h3>
+                    <div class="modal-box">
                         <p>
                             <span class="tag">Id</span>
                             <span class="tag-info">${data.id}</span>
@@ -520,26 +519,27 @@ $(document).ready(function() {
                             <span class="tag-info">${data.trailerLink}</span>
                         </p>
                         <p>
-                        <span class="tag">Poster</span>
-                        <span class="tag-info">${data.poster}</span>
-                    </p>
-                    <p>
                             <span class="tag">RelseaseDate</span>
-                        <span class="tag-info">${data.relseaseDate}</span>
+                            <span class="tag-info">${formatDate(data.releaseDate)}</span>
                         </p>
                         <p>
                             <span class="tag">Created At</span>
-                        <span class="tag-info">${data.createdAt}</span>
+                            <span class="tag-info">${formatDate(data.createdAt)}</span>
                         </p>
-                    `
-                    }))
-                $("#modalInfoContent1").append(elem);
+                    </div>
+                `);
+                // <p>
+                //     <span class="tag">Poster</span>
+                //     <span class="tag-info">${data.poster}</span>
+                // </p>
             },
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
-                        <hr>
+                        <h3 class="modal-subtitle">Overview</h3>
+                        <div class="modal-box">
                             <p><i>No Movie Details are available for this Movie!</i></p>
+                        </div>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
