@@ -269,6 +269,9 @@ function ratingStarsSelection() {
                     for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
                 }
             };
+            star.onmouseout = () => {
+                showRatingStars(stars);
+            }
 
             star.onclick = () => {
                 i = stars.indexOf(star);
@@ -286,14 +289,27 @@ function ratingStarsSelection() {
                 }
             };
         });
+
+        showRatingStars(stars);
+    }
+
+    function printRatingResult(result, num = 0) {
+        result.textContent = `${num}/10`;
+    }
+
+    function showRatingStars (stars) {
         $.ajax({
             url: `${URLPath}/rating/movie/${movieId}/user/${loggedInMemberId}`,
             type: "GET",
             success: function(rating) {
-                console.log(rating);
                 for (let i = 0; i < rating.value; i++) {
-                    $(stars[i]).attr('class', starClassActive);
+                    $(stars[i]).attr('class', 'rating__star fas fa-star');
                 }
+
+                for (let i = 10; i >= rating.value; --i){
+                    $(stars[i]).attr('class', 'rating__star far fa-star');
+                }
+
                 printRatingResult(ratingResult, rating.value);
             },
             statusCode: {
@@ -307,12 +323,8 @@ function ratingStarsSelection() {
                 }
             }
         });
-
-    }
-
-    function printRatingResult(result, num = 0) {
-        result.textContent = `${num}/10`;
     }
 
     executeRating(ratingStars, ratingResult);
 }
+
