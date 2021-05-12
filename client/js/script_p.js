@@ -702,8 +702,7 @@ $(document).ready(function() {
                     <h3 class="modal-subtitle">Reviews</h3>
                 `);
                 data.forEach(element => {
-                    const elem = $("<div />");
-                    elem.append($("<div />", { "class": "", "html": 
+                    $("#modalInfoContent6").append(
                         `
                         <div class="modal-box">
                             <p>
@@ -721,7 +720,7 @@ $(document).ready(function() {
                                 </p>
                             </div>
                         </div>
-                        ` }))
+                    `)
                     let userId = element.userId;
                     $.ajax({
                         url: URL + `user/${userId}`,
@@ -737,7 +736,6 @@ $(document).ready(function() {
                             }
                         }
                     });
-                    $("#modalInfoContent6").append(elem);
                 });                
             },
             statusCode: {
