@@ -145,7 +145,7 @@ $(document).ready(function() {
                     <label for="releaseDate">Release Date</label>
                     <input type="date" id="releaseDate" class="form-control" required>
                     <div class="modal-actions">
-                        <button type="submit" id="createMovie" class="btn btn-success btn-3">Create Movie</button>
+                        <button type="submit" id="createMovie" class="btn btn-success btn-3" data-dismiss="modal">Create Movie</button>
                     </div>
                 </div>
             </form>
@@ -244,7 +244,6 @@ $(document).ready(function() {
                             <input type="date" id="releaseDate" class="form-control" value="${formatDate(data.releaseDate)}">
                             <label for="poster">Poster</label>
                             <textarea id="poster" class="form-control" rows="3">${data.poster}</textarea>
-
                             <div class="modal-actions">
                                 <button type="submit" id="updateMovie" class="btn btn-success btn-3" data-dismiss="modal">Update Movie</button>
                             </div>
@@ -255,8 +254,9 @@ $(document).ready(function() {
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
-                        <hr>
-                        <p><i>No Movie Details are available for this Movie!</i></p>
+                        <div class="modal-box">
+                            <p><i>No Movie Details are available for this Movie!</i></p>
+                        </div>
                     `);
                 }
             }
@@ -852,7 +852,7 @@ $(document).ready(function() {
                     <button type="submit" id="createUser" class="btn btn-success btn-3" data-dismiss="modal">Create User</button>
                 </div>
             </form>
-        `);       
+        `);     
     });
 
     // Create User - Form Processing
@@ -931,7 +931,7 @@ $(document).ready(function() {
                             <input type="text" id="country" class="form-control" value="${data.country}">
                             </br>
                             <button type="submit" id="updateUser" class="btn btn-success btn-3" data-dismiss="modal">Update User</button>
-                        </div>
+                            </div>
                     </form>
                 `);
                 $("#modalInfoContent2").append(`
@@ -949,13 +949,13 @@ $(document).ready(function() {
                             <button type="submit" id="updateUserPassword" class="btn btn-success btn-3" data-dismiss="modal">Update User Password</button>
                         </div>
                     </form>
-                `);    
+                `);
             },
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
                         <hr>
-                        <p><i>No User Details are available for this User!</i></p>
+                            <p><i>No User Details are available for this User!</i></p>
                     `);
                 }
             }
@@ -1168,37 +1168,37 @@ $(document).ready(function() {
                 $("#modalTitle").html("User Details");           
                 elem.append($("<div />", { "class": "", "html": 
                     `<p>
-                        <span class="tag">Id</span>
-                        <span class="tag-info">${data.id}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Username</span>
-                        <span class="tag-info">${data.username}</span>
-                    </p>
-                    <p>
-                        <span class="tag">First Name</span>
-                        <span class="tag-info">${data.firstName}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Last Name</span>
-                        <span class="tag-info">${data.lastName}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Gender</span>
-                        <span class="tag-info">${data.gender}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Birthday</span>
-                        <span class="tag-info">${formatDate(data.birthday)}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Country</span>
-                        <span class="tag-info">${data.country}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Created At</span>
-                        <span class="tag-info">${formatDate(data.createdAt)}</span>
-                    </p>
+                            <span class="tag">Id</span>
+                            <span class="tag-info">${data.id}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Username</span>
+                            <span class="tag-info">${data.username}</span>
+                        </p>
+                        <p>
+                            <span class="tag">First Name</span>
+                            <span class="tag-info">${data.firstName}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Last Name</span>
+                            <span class="tag-info">${data.lastName}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Gender</span>
+                            <span class="tag-info">${data.gender}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Birthday</span>
+                            <span class="tag-info">${formatDate(data.birthday)}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Country</span>
+                            <span class="tag-info">${data.country}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Created At</span>
+                            <span class="tag-info">${formatDate(data.createdAt)}</span>
+                        </p>
                     `
                     }))
                 $("#modalInfoContent1").append(elem);
@@ -1207,7 +1207,7 @@ $(document).ready(function() {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
                         <hr>
-                        <p><i>No User Details are available for this User!</i></p>
+                            <p><i>No User Details are available for this User!</i></p>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
