@@ -509,9 +509,7 @@ $(document).ready(function() {
             url: URL + `rating/movie/${id}`,
             type: "GET",
             success: function(data) {
-                const elem = $("<div />");
-                elem.append($("<div />", { "class": "", "html": 
-                    `
+                $("#modalInfoContent2").append(`
                     <h3 class="modal-subtitle">Ratings</h3>
                     <div class="modal-box">
                         <p>
@@ -519,8 +517,7 @@ $(document).ready(function() {
                             <span class="tag-info">${calculateRatingAverage(data)}</span>
                         </p>
                     </div>
-                `}))
-                $("#modalInfoContent2").append(elem);
+                `)
             },
             statusCode: {
                 404: function(data) {
