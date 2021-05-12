@@ -608,9 +608,18 @@ img.smallButton {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
+
+.video {
+    text-align: center;
 }
+
+.video iframe {
+    border: none;
+    width: 400px;
+    height: 300px;
+}
+
+/*  */
 
 .poster {
     cursor: pointer;
