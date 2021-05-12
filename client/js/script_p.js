@@ -119,10 +119,10 @@ $(document).ready(function() {
         clearModalData();
         showMovieDetails(id);
         showMovieRatingAverage(id);
-        showMovieReviews(id);
         showMovieCrews(id);
         showMovieGenres(id);
         showMovieLanguages(id); 
+        showMovieReviews(id);
     });
 
     // Create Movie - Open Modal
@@ -492,45 +492,45 @@ $(document).ready(function() {
             success: function(data) {
                 console.log('data: ', data);
                 const elem = $("<div />");
-                $("#modalTitle").html("Movie Details");           
+                $("#modalTitle").html("Movie Details");  
                 elem.append($("<div />", { "class": "", "html": 
                     `<div class="card">
-                        <img class="card-img-top" src="${data.poster}">
-                    </div>  
+                        <img class="card-img-top" src="${data.poster}"> 
+                    </div>
                     </br>
                     <h3>Overview</h3>
-                    <p>
-                        <span class="tag">Id</span>
-                        <span class="tag-info">${data.id}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Title</span>
-                        <span class="tag-info">${data.title}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Overview</span>
-                        <span class="tag-info">${data.overview}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Runtime</span>
-                        <span class="tag-info">${data.runtime}</span>
-                    </p>
-                    <p>
-                        <span class="tag">TrailerLink</span>
-                        <span class="tag-info">${data.trailerLink}</span>
-                    </p>
-                    <p>
+                        <p>
+                            <span class="tag">Id</span>
+                            <span class="tag-info">${data.id}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Title</span>
+                            <span class="tag-info">${data.title}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Overview</span>
+                            <span class="tag-info">${data.overview}</span>
+                        </p>
+                        <p>
+                            <span class="tag">Runtime</span>
+                            <span class="tag-info">${data.runtime}</span>
+                        </p>
+                        <p>
+                            <span class="tag">TrailerLink</span>
+                            <span class="tag-info">${data.trailerLink}</span>
+                        </p>
+                        <p>
                         <span class="tag">Poster</span>
                         <span class="tag-info">${data.poster}</span>
                     </p>
                     <p>
-                        <span class="tag">RelseaseDate</span>
+                            <span class="tag">RelseaseDate</span>
                         <span class="tag-info">${data.relseaseDate}</span>
-                    </p>
-                    <p>
-                        <span class="tag">Created At</span>
+                        </p>
+                        <p>
+                            <span class="tag">Created At</span>
                         <span class="tag-info">${data.createdAt}</span>
-                    </p>
+                        </p>
                     `
                     }))
                 $("#modalInfoContent1").append(elem);
@@ -539,7 +539,7 @@ $(document).ready(function() {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
                         <hr>
-                        <p><i>No Movie Details are available for this Movie!</i></p>
+                            <p><i>No Movie Details are available for this Movie!</i></p>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
@@ -558,10 +558,10 @@ $(document).ready(function() {
                 elem.append($("<div />", { "class": "", "html": 
                     `<hr>
                     <h3>Ratings</h3>
-                    <p>
-                        <span class="tag">Rating Average</span>
-                        <span class="tag-info">${calculateRatingAverage(data)}</span>
-                    </p>
+                        <p>
+                            <span class="tag">Rating Average</span>
+                            <span class="tag-info">${calculateRatingAverage(data)}</span>
+                        </p>
                 `}))
                 $("#modalInfoContent2").append(elem);
             },
@@ -569,7 +569,7 @@ $(document).ready(function() {
                 404: function(data) {
                     $("#modalInfoContent2").append(`
                         <hr>
-                        <p><i>No Ratings are available for this Movie!</i></p>
+                            <p><i>No Ratings are available for this Movie!</i></p>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
@@ -659,10 +659,10 @@ $(document).ready(function() {
                                 type: "GET",
                                 success: function(role) {
                                     $("#modalInfoContent4").append(`
-                                        <p>
-                                            <span class="tag">${role.name}</span>
-                                            <span class="tag-info">${crew.name}</span>
-                                        </p>
+                                            <p>
+                                                <span class="tag">${role.name}</span>
+                                                <span class="tag-info">${crew.name}</span>
+                                            </p>
                                     `);
                                 },
                                 statusCode: {
@@ -686,7 +686,7 @@ $(document).ready(function() {
                 404: function(data) {
                     $("#modalInfoContent4").append(`
                         <hr>
-                        <p><i>No Crews are available for this Movie!</i></p>
+                            <p><i>No Crews are available for this Movie!</i></p>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
@@ -705,9 +705,9 @@ $(document).ready(function() {
                 $("#modalInfoContent5").append(`
                     <hr>
                     <h3>Genres</h3>
-                    <p class="movie-genres">
-                        <span class="tag">Genres: </span>
-                    </p>
+                        <p class="movie-genres">
+                            <span class="tag">Genres: </span>
+                        </p>
                 `);
 
                 movie_genre_array.forEach(movie_genre => {
@@ -734,7 +734,7 @@ $(document).ready(function() {
                 404: function(data) {
                     $("#modalInfoContent5").append(`
                         <hr>
-                        <p><i>No Genres are available for this Movie!</i></p>
+                            <p><i>No Genres are available for this Movie!</i></p>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // // alert(errorMsg);
@@ -753,9 +753,9 @@ $(document).ready(function() {
                 $("#modalInfoContent6").append(`
                     <hr>
                     <h3>Languages</h3>
-                    <p class="movie-languages">
-                        <span class="tag">Languages: </span>
-                    </p>
+                        <p class="movie-languages">
+                            <span class="tag">Languages: </span>
+                        </p>
                 `);
 
                 movie_language_array.forEach(movie_language => {
