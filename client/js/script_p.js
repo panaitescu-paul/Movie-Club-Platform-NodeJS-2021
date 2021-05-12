@@ -224,7 +224,7 @@ $(document).ready(function() {
                 $("#modalTitle").html("Update Movie");   
                 $("#modalInfoContent1").append(`
                     <form id="createMovieForm">
-                        <div class="form-group">
+                        <div class="form-group form-custom">
                             <div class="modal-image">
                                 <img class="card-img-top" src="${data.poster}"> 
                             </div>
@@ -246,7 +246,7 @@ $(document).ready(function() {
                             <textarea id="poster" class="form-control" rows="3">${data.poster}</textarea>
 
                             <div class="modal-actions">
-                                <button type="submit" id="updateMovie" class="btn btn-success" data-dismiss="modal">Update Movie</button>
+                                <button type="submit" id="updateMovie" class="btn btn-success btn-3" data-dismiss="modal">Update Movie</button>
                             </div>
                         </div>
                     </form>
