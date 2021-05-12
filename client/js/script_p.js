@@ -908,7 +908,7 @@ $(document).ready(function() {
                 $("#modalTitle").html("Update User");   
                 $("#modalInfoContent1").append(`
                     <form id="createUserForm">
-                        <div class="form-group">
+                        <div class="form-group form-custom">
                             <label for="userId">User Id</label>
                             <input type="text" id="userId" class="form-control" value="${data.id}" disabled>
                             </br>
@@ -930,7 +930,7 @@ $(document).ready(function() {
                             <label for="country">Country</label>
                             <input type="text" id="country" class="form-control" value="${data.country}">
                             </br>
-                            <button type="submit" id="updateUser" class="btn btn-success" data-dismiss="modal">Update User</button>
+                            <button type="submit" id="updateUser" class="btn btn-success btn-3" data-dismiss="modal">Update User</button>
                         </div>
                     </form>
                 `);
@@ -939,14 +939,14 @@ $(document).ready(function() {
                     <hr>
                     </br>
                     <form id="updatePasswordUserForm">
-                        <div class="form-group">
+                        <div class="form-group form-custom">
                             <label for="oldPassword">OldPassword</label>
                             <input type="password" id="oldPassword" class="form-control" required>
                             </br>
                             <label for="newPassword">New Password</label>
                             <input type="password" id="newPassword" class="form-control" required>
                             </br>
-                            <button type="submit" id="updateUserPassword" class="btn btn-success" data-dismiss="modal">Update User Password</button>
+                            <button type="submit" id="updateUserPassword" class="btn btn-success btn-3" data-dismiss="modal">Update User Password</button>
                         </div>
                     </form>
                 `);    
