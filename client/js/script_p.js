@@ -1160,13 +1160,10 @@ $(document).ready(function() {
             type: "GET",
             success: function(data) {
                 console.log('data: ', data);
-                $("#modalInfoContent1").append(`
-                    <h3>Overview</h3>
-                `);
-                const elem = $("<div />");
                 $("#modalTitle").html("User Details");           
-                elem.append($("<div />", { "class": "", "html": 
-                    `<p>
+                $("#modalInfoContent1").append(`
+                    <div class="modal-box">
+                        <p>
                             <span class="tag">Id</span>
                             <span class="tag-info">${data.id}</span>
                         </p>
@@ -1198,18 +1195,16 @@ $(document).ready(function() {
                             <span class="tag">Created At</span>
                             <span class="tag-info">${formatDate(data.createdAt)}</span>
                         </p>
-                    `
-                    }))
-                $("#modalInfoContent1").append(elem);
+                    </div>
+                `)
             },
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent1").append(`
-                        <hr>
+                        <div class="modal-box">
                             <p><i>No User Details are available for this User!</i></p>
+                        </div>
                     `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
                 }
             }
         });
