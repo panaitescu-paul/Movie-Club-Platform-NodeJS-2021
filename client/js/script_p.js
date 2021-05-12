@@ -842,14 +842,14 @@ $(document).ready(function() {
         $("#modalTitle").html("Create User");   
         $("#modalInfoContent1").append(`
             <form id="createUserForm">
-                <div class="form-group">
+                <div class="form-group form-custom">
                     <label for="username">User Name</label>
                     <input type="text" id="username" class="form-control" required>
                     </br>
                     <label for="password">Password</label>
                     <input type="password" id="password" class="form-control" required>
                     </br>
-                    <button type="submit" id="createUser" class="btn btn-success" data-dismiss="modal">Create User</button>
+                    <button type="submit" id="createUser" class="btn btn-success btn-3" data-dismiss="modal">Create User</button>
                 </div>
             </form>
         `);       
