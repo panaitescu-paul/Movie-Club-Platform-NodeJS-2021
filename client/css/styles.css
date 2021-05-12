@@ -763,8 +763,27 @@ img.smallButton {
     width: 416px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-
 }
+
+/* Login Page */
+.loginForm {
+    text-align: center;
+}
+
+.loginForm input {
+    width: 406px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.loginForm label {
+    margin-top: 10px;
+}
+
+.loginForm button {
+    margin-top: 20px;
+}
+
 /*  */
 
 .poster {
