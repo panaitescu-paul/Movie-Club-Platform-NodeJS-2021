@@ -244,6 +244,8 @@ $(document).ready(function() {
                             <input type="date" id="releaseDate" class="form-control" value="${formatDate(data.releaseDate)}">
                             <label for="poster">Poster</label>
                             <textarea id="poster" class="form-control" rows="3">${data.poster}</textarea>
+                            <label for="createdAt">Created At</label>
+                            <input type="text" id="createdAt" class="form-control" value="${formatDate(data.createdAt)}" disabled>
                             <div class="modal-actions">
                                 <button type="submit" id="updateMovie" class="btn btn-success btn-3" data-dismiss="modal">Update Movie</button>
                             </div>
