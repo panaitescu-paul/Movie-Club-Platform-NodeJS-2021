@@ -24,6 +24,7 @@
 /* ------------------------------------------------------------ */
 /*                         Color Palette                        */
 /* ------------------------------------------------------------ */
+
 /* .btn-custom1 {
     background-color: #28a745 !important;
 }
@@ -43,17 +44,36 @@ button, a {
 } */
 /* ------------------------------------------------------------ */
 
+/* :root {
+    --woocommerce: #a46497;
+    --wc-green: #7ad03a;
+    --wc-red: #a00;
+    --wc-orange: #ffba00;
+    --wc-blue: #2ea2cc;
+    --wc-primary: #a46497;
+    --wc-primary-text: #fff;
+    --wc-secondary: #ebe9eb;
+    --wc-secondary-text: #515151;
+    --wc-highlight: #77a464;
+    --wc-highligh-text: #fff;
+    --wc-content-bg: #fff;
+    --wc-subtext: #767676;
+} */
+
+/* ------------------------------------------------------------ */
+
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
     /* max-width: 650px !important; */
-    max-width: 900px !important;
+    max-width: 965px !important;
     margin-top: 30px;
     margin-bottom: 100px;
     border: 1px solid #b3bfca;
     border-radius: 5px;
+    text-align: center;
 }
 .main-title {
     font-family: "Times New Roman", Times, serif;
@@ -523,21 +543,71 @@ img.smallButton {
 }
 
 /* ------------------------------------------------------------ */
+/*                          New CSS                             */
+/* ------------------------------------------------------------ */
 
-/* NEW CSS */
 /* Card */
 
 .card {
     display: inline-flex !important;
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 200px
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 210px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 5px;
 }
-.card-img-top {
-    /* width: 150px; */
+
+.card:hover {
+    cursor: pointer;
+    border: 1px solid #107df5;
+    background-color: rgba(16, 125, 245, 0.1);
 }
 
 .card-body {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    padding: 0px !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card h5 {
+    margin: 0px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.card li {
+    border-top: 0px;
+    padding: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: transparent;
+}
+
+.card .card-tag {
+    font-weight: 600;
+}
+.card .card-tag-info {
+
+}
+
+.card .card-actions {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
