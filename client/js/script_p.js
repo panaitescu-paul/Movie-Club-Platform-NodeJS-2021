@@ -651,12 +651,13 @@ $(document).ready(function() {
             url: URL + `movie_genre/movieId/${id}`,
             type: "GET",
             success: function(movie_genre_array) {
-                $("#modalInfoContent5").append(`
-                    <hr>
-                    <h3>Genres</h3>
+                $("#modalInfoContent4").append(`
+                    <h3 class="modal-subtitle">Genres</h3>
+                    <div class="modal-box">
                         <p class="movie-genres">
                             <span class="tag">Genres: </span>
                         </p>
+                    </div>
                 `);
 
                 movie_genre_array.forEach(movie_genre => {
@@ -681,9 +682,11 @@ $(document).ready(function() {
             },
             statusCode: {
                 404: function(data) {
-                    $("#modalInfoContent5").append(`
-                        <hr>
+                    $("#modalInfoContent4").append(`
+                        <h3 class="modal-subtitle">Genres</h3>
+                        <div class="modal-box">
                             <p><i>No Genres are available for this Movie!</i></p>
+                        </div>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // // alert(errorMsg);
@@ -729,7 +732,7 @@ $(document).ready(function() {
             },
             statusCode: {
                 404: function(data) {
-                    $("#modalInfoContent6").append(`
+                $("#modalInfoContent6").append(`
                         <hr>
                         <p><i>No Languages are available for this Movie!</i></p>
                     `);
