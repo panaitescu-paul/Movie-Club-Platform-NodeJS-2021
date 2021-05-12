@@ -225,33 +225,30 @@ $(document).ready(function() {
                 $("#modalInfoContent1").append(`
                     <form id="createMovieForm">
                         <div class="form-group">
-                            <div class="card">
+                            <div class="modal-image">
                                 <img class="card-img-top" src="${data.poster}"> 
                             </div>
                             </br>
+                            <h3 class="modal-subtitle">Overview</h3>
                             <label for="movieId">Movie Id</label>
                             <input type="text" id="movieId" class="form-control" value="${data.id}" disabled>
-                            </br>
                             <label for="title">Title</label>
                             <input type="text" id="title" class="form-control" value="${data.title}" required>
-                            </br>
                             <label for="overview">Overview</label>
-                            <input type="text" id="overview" class="form-control" value="${data.overview}">
-                            </br>
+                            <textarea id="overview" class="form-control" rows="3">${data.overview}</textarea>
                             <label for="runtime">Runtime</label>
                             <input type="text" id="runtime" class="form-control" value="${data.runtime}">
-                            </br>
                             <label for="trailerLink">Trailer Link</label>
                             <input type="text" id="trailerLink" class="form-control" value="${data.trailerLink}">
-                            </br>
                             <label for="releaseDate">Release Date</label>
-                            <input type="text" id="releaseDate" class="form-control" value="${formatDate(data.releaseDate)}">
-                            </br>
+                            <input type="date" id="releaseDate" class="form-control" value="${formatDate(data.releaseDate)}">
                             <label for="poster">Poster</label>
-                            <input type="text" id="poster" class="form-control" value="${data.poster}">
-                            </br>
+                            <textarea id="poster" class="form-control" rows="3">${data.poster}</textarea>
+
+                            <div class="modal-actions">
                                 <button type="submit" id="updateMovie" class="btn btn-success" data-dismiss="modal">Update Movie</button>
                             </div>
+                        </div>
                     </form>
                 `);
             },
@@ -492,6 +489,7 @@ $(document).ready(function() {
                     <div class="modal-image">
                         <img class="card-img-top" src="${data.poster}"> 
                     </div>
+                    </br>
                     <h3 class="modal-subtitle">Overview</h3>
                     <div class="modal-box">
                         <p>
@@ -907,7 +905,7 @@ $(document).ready(function() {
                             <input type="text" id="gender" class="form-control" value="${data.gender}">
                             </br>
                             <label for="birthday">Birthday</label>
-                            <input type="text" id="birthday" class="form-control" value="${formatDate(data.birthday)}">
+                            <input type="date" id="birthday" class="form-control" value="${formatDate(data.birthday)}">
                             </br>
                             <label for="country">Country</label>
                             <input type="text" id="country" class="form-control" value="${data.country}">
