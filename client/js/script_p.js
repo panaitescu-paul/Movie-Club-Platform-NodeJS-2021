@@ -1057,25 +1057,6 @@ $(document).ready(function() {
                 } else if (user == 'member') {
  
                 } else if (user == 'admin') {
-                    // $("#results").append(`
-                    //     <div class="card" data-id="${element.id}">
-                    //         <div class="card-body">
-                    //             <h5 class="card-title">${element.username}</h5>
-                    //             <p class="card-title">${element.firstName}</p>
-                    //             <p class="card-title">${element.lastName}</p>
-                    //             <p class="card-title">${formatDate(element.birthday)}</p>
-                    //         </div>
-                    //         <div class="card-body">
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                     btnShow showUserModal" data-toggle="modal" data-target="#modal">Details</button>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-warning
-                    //                 btnShow updateUserModal" data-toggle="modal" data-target="#modal">Update</button>
-                    //             <button data-id="${element.id}" type="button" class="btn btn-danger
-                    //                 btnShow deleteUser">Delete</button>
-                    //         </div>
-                    //     </div>
-                    // `);
-                    // Version 2
                     $("#results").append(`
                         <div class="card">
                             <div class="card-body showUserModal" data-id="${element.id}" data-toggle="modal" data-target="#modal">
