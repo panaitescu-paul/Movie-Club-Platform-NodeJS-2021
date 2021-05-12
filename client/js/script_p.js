@@ -702,12 +702,13 @@ $(document).ready(function() {
             url: URL + `movie_language/movieId/${id}`,
             type: "GET",
             success: function(movie_language_array) {
-                $("#modalInfoContent6").append(`
-                    <hr>
-                    <h3>Languages</h3>
+                $("#modalInfoContent5").append(`
+                    <h3 class="modal-subtitle">Languages</h3>
+                    <div class="modal-box">
                         <p class="movie-languages">
                             <span class="tag">Languages: </span>
                         </p>
+                    </div>
                 `);
 
                 movie_language_array.forEach(movie_language => {
@@ -732,7 +733,19 @@ $(document).ready(function() {
             },
             statusCode: {
                 404: function(data) {
-                $("#modalInfoContent6").append(`
+                    $("#modalInfoContent5").append(`
+                        <h3 class="modal-subtitle">Languages</h3>
+                        <div class="modal-box">
+                            <p><i>No Languages are available for this Movie!</i></p>
+                        </div>
+                    `);
+                    // const errorMsg = JSON.parse(data.responseText).Error;
+                    // alert(errorMsg);
+                }
+            }
+        });
+    };
+                    $("#modalInfoContent6").append(`
                         <hr>
                         <p><i>No Languages are available for this Movie!</i></p>
                     `);
