@@ -589,9 +589,8 @@ $(document).ready(function() {
             url: URL + `movie_crew/movieId/${id}`,
             type: "GET",
             success: function(movie_crew_array) {
-                $("#modalInfoContent4").append(`
-                    <hr>
-                    <h3>Crews</h3>
+                $("#modalInfoContent3").append(`
+                    <h3 class="modal-subtitle">Crews</h3>
                 `);
                 movie_crew_array.forEach(movie_crew => {
                     // GET crew
@@ -604,11 +603,13 @@ $(document).ready(function() {
                                 url: URL + `role/${movie_crew.roleId}`,
                                 type: "GET",
                                 success: function(role) {
-                                    $("#modalInfoContent4").append(`
+                                    $("#modalInfoContent3").append(`
+                                        <div class="modal-box">
                                             <p>
                                                 <span class="tag">${role.name}</span>
                                                 <span class="tag-info">${crew.name}</span>
                                             </p>
+                                        </div>
                                     `);
                                 },
                                 statusCode: {
@@ -630,9 +631,11 @@ $(document).ready(function() {
             },
             statusCode: {
                 404: function(data) {
-                    $("#modalInfoContent4").append(`
-                        <hr>
+                    $("#modalInfoContent3").append(`
+                        <h3 class="modal-subtitle">Crews</h3>
+                        <div class="modal-box">
                             <p><i>No Crews are available for this Movie!</i></p>
+                        </div>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
