@@ -212,7 +212,6 @@ body {
 /* ------------------------------------------------------------ */
 
 /* Card */
-
 .card {
     display: inline-flex !important;
     margin-left: 8px;
@@ -223,20 +222,17 @@ body {
     text-align: center;
     border-radius: 5px;
 }
-
 .card:hover {
     cursor: pointer;
     border: 1px solid #107df5;
     background-color: rgba(16, 125, 245, 0.1);
 }
-
 .card-body {
     padding-top: 0px !important;
     padding-bottom: 0px !important;
     padding: 0px !important;
     border-bottom: 1px solid #dee2e6;
 }
-
 .card h5 {
     margin: 0px;
     padding-top: 15px;
@@ -246,7 +242,6 @@ body {
     text-align: center;
     font-weight: 500;
 }
-
 .card li {
     border-top: 0px;
     padding: 0px;
@@ -254,21 +249,15 @@ body {
     padding-bottom: 10px;
     background-color: transparent;
 }
-
 .card .card-tag {
     font-weight: 600;
 }
-.card .card-tag-info {
-
-}
-
 .card .card-actions {
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: auto;
     margin-right: auto;
 }
-
 .card button {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -277,11 +266,10 @@ body {
     margin-right: auto;
     width: 110px;
 }
-
+/* Iframe for Video Trailer */
 .video {
     text-align: center;
 }
-
 .video iframe {
     border: none;
     width: 600px;
@@ -289,23 +277,19 @@ body {
 }
 
 /* Modal */
-
 .modal-content {
     max-width: 700px;
     word-break: break-all;
 }
-
 .modal-header {
     text-align: center !important;
 }
-
 .modal-image {
     max-width: 400px !important;
     margin-left: auto;
     margin-right: auto;
     border: 1px solid #dee2e6;
 }
-
 .modal-subtitle {
     margin: 0px;
     padding-top: 15px;
@@ -316,7 +300,6 @@ body {
 }
 
 /* Modal Review */
-
 .modal-box {
     background-color: rgba(16, 125, 245, 0.1);
     padding-left: 20px;
@@ -326,7 +309,6 @@ body {
     padding-bottom: 5px;
     margin-bottom: 15px;
 }
-
 .review-title {
     margin-top: 20px;
     padding-top: 15px;
@@ -334,14 +316,12 @@ body {
     font-size: 1.2rem;
     font-weight: 600;
 }
-
 .review-content {
     padding-top: 15px;
     padding-bottom: 15px;
 }
 
 /* Modal Buttons */
-
 .modal-actions {
     width: 100%;
     text-align: center;
@@ -349,51 +329,41 @@ body {
 }
 
 /* Modal Forms */
-
 .form-group {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
 }
-
 .form-custom label {
     margin-top: 25px;
     font-weight: 600;
 }
-
 .form-group textarea {
     min-height: 90px;
 }
 
 /* Controls - Buttons */
-
 .btn-1 {
     width: 100px;
 }
-
 .btn-2 {
     width: 200px;
 }
-
 .btn-3 {
     width: 200px;
     height: 50px;
     font-weight: 600 !important;
 }
-
 .panel-actions {
     margin-top: 20px;
 }
-
 .panel-actions button {
     display: block;
     margin-left: auto !important;
     margin-right: auto !important;
 }
-
 #movieSearch, #crewSearch, #adminSearch, #memberSearch {
     margin-top: 10px;
 } 
-
 #searchMovie, #searchCrew, #searchAdmin, #searchMember {
     width: 416px !important;
     margin-left: auto !important;
@@ -404,39 +374,33 @@ body {
 .loginForm {
     text-align: center;
 }
-
 .loginForm input {
     width: 406px;
     margin-left: auto !important;
     margin-right: auto !important;
 }
-
 .loginForm label {
     margin-top: 10px;
 }
-
 .loginForm button {
     margin-top: 20px;
 }
 
-/*  */
+/* End Login Page */
 
 .poster {
     cursor: pointer;
 }
-
 .crewDiv, .adminDiv {
     width: 220px !important;
 }
-
 .detailsBtn {
     margin-right: 19px;
     margin-bottom: 5px;
     margin-top: 7px;
 }
-
 #adminLogout, #memberLogout {
     position: absolute;
     right: 10px;
-    top: 2px;
+    top: 8px;
 }
