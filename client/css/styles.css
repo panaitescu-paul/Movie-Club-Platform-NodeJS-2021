@@ -680,6 +680,13 @@ img.smallButton {
     padding-bottom: 15px;
 }
 
+/* Modal Buttons */
+
+.modal-actions {
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+}
 /*  */
 
 .poster {
