@@ -556,78 +556,24 @@ $(document).ready(function() {
             success: function(data) {
                 const elem = $("<div />");
                 elem.append($("<div />", { "class": "", "html": 
-                    `<hr>
-                    <h3>Ratings</h3>
+                    `
+                    <h3 class="modal-subtitle">Ratings</h3>
+                    <div class="modal-box">
                         <p>
                             <span class="tag">Rating Average</span>
                             <span class="tag-info">${calculateRatingAverage(data)}</span>
                         </p>
+                    </div>
                 `}))
                 $("#modalInfoContent2").append(elem);
             },
             statusCode: {
                 404: function(data) {
                     $("#modalInfoContent2").append(`
-                        <hr>
+                        <h3 class="modal-subtitle">Ratings</h3>
+                        <div class="modal-box">
                             <p><i>No Ratings are available for this Movie!</i></p>
-                    `);
-                    // const errorMsg = JSON.parse(data.responseText).Error;
-                    // alert(errorMsg);
-                }
-            }
-        });
-    };
-
-    // Show Movie Reviews
-    function showMovieReviews(id) {
-        $.ajax({
-            url: URL + `review/movie/${id}`,
-            type: "GET",
-            success: function(data) {
-                $("#modalInfoContent3").append(`
-                    <hr>
-                    <h3>Reviews</h3>
-                `);
-                data.forEach(element => {
-                    const elem = $("<div />");
-                    elem.append($("<div />", { "class": "", "html": 
-                        `
-                        <p>
-                            <span class="tag">User name:</span>
-                            <span class="tag-info" id="user-name"></span>
-                        </p>
-                        <p>
-                            <span class="tag">Title</span>
-                            <span class="tag-info">${element.title}</span>
-                        </p>
-                        <p>
-                            <span class="tag">Content</span>
-                            <span class="tag-info">${element.content}</span>
-                        </p>
-                        ` }))
-                    let userId = element.userId;
-                    $.ajax({
-                        url: URL + `user/${userId}`,
-                        type: "GET",
-                        success: function(data) {
-                            document.getElementById("user-name").innerHTML = data.firstName + ' ' + data.lastName;
-                            $("#modalInfoContent3").append(elem);
-                        },
-                        statusCode: {
-                            404: function(data) {
-                                const errorMsg = JSON.parse(data.responseText).Error;
-                                // alert(errorMsg);
-                            }
-                        }
-                    });
-                    $("#modalInfoContent3").append(elem);
-                });                
-            },
-            statusCode: {
-                404: function(data) {
-                    $("#modalInfoContent3").append(`
-                        <hr>
-                        <p><i>No Reviews are available for this Movie!</i></p>
+                        </div>
                     `);
                     // const errorMsg = JSON.parse(data.responseText).Error;
                     // alert(errorMsg);
