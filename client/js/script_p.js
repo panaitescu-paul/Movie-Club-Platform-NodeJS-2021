@@ -851,6 +851,8 @@ $(document).ready(function() {
                             <input type="date" id="birthday" class="form-control" value="${formatDate(data.birthday)}">
                             <label for="country">Country</label>
                             <input type="text" id="country" class="form-control" value="${data.country}">
+                            <label for="createdAt">Created At</label>
+                            <input type="text" id="createdAt" class="form-control" value="${formatDate(data.createdAt)}" disabled>
                             <div class="modal-actions">
                                 <button type="submit" id="updateUser" class="btn btn-success btn-3" data-dismiss="modal">Update Member</button>
                             </div>
