@@ -377,6 +377,18 @@ $(document).ready(function() {
         });
     }
 
+    // Show Movie Trailer - Open Modal
+    $(document).on("click", ".showMovieTrailerModal", function() {
+        const link = $(this).attr("data-link");
+        clearModalData();
+        $("#modalTitle").html("Movie Trailer");    
+        $("#modalInfoContent1").append(`
+            <div class="video">
+                <iframe src="${link}"></iframe>
+            </div>
+        `);
+    });
+
     function displayMovies(movies, user = 'guest') {
         $("section#movieResults").empty();
         $("#results").empty();
@@ -388,7 +400,7 @@ $(document).ready(function() {
                 if (user == 'guest') {
                     $("#results").append(`
                         <div class="card" data-id="${element.id}">
-                            <img class="card-img-top" src="${element.poster}" alt="Card image cap">
+                                <img class="card-img-top" src="${element.poster}" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">${element.title}</h5>
                             </div>
