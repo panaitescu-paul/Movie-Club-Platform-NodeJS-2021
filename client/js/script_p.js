@@ -134,23 +134,19 @@ $(document).ready(function() {
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" class="form-control" required>
-                    </br>
                     <label for="overview">Overview</label>
                     <input type="text" id="overview" class="form-control" required>
-                    </br>
                     <label for="runtime">Runtime</label>
                     <input type="text" id="runtime" class="form-control" required>
-                    </br>
                     <label for="trailerLink">Trailer Link</label>
                     <input type="text" id="trailerLink" class="form-control" required>
-                    </br>
                     <label for="poster">Poster</label>
                     <input type="text" id="poster" class="form-control" required>
-                    </br>
                     <label for="releaseDate">Release Date</label>
                     <input type="date" id="releaseDate" class="form-control" required>
-                    </br>
-                    <button type="submit" id="createMovie" class="btn btn-success">Create Movie</button>
+                    <div class="modal-actions">
+                        <button type="submit" id="createMovie" class="btn btn-success modal-button">Create Movie</button>
+                    </div>
                 </div>
             </form>
         `);       
@@ -230,8 +226,8 @@ $(document).ready(function() {
                     <form id="createMovieForm">
                         <div class="form-group">
                             <div class="card">
-                                <img class="card-img-top" src="${data.poster}">
-                            </div>  
+                                <img class="card-img-top" src="${data.poster}"> 
+                            </div>
                             </br>
                             <label for="movieId">Movie Id</label>
                             <input type="text" id="movieId" class="form-control" value="${data.id}" disabled>
@@ -254,8 +250,8 @@ $(document).ready(function() {
                             <label for="poster">Poster</label>
                             <input type="text" id="poster" class="form-control" value="${data.poster}">
                             </br>
-                            <button type="submit" id="updateMovie" class="btn btn-success" data-dismiss="modal">Update Movie</button>
-                        </div>
+                                <button type="submit" id="updateMovie" class="btn btn-success" data-dismiss="modal">Update Movie</button>
+                            </div>
                     </form>
                 `);
             },
