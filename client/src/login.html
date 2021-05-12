@@ -21,42 +21,32 @@
 
     <!-- Start of Page content -->
     <main>
-        <div class="container" id="page-artists">
-
+        <div class="container">
             <h1 class="main-title" id="loginTitle">Member Login</h1>
             <div class="resultArea">
-
                 <div class="controls">
                     <div class="buttons">
-                        <button type="button" id="btnMemberTab" class="btn btn-primary mb-2 btnLibrary">Member Login</button>
-                        <button type="button" id="btnAdminTab" class="btn btn-primary mb-2 btnLibrary">Admin Login</button>
+                        <button type="button" id="btnMemberTab" class="btn btn-primary mb-2 btn-2">Member</button>
+                        <button type="button" id="btnAdminTab" class="btn btn-primary mb-2 btn-2">Admin</button>
                     </div>
-                    <div id="loginForm">
-                        <form id="loginMemberForm">
-                            <div class="form-group">
-                                <label for="memberUsername">Username</label>
-                                <input type="text" class="form-control" id="memberUsername" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="memberPassword">Password</label>
-                                <input type="password" class="form-control" id="memberPassword">
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </form>
-                        <form id="loginAdminForm">
-                            <div class="form-group">
-                                <label for="adminUsername">Username</label>
-                                <input type="text" class="form-control" id="adminUsername" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="adminPassword">Password</label>
-                                <input type="password" class="form-control" id="adminPassword">
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Login as an Admin</button>
-                        </form>
-                    </div>
+                    <form id="loginMemberForm" class="loginForm">
+                        <div class="form-group">
+                            <label for="memberUsername">Username</label>
+                            <input type="text" class="form-control" id="memberUsername" required>
+                            <label for="memberPassword">Password</label>
+                            <input type="password" class="form-control" id="memberPassword" required>
+                            <button type="submit" class="btn btn-success btn-2">Login</button>
+                        </div>
+                    </form>
+                    <form id="loginAdminForm" class="loginForm">
+                        <div class="form-group">
+                            <label for="adminUsername">Username</label>
+                            <input type="text" class="form-control" id="adminUsername" required>
+                            <label for="adminPassword">Password</label>
+                            <input type="password" class="form-control" id="adminPassword" required>
+                            <button type="submit" class="btn btn-success btn-2">Login</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
