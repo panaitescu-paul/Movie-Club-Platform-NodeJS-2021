@@ -118,10 +118,6 @@ body {
     border-radius: 5px;
     margin-bottom: 20px;
 }
-.buttons {
-    width: 360px;
-    text-align: center;
-}
 #loginArea {
     text-align: center;
 }
@@ -132,11 +128,17 @@ body {
     margin-bottom: 30px;
     display: block;
     text-align: center;
-    width: 400px;
+    width: 480px;
     padding: 20px;
     border: 1px solid #107df5;
     background-color: rgba(16, 125, 245, 0.1);
     border-radius: 5px;
+}
+.buttons {
+    width: 420px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 .btnNav {
     margin-top: 7px;
@@ -345,6 +347,13 @@ img.smallButton {
 /* ***                                                *** */
 /* ****************************************************** */
 
+@media only screen and (max-width: 995px) {
+    .video iframe {
+        width: 400px !important;
+        height: 300px !important;
+    }
+}
+
 @media only screen and (max-width: 767px) {
     /* Top Navigation */
     .navbar {
@@ -356,6 +365,10 @@ img.smallButton {
         text-align: center;
         width: 100%;
         max-width: 250px;
+    }
+    .video iframe {
+        width: 400px !important;
+        height: 300px !important;
     }
 }
 
@@ -374,6 +387,10 @@ img.smallButton {
     }
     .controls {
         width: 300px;
+    }
+    .video iframe {
+        width: 400px !important;
+        height: 300px !important;
     }
 
     /* Table */
@@ -454,6 +471,10 @@ img.smallButton {
         margin-left: auto;
         width: 235px;
     }
+    .video iframe {
+        width: 400px !important;
+        height: 300px !important;
+    }
 }
 
 /* Add Animation */
@@ -487,6 +508,10 @@ img.smallButton {
     }
     .main-title {
         font-size: 2.5rem;
+    }
+    .video iframe {
+        width: 300px !important;
+        height: 200px !important;
     }
     .tableList {
         max-width: 200px !important;
