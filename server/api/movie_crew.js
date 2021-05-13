@@ -24,9 +24,6 @@ app.use(cors());
 // ***                                                ***
 // ******************************************************
 
-// TODO: Add if else statements to prevent stoping the server after request failure
-// TODO: return the object after it was created
-
 /**
 * CREATE new Movie_Crew (Attach a Crew and a Role to a Movie)
 *               

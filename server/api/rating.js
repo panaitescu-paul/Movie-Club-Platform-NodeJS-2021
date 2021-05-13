@@ -24,9 +24,6 @@ app.use(cors());
 // ***                                                ***
 // ******************************************************
 
-// TODO: Add if else statements to prevent stoping the server after request failure
-// TODO: return the object after it was created
-
 /**
 * CREATE new Rating (Add a Rating to a Movie)
 *               
@@ -333,7 +330,7 @@ app.get("/rating/movie/:movieId/user/:userId", (req, res) => {
                     message: `Movie with this ID (${req.params.movieId}) does not exist!`
                 });
             } else {
-                
+
                 // Check if there is a User with this id
                 connection.query(sqlGetUser, [req.params.userId], function (err, user) {
                     if (err) {

@@ -24,9 +24,6 @@ app.use(cors());
 // ***                                                ***
 // ******************************************************
 
-// TODO: Add if else statements to prevent stoping the server after request failure
-// TODO: return the object after it was created
-
 /**
 * CREATE new Review (Add a Review to a Movie)
 *               
@@ -89,7 +86,7 @@ app.post("/review", (req, res) => {
                                 message: `Movie with this ID (${movieId}) does not exist!`
                             });
                         } else {
-                            
+
                            // Check if this User added a rating to this movie already
                            connection.query(`SELECT COUNT(*) AS total FROM review WHERE userId = ? AND movieId = ?;` , 
                                            [userId, movieId], function (err, result) {

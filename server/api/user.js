@@ -25,8 +25,6 @@ app.use(cors());
 // ***                                                ***
 // ******************************************************
 
-// TODO: Add if else statements to prevent stoping the server after request failure
-
 /**
 * CREATE new User
 *
