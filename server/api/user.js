@@ -188,9 +188,8 @@ app.put("/user/:id", (req, res) => {
             res.status(409).json({
                 message: 'User with this Username already exists!',
             });
-        } 
-    });
-
+        } else {
+            // Get User
             connection.query(sqlGet, [req.params.id], function (err, user) {
                 if (err) {
                     res.status(400).json({
@@ -203,6 +202,7 @@ app.put("/user/:id", (req, res) => {
                             message: `User with this ID (${req.params.id}) does not exist!`
                         });
                     } else {
+                        // Update User
                         connection.query(sqlUpdate, [username, firstName, lastName, gender,
                                         birthday, country, req.params.id], function (err) {
                             if (err) {
@@ -218,6 +218,8 @@ app.put("/user/:id", (req, res) => {
                     }
                 }
             });
+        }
+    });
 });
 
 /**
