@@ -57,59 +57,62 @@ app.post("/movie_genre", (req, res) => {
                 res.status(404).json({
                     message: `Movie with this ID (${movieId}) does not exist!`
                 });
-            }
-        }
-    });
+            } else {
 
-    // Check if there is a Genre with this id
-    connection.query(sqlGetGenre, [genreId], function(err, genre) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!genre.length) {
-                res.status(404).json({
-                    message: `Genre with this ID (${genreId}) does not exist!`
+                // Check if there is a Genre with this id
+                connection.query(sqlGetGenre, [genreId], function(err, genre) {
+                    if (err) {
+                        res.status(400).json({
+                            error: err
+                        });
+                        console.log(err);
+                    } else {
+                        if(!genre.length) {
+                            res.status(404).json({
+                                message: `Genre with this ID (${genreId}) does not exist!`
+                            });
+                        } else {
+
+                            // Check if Genre is already attached to this Movie
+                            connection.query(`SELECT COUNT(*) AS total FROM movie_genre WHERE movieId = ? AND genreId = ?;` , 
+                                            [movieId, genreId], function (err, result) {
+                                console.log('total: ', result[0].total);
+                                if (result[0].total > 0) {
+                                    res.status(409).json({
+                                        message: 'Genre is already attached to this Movie!',
+                                    });
+                                } else {
+
+                                    // Add Movie_Genre
+                                    connection.query(sqlAddMovie_Genre, [movieId, genreId], function (err, result) {
+                                        if (err) {
+                                            res.status(400).json({
+                                                message: 'The Movie_Genre could not be created!',
+                                                error: err.message
+                                            });
+                                            console.log(err.message);
+                                        } else {
+                                            console.log(`A new row has been inserted!`);
+                                            // Get the last inserted Movie_Genre
+                                            axios.get(`http://${HOSTNAME}:${PORT}/movie_genre/${result.insertId}`).then(response =>{
+                                                console.log(response);
+                                                res.status(201).send(response.data[0]);
+                                            }).catch(err =>{
+                                                if(err){
+                                                    console.log(err);
+                                                }
+                                                res.status(400).json({
+                                                    message: `Movie_Genre with this ID (${result.insertId}) does not exist!`
+                                                });
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
                 });
             }
-        }
-    });
-
-    // Check if Genre is already attached to this Movie
-    connection.query(`SELECT COUNT(*) AS total FROM movie_genre WHERE movieId = ? AND genreId = ?;` , 
-                    [movieId, genreId], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'Genre is already attached to this Movie!',
-            });
-        } else {
-            // Add Movie_Genre
-            connection.query(sqlAddMovie_Genre, [movieId, genreId], function (err, result) {
-                if (err) {
-                    res.status(400).json({
-                        message: 'The Movie_Genre could not be created!',
-                        error: err.message
-                    });
-                    console.log(err.message);
-                } else {
-                    console.log(`A new row has been inserted!`);
-                    // Get the last inserted Movie_Genre
-                    axios.get(`http://${HOSTNAME}:${PORT}/movie_genre/${result.insertId}`).then(response =>{
-                        console.log(response);
-                        res.status(201).send(response.data[0]);
-                    }).catch(err =>{
-                        if(err){
-                            console.log(err);
-                        }
-                        res.status(400).json({
-                            message: `Movie_Genre with this ID (${result.insertId}) does not exist!`
-                        });
-                    });
-                }
-            });
         }
     });
 });
