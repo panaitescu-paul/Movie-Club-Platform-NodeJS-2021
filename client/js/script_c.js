@@ -25,7 +25,10 @@ $(document).ready(function() {
                         <p id="birthPlace"><span class="tag">Birth place: </span><span class="tag-info">${crew.birthPlace}</span></p>
                         <p id="biography"><span class="tag">Biography: </span><span class="tag-info">${crew.biography}</span></p>
                         <p id="website"><span class="tag">Website: </span><span class="tag-info">${crew.website}</span></p>
-                        <p id="movies"><span class="tag">List of Movies: </span><div id="listOfMovies"></div></p>
+                    </div>
+                    <h3 class="modal-subtitle">Movies List</h3>
+                    <div class="modal-box">
+                        <p id="movies"><div id="listOfMovies"></div></p>
                     </div>
                 `);
                 $.ajax({
@@ -229,12 +232,14 @@ $(document).ready(function() {
                     </br>
                     <form id="crewMovieForm">
                         <div class="form-group form-custom">
+                            <h3 class="modal-subtitle">Movies List</h3>
                             <div class="modal-box">
-                                <p id="movies"><span class="tag">List of Movies: </span><div id="listOfMovies"></div></p>
+                                <p id="movies"><div id="listOfMovies"></div></p>
                             </div>
                             </br>
                             <hr>
                             </br>
+                            <h3 class="modal-subtitle">Crew - Add Movies and Role</h3>
                             <label for="moviesDropdown">Movie</label>
                             <select name="moviesDropdown" id="moviesDropdown" class="form-control"></select>
                             <label for="rolesDropdown">Role</label>
@@ -663,6 +668,7 @@ $(document).ready(function() {
                     </br>
                     <hr>
                     </br>
+                    <h3 class="modal-subtitle">Update Admin Password</h3>
                     <form id="updatePasswordAdminForm">
                         <div class="form-group form-custom">
                             <label for="oldPassword">Old Password</label>
@@ -810,15 +816,17 @@ $(document).ready(function() {
                     url: `${URLPath}/rating/movie/${movieId}`,
                     type: "GET",
                     success: function(data) {
-                        if ($("#modalInfoContent2 > div.modal-box > p > i").text() === "No Ratings are available for this Movie!") {
-                            $("#modalInfoContent2 > div.modal-box").empty();
-                            $("#modalInfoContent2 > div.modal-box").append(`
-                            <p>
+                        $('#ratingContent').hide();
+                        $('.loader').show();
+                        setTimeout(function(){
+                            $('.loader').hide();
+                            $('#ratingContent').show();
+                        }, 3000);
+                        if ($("#ratingText").text() === "No Ratings are available for this Movie!") {
+                            $("#ratingText").empty().append(`
                                 <span class="tag">Rating Average</span>
-                                <span id="ratingAverage" class="tag-info">${calculateRatingAverage( data )}</span>
-                            </p>
+                                <span id="ratingAverage" class="tag-info">${calculateRatingAverage(data)}</span>
                             `);
-
                         }
                         ratingStarsSelection()
                     },
@@ -837,7 +845,6 @@ $(document).ready(function() {
                 },
                 409: function(data) {
                     const errorMessage = data.responseJSON.message;
-                    // alert(errorMessage);
 
                     if (errorMessage === 'Rating from this User is already attached to this Movie!') {
                         $.ajax({
@@ -856,8 +863,14 @@ $(document).ready(function() {
                                             url: `${URLPath}/rating/movie/${movieId}`,
                                             type: "GET",
                                             success: function(data) {
+                                                $('#ratingContent').hide();
+                                                $('.loader').show();
+                                                setTimeout(function(){
+                                                    $('.loader').hide();
+                                                    $('#ratingContent').show();
+                                                }, 3000);
                                                 $('#ratingAverage').text(calculateRatingAverage(data));
-                                                ratingStarsSelection()
+                                                ratingStarsSelection();
                                             },
                                             statusCode: {
                                                 404: function(data) {
@@ -866,7 +879,6 @@ $(document).ready(function() {
                                                 }
                                             }
                                         });
-
                                     },
                                     statusCode: {
                                         400: function(data) {
@@ -891,7 +903,6 @@ $(document).ready(function() {
                                 },
                                 404: function(data) {
                                     const errorMessage = data.responseJSON.message;
-                                    // alert(errorMessage);
                                 }
                             }
                         });
@@ -936,7 +947,6 @@ $(document).ready(function() {
                         },
                         404: function (data) {
                             const errorMessage = data.responseJSON.message;
-                            // alert(errorMessage);
                         }
                     }
                 } );

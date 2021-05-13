@@ -81,7 +81,7 @@ function calculateRatingAverage(data) {
     for (let i = 0; i < data.length; i++) {
         sum += data[i].value;
     }
-    return (sum/data.length).toFixed(2);;
+    return (sum/data.length).toFixed(2);
 }
 
 function formatDate(date) {
@@ -301,12 +301,18 @@ function ratingStarsSelection() {
             url: `${URLPath}/rating/movie/${movieId}/user/${loggedInMemberId}`,
             type: "GET",
             success: function(rating) {
-                for (let i = 0; i < rating.value; i++) {
-                    $(stars[i]).attr('class', 'rating__star fas fa-star');
-                }
+                if (rating.value === undefined) {
+                    for (let i = 0; i < 10; i++) {
+                        $(stars[i]).attr('class', 'rating__star far fa-star');
+                    }
+                } else {
+                    for (let i = 0; i < rating.value; i++) {
+                        $(stars[i]).attr('class', 'rating__star fas fa-star');
+                    }
 
-                for (let i = 10; i >= rating.value; --i){
-                    $(stars[i]).attr('class', 'rating__star far fa-star');
+                    for (let i = 10; i >= rating.value; --i){
+                        $(stars[i]).attr('class', 'rating__star far fa-star');
+                    }
                 }
 
                 printRatingResult(ratingResult, rating.value);
@@ -318,7 +324,7 @@ function ratingStarsSelection() {
                 },
                 404: function(data) {
                     const errorMessage = data.responseJSON.message;
-                    // alert(errorMessage);
+
                 }
             }
         });

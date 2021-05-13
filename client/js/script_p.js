@@ -516,26 +516,30 @@ $(document).ready(function() {
                 $("#modalInfoContent2").append(`
                     <h3 class="modal-subtitle">Ratings</h3>
                     <div data-movieid="${id}" class="modal-box">
-                        <p>
-                            <span class="tag">Rating Average</span>
-                            <span id="ratingAverage" class="tag-info">${calculateRatingAverage(data)}</span>
-                        </p>
-                        <div class="rating">
-                            <span class="rating__result"></span>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="fas fa-times-circle" id="removeRating"></i>
+                        <div class="loader"></div>
+                        <div id="ratingContent">
+                            <p id="ratingText">
+                                <span class="tag">Rating Average</span>
+                                <span id="ratingAverage" class="tag-info">${calculateRatingAverage(data)}</span>
+                            </p>
+                            <div class="rating">
+                                <span class="rating__result"></span>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="rating__star far fa-star"></i>
+                                <i class="fas fa-times-circle" id="removeRating"></i>
+                            </div>
                         </div>
                     </div>
-                `)
+                `);
+                $('.loader').hide();
                 ratingStarsSelection();
             },
             statusCode: {
@@ -543,23 +547,28 @@ $(document).ready(function() {
                     $("#modalInfoContent2").append(`
                         <h3 class="modal-subtitle">Ratings</h3>
                         <div data-movieid="${id}" class="modal-box">
-                            <p><i>No Ratings are available for this Movie!</i></p>
-                        </div>
-                        <div class="rating">
-                            <span class="rating__result"></span>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="rating__star far fa-star"></i>
-                            <i class="fas fa-times-circle" id="removeRating"></i>
+                            <div class="loader"></div>
+                            <div id="ratingContent">
+                                <p id="ratingText"><i>No Ratings are available for this Movie!</i></p>
+                                <div class="rating">
+                                    <span class="rating__result"></span>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="rating__star far fa-star"></i>
+                                    <i class="fas fa-times-circle" id="removeRating"></i>
+                                </div>
+                            </div>
+                            
                         </div>
                     `);
+                    $('.loader').hide();
                     ratingStarsSelection();
                 }
             }
