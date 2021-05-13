@@ -74,70 +74,59 @@ app.post("/review", (req, res) => {
                 res.status(404).json({
                     message: `User with this ID (${userId}) does not exist!`
                 });
-            }
-        }
-    });
-
-    // Check if there is a Movie with this id
-    connection.query(sqlGetMovie, [movieId], function(err, movie) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!movie.length) {
-                res.status(404).json({
-                    message: `Movie with this ID (${movieId}) does not exist!`
-                });
             } else {
-               // TODO: add the next query here, if it doesn't work otherwise
-            }
-        }
-    });
-
-    // Check if this User added a rating to this movie already
-    connection.query(`SELECT COUNT(*) AS total FROM review WHERE userId = ? AND movieId = ?;` , 
-                    [userId, movieId], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'This User already added a Review to this Movie!',
-            });
-        } else {
-
-            // Add Review to Movie
-            connection.query(sqlAddReview, [userId, movieId, title, content], function (err, result) {
-                if (err) {
-                    res.status(400).json({
-                        message: 'The Review could not be created!',
-                        error: err.message
-                    });
-                    console.log(err.message);
-                } else {
-                    console.log(`A new row has been inserted!`);
-                    // Get the last inserted Review
-                    axios.get(`http://${HOSTNAME}:${PORT}/review/${result.insertId}`).then(response =>{
-                        res.status(201).send(response.data[0]);    
-                        // res.status(201).json({
-                        //     id: response.data.rating[0].id,
-                        //     userId: response.data.rating[0].userId,
-                        //     movieId: response.data.rating[0].movieId,
-                        //     title: response.data.rating[0].title,
-                        //     content: response.data.rating[0].content,
-                        //     modifiedAt: response.data.rating[0].modifiedAt,
-                        //     createdAt: response.data.rating[0].createdAt
-                        // });
-                    }).catch(err =>{
-                        if(err){
-                            console.log(err);
-                        }
+                // Check if there is a Movie with this id
+                connection.query(sqlGetMovie, [movieId], function(err, movie) {
+                    if (err) {
                         res.status(400).json({
-                            message: `Review with this ID (${result.insertId}) does not exist!`
+                            error: err
                         });
-                    });
-                }
-            });
+                        console.log(err);
+                    } else {
+                        if(!movie.length) {
+                            res.status(404).json({
+                                message: `Movie with this ID (${movieId}) does not exist!`
+                            });
+                        } else {
+                           // Check if this User added a rating to this movie already
+                           connection.query(`SELECT COUNT(*) AS total FROM review WHERE userId = ? AND movieId = ?;` , 
+                                           [userId, movieId], function (err, result) {
+                               console.log('total: ', result[0].total);
+                               if (result[0].total > 0) {
+                                   res.status(409).json({
+                                       message: 'This User already added a Review to this Movie!',
+                                   });
+                               } else {
+
+                                   // Add Review to Movie
+                                   connection.query(sqlAddReview, [userId, movieId, title, content], function (err, result) {
+                                       if (err) {
+                                           res.status(400).json({
+                                               message: 'The Review could not be created!',
+                                               error: err.message
+                                           });
+                                           console.log(err.message);
+                                       } else {
+                                           console.log(`A new row has been inserted!`);
+                                           // Get the last inserted Review
+                                           axios.get(`http://${HOSTNAME}:${PORT}/review/${result.insertId}`).then(response =>{
+                                               res.status(201).send(response.data[0]);    
+                                           }).catch(err =>{
+                                               if(err){
+                                                   console.log(err);
+                                               }
+                                               res.status(400).json({
+                                                   message: `Review with this ID (${result.insertId}) does not exist!`
+                                               });
+                                           });
+                                       }
+                                   });
+                               }
+                           });
+                        }
+                    }
+                });
+            }
         }
     });
 });
