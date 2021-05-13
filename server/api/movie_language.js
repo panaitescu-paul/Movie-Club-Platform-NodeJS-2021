@@ -57,59 +57,62 @@ app.post("/movie_language", (req, res) => {
                 res.status(404).json({
                     message: `Movie with this ID (${movieId}) does not exist!`
                 });
-            }
-        }
-    });
+            } else {
+                
+                // Check if there is a Language with this id
+                connection.query(sqlGetLanguage, [languageId], function(err, language) {
+                    if (err) {
+                        res.status(400).json({
+                            error: err
+                        });
+                        console.log(err);
+                    } else {
+                        if(!language.length) {
+                            res.status(404).json({
+                                message: `Language with this ID (${languageId}) does not exist!`
+                            });
+                        } else {
 
-    // Check if there is a Language with this id
-    connection.query(sqlGetLanguage, [languageId], function(err, language) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!language.length) {
-                res.status(404).json({
-                    message: `Language with this ID (${languageId}) does not exist!`
+                            // Check if Language is already attached to this Movie
+                            connection.query(`SELECT COUNT(*) AS total FROM movie_language WHERE movieId = ? AND languageId = ?;` , 
+                                            [movieId, languageId], function (err, result) {
+                                console.log('total: ', result[0].total);
+                                if (result[0].total > 0) {
+                                    res.status(409).json({
+                                        message: 'Language is already attached to this Movie!',
+                                    });
+                                } else {
+                                    
+                                    // Add Movie_Language
+                                    connection.query(sqlAddMovie_Language, [movieId, languageId], function (err, result) {
+                                        if (err) {
+                                            res.status(400).json({
+                                                message: 'The Movie_Language could not be created!',
+                                                error: err.message
+                                            });
+                                            console.log(err.message);
+                                        } else {
+                                            console.log(`A new row has been inserted!`);
+                                            // Get the last inserted Movie_Language
+                                            axios.get(`http://${HOSTNAME}:${PORT}/movie_language/${result.insertId}`).then(response =>{
+                                                console.log(response);
+                                                res.status(201).send(response.data[0]);
+                                            }).catch(err =>{
+                                                if(err){
+                                                    console.log(err);
+                                                }
+                                                res.status(400).json({
+                                                    message: `Movie_Language with this ID (${result.insertId}) does not exist!`
+                                                });
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
                 });
             }
-        }
-    });
-
-    // Check if Language is already attached to this Movie
-    connection.query(`SELECT COUNT(*) AS total FROM movie_language WHERE movieId = ? AND languageId = ?;` , 
-                    [movieId, languageId], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'Language is already attached to this Movie!',
-            });
-        } else {
-            // Add Movie_Language
-            connection.query(sqlAddMovie_Language, [movieId, languageId], function (err, result) {
-                if (err) {
-                    res.status(400).json({
-                        message: 'The Movie_Language could not be created!',
-                        error: err.message
-                    });
-                    console.log(err.message);
-                } else {
-                    console.log(`A new row has been inserted!`);
-                    // Get the last inserted Movie_Language
-                    axios.get(`http://${HOSTNAME}:${PORT}/movie_language/${result.insertId}`).then(response =>{
-                        console.log(response);
-                        res.status(201).send(response.data[0]);
-                    }).catch(err =>{
-                        if(err){
-                            console.log(err);
-                        }
-                        res.status(400).json({
-                            message: `Movie_Language with this ID (${result.insertId}) does not exist!`
-                        });
-                    });
-                }
-            });
         }
     });
 });
