@@ -63,6 +63,7 @@ app.post("/movie", (req, res) => {
                 message: 'Movie with this Title already exists!',
             });
         } else {
+
             // Create Movie
             connection.query(sql, [title, overview, runtime, trailerLink, poster, releaseDate], function (err, result) {
                 if (err) {
@@ -181,6 +182,7 @@ app.put("/movie/:id", (req, res) => {
                 message: 'Movie with this Title already exists!',
             });
         } else {
+
             // Get Movie
             connection.query(sqlGet, [req.params.id], function (err, movie) {
                 if (err) {
@@ -194,6 +196,7 @@ app.put("/movie/:id", (req, res) => {
                             message: `Movie with this ID (${req.params.id}) does not exist!`
                         });
                     } else {
+
                         // Update Movie
                         connection.query(sqlUpdate, [title, overview, runtime, trailerLink, 
                             poster, releaseDate, req.params.id], function (err) {
@@ -260,39 +263,6 @@ app.delete("/movie/:id", (req, res) => {
 // ***             Movie Extra Functionality          ***
 // ***                                                ***
 // ******************************************************
-
-// TODO: READ all Crews for a Movie
-// TODO: READ all Genres for a Movie
-// TODO: READ all Languages for a Movie
-
-// /**
-// * READ all Crews for a Movie
-// *
-// * Input:    -
-// * Output:   an array with all Crews for a Movie and their information
-// * Errors:   There are no Crews for this Movie!
-// */
-// app.get("/crew/movie/:id", (req, res) => {
-//     let sql = `SELECT * FROM crew WHERE movieId = ?`;
-//     connection.query(sql, [req.params.id], function(err, crews) {
-//         if (err) {
-//             res.status(400).json({
-//                 message: 'There are no Crews for this Movie!',
-//                 error: err.message
-//             });
-//             console.log(err);
-//         } else {
-//             if(crews.length) {
-//                 res.status(200).send(crews);
-//             } else {
-//                 res.status(404).json({
-//                     message: `There are no Crews for this Movie!`
-//                 });
-//             }
-//         }
-//     });
-// });
-
 
 // Server connection
 app.listen(PORT, HOSTNAME, (err) => {
