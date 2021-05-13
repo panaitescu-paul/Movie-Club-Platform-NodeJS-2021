@@ -953,6 +953,38 @@ $(document).ready(function() {
             }
         }
     });
+
+    // ************** Chat functionality ****************
+    // Room chat
+    $(document).on("click", ".roomInfo", function() {
+        const roomId = $(this).attr("data-id");
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
+        const memberUsername = $('#loggedInMember').text().substring(13);
+
+
+        $.ajax({
+            url: `${URLPath}/room/${roomId}`,
+            type: "GET",
+            success: function(room) {
+                console.log(room);
+                // change the title of the room with the one chosen by the user
+                $('.room-title').text(room.name);
+                // show the chat
+                $('.chat').show();
+                if (memberUsername === '') {
+                    $('#chatUsername').text('Guest User');
+                } else {
+                    $('#chatUsername').text(memberUsername);
+                }
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = JSON.parse(data.responseText).Error;
+                    alert(errorMsg);
+                }
+            }
+        });
+    });
 });
 
 // Show all Crews in a List
@@ -1061,6 +1093,45 @@ function showAdmins(data) {
                             btnShow adminUpdate" data-toggle="modal" data-target="#modal">Update</button>
                     <button data-id="${admin.id}" type="button" class="btn btn-danger
                             btnShow adminDelete">Delete</button>
+                </div>
+            </div>
+        `);
+    });
+}
+
+// Show all Rooms in a List
+function showAllRooms() {
+    $.ajax({
+        url: `${URLPath}/room`,
+        type: "GET",
+        success: function(rooms) {
+            showRooms(rooms);
+        },
+        statusCode: {
+            404: function(data) {
+                $("#results").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+                alert(errorMsg);
+            }
+        }
+    });
+}
+
+// Show Admins in a List
+function showRooms(data) {
+    $("#results").empty();
+    data.forEach(room => {
+        $("#results").append(`
+            <div class="card">
+                <div data-id="${room.id}" class="card-body roomInfo">
+                    <h5 class="card-title">${room.name}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Created at: </b>${formatDateTime(room.createdAt)}</li>
+                </ul>
+                <div class="card-actions">
+                    <button data-id="${room.id}" type="button" class="btn btn-warning
+                            btnShow roomInfo">Open Chat Room</button>
                 </div>
             </div>
         `);

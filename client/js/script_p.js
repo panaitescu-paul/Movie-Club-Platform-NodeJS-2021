@@ -67,6 +67,8 @@ $(document).ready(function() {
                 importFooterFragment();
                 checkIfAdminLoggedIn();
                 checkMemberLogin();
+                showAllRooms();
+                $('.chat').hide();
             });
             // ShowCommunity();
         } else if (page === "login.html" || page === "login.html?") {

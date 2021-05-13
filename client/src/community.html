@@ -21,16 +21,44 @@
 
     <!-- Start of Page content -->
     <main>
-
-    </main>
-    <div class="container" id="page-artists">
-
-        <h1 class="main-title">Community Chat</h1>
-        <div class="resultArea">
-            <section id="results">
-            </section>
+        <div class="container" id="page-artists">
+            <h1 class="main-title">Community Chat</h1>
+            <div class="resultArea">
+                <section id="results">
+                </section>
+            </div>
         </div>
-    </div>
+        <div class="chat">
+            <div id="sidebar" class="chat__sidebar">
+                <h2 class="room-title"></h2>
+                <h3 class="list-title">User: <b><span id="chatUsername"></span></b></h3>
+                <ul class="users">
+                    <li>List of users:</li>
+                    <li>cons0343</li>
+                    <li>saddas</li>
+                </ul>
+            </div>
+            <div class="chat__main">
+                <div id="messages" class="chat__messages">
+                    <div class="message">
+                        <p>
+                            <span class="message__name"></span>
+                            <span class="message__meta"></span>
+                        </p>
+                        <p></p>
+                    </div>
+                </div>
+
+                <div class="compose">
+                    <form id="message-form">
+                        <input name="message" placeholder="Write a message" required="" autocomplete="off">
+                        <button>Send</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
     <!-- End of Page content -->
 
     <!-- Start of Footer !!!!!! -->
