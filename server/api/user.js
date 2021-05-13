@@ -66,33 +66,33 @@ app.post("/user", (req, res) => {
             res.status(409).json({
                 message: 'User with this Username already exists!',
             });
-        } 
-    });
-
-    // Hash the Password
-    let hashedPassword = bcrypt.hashSync(password, 10);
-    
-    // Create User
-    connection.query(sql, [username, hashedPassword], function (err, result) {
-        if (err) {
-            res.status(400).json({
-                message: 'User could not be created!',
-                error: err.message
-            });
-            console.log(err.message);
         } else {
-            console.log(`A new row has been inserted!`);
-            // Get the last inserted User
-            axios.get(`http://${HOSTNAME}:${PORT}/user/${result.insertId}`).then(response =>{
-                console.log(response);
-                res.status(201).send(response.data[0]);
-            }).catch(err =>{
-                if(err){
-                    console.log(err);
+            // Hash the Password
+            let hashedPassword = bcrypt.hashSync(password, 10);
+            
+            // Create User
+            connection.query(sql, [username, hashedPassword], function (err, result) {
+                if (err) {
+                    res.status(400).json({
+                        message: 'User could not be created!',
+                        error: err.message
+                    });
+                    console.log(err.message);
+                } else {
+                    console.log(`A new row has been inserted!`);
+                    // Get the last inserted User
+                    axios.get(`http://${HOSTNAME}:${PORT}/user/${result.insertId}`).then(response =>{
+                        console.log(response);
+                        res.status(201).send(response.data[0]);
+                    }).catch(err =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        res.status(400).json({
+                            message: `User with this ID (${result.insertId}) does not exist!`
+                        });
+                    });
                 }
-                res.status(400).json({
-                    message: `User with this ID (${result.insertId}) does not exist!`
-                });
             });
         }
     });
@@ -191,33 +191,33 @@ app.put("/user/:id", (req, res) => {
         } 
     });
 
-    connection.query(sqlGet, [req.params.id], function (err, user) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!user.length) {
-                res.status(404).json({
-                    message: `User with this ID (${req.params.id}) does not exist!`
-                });
-            } else {
-                connection.query(sqlUpdate, [username, firstName, lastName, gender,
-                                birthday, country, req.params.id], function (err) {
-                    if (err) {
-                        res.status(400).json({
-                            message: 'The User could not be updated!',
-                            error: err.message
+            connection.query(sqlGet, [req.params.id], function (err, user) {
+                if (err) {
+                    res.status(400).json({
+                        error: err
+                    });
+                    console.log(err);
+                } else {
+                    if(!user.length) {
+                        res.status(404).json({
+                            message: `User with this ID (${req.params.id}) does not exist!`
                         });
-                        console.log(err.message);
                     } else {
-                        res.sendStatus(204);
+                        connection.query(sqlUpdate, [username, firstName, lastName, gender,
+                                        birthday, country, req.params.id], function (err) {
+                            if (err) {
+                                res.status(400).json({
+                                    message: 'The User could not be updated!',
+                                    error: err.message
+                                });
+                                console.log(err.message);
+                            } else {
+                                res.sendStatus(204);
+                            }
+                        });
                     }
-                });
-            }
-        }
-    });
+                }
+            });
 });
 
 /**
