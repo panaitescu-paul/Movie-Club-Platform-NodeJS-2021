@@ -336,10 +336,12 @@ app.put("/user/password/:id", (req, res) => {
         res.status(409).json({
             message: 'Old Password can not be null!'
         });
+        return 0;
     } else if(newPassword.length == 0) {
         res.status(409).json({
             message: 'New Password can not be null!'
         });
+        return 0;
     } 
 
     // Check if Old Password and New Password are the same
@@ -347,6 +349,7 @@ app.put("/user/password/:id", (req, res) => {
         res.status(409).json({
             message: 'Old Password and New Password are the same!'
         });
+        return 0;
     }
 
     // Get the Old Password of the User
