@@ -82,6 +82,7 @@ app.post("/rating", (req, res) => {
                                 message: `Movie with this ID (${movieId}) does not exist!`
                             });
                         } else {
+
                            // Check if this User added a rating to this movie already
                            connection.query(`SELECT COUNT(*) AS total FROM rating WHERE userId = ? AND movieId = ?;` , 
                                            [userId, movieId], function (err, result) {
@@ -91,6 +92,7 @@ app.post("/rating", (req, res) => {
                                        message: 'Rating from this User is already attached to this Movie!',
                                    });
                                } else {
+
                                    // Add Rating to Movie
                                    connection.query(sqlAddRating, [userId, movieId, value], function (err, result) {
                                        if (err) {
@@ -331,6 +333,7 @@ app.get("/rating/movie/:movieId/user/:userId", (req, res) => {
                     message: `Movie with this ID (${req.params.movieId}) does not exist!`
                 });
             } else {
+                
                 // Check if there is a User with this id
                 connection.query(sqlGetUser, [req.params.userId], function (err, user) {
                     if (err) {
