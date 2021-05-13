@@ -60,77 +60,84 @@ app.post("/movie_crew", (req, res) => {
                 res.status(404).json({
                     message: `Movie with this ID (${movieId}) does not exist!`
                 });
-            }
-        }
-    });
-
-    // Check if there is a Crew with this id
-    connection.query(sqlGetCrew, [crewId], function(err, crew) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!crew.length) {
-                res.status(404).json({
-                    message: `Crew with this ID (${crewId}) does not exist!`
-                });
-            }
-        }
-    });
-
-    // Check if there is a Role with this id
-    connection.query(sqlGetRole, [roleId], function(err, role) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!role.length) {
-                res.status(404).json({
-                    message: `Role with this ID (${roleId}) does not exist!`
-                });
-            }
-        }
-    });
-
-    // Check if Crew with this Role is already attached to this Movie
-    connection.query(`SELECT COUNT(*) AS total FROM movie_crew WHERE movieId = ? AND crewId = ? AND roleId = ?;` , 
-                    [movieId, crewId, roleId], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'Crew with this Role is already attached to this Movie!',
-            });
-        } else {
-            // Add Movie_Crew
-            connection.query(sqlAddMovie_Crew, [movieId, crewId, roleId], function (err, result) {
-                if (err) {
-                    res.status(400).json({
-                        message: 'The Movie_Crew could not be created!',
-                        error: err.message
-                    });
-                    console.log(err.message);
-                } else {
-                    console.log(`A new row has been inserted!`);
-                    // Get the last inserted Movie_Crew
-                    axios.get(`http://${HOSTNAME}:${PORT}/movie_crew/${result.insertId}`).then(response =>{
-                        console.log(response);
-                        res.status(201).send(response.data[0]);
-                    }).catch(err =>{
-                        if(err){
-                            console.log(err);
-                        }
+            } else {
+                
+                // Check if there is a Crew with this id
+                connection.query(sqlGetCrew, [crewId], function(err, crew) {
+                    if (err) {
                         res.status(400).json({
-                            message: `Movie_Crew with this ID (${result.insertId}) does not exist!`
+                            error: err
                         });
-                    });
-                }
-            });
+                        console.log(err);
+                    } else {
+                        if(!crew.length) {
+                            res.status(404).json({
+                                message: `Crew with this ID (${crewId}) does not exist!`
+                            });
+                        } else {
+
+                            // Check if there is a Role with this id
+                            connection.query(sqlGetRole, [roleId], function(err, role) {
+                                if (err) {
+                                    res.status(400).json({
+                                        error: err
+                                    });
+                                    console.log(err);
+                                } else {
+                                    if(!role.length) {
+                                        res.status(404).json({
+                                            message: `Role with this ID (${roleId}) does not exist!`
+                                        });
+                                    } else {
+
+                                        // Check if Crew with this Role is already attached to this Movie
+                                        connection.query(`SELECT COUNT(*) AS total FROM movie_crew WHERE movieId = ? AND crewId = ? AND roleId = ?;` , 
+                                                        [movieId, crewId, roleId], function (err, result) {
+                                            console.log('total: ', result[0].total);
+                                            if (result[0].total > 0) {
+                                                res.status(409).json({
+                                                    message: 'Crew with this Role is already attached to this Movie!',
+                                                });
+                                            } else {
+                                                
+                                                // Add Movie_Crew
+                                                connection.query(sqlAddMovie_Crew, [movieId, crewId, roleId], function (err, result) {
+                                                    if (err) {
+                                                        res.status(400).json({
+                                                            message: 'The Movie_Crew could not be created!',
+                                                            error: err.message
+                                                        });
+                                                        console.log(err.message);
+                                                    } else {
+                                                        console.log(`A new row has been inserted!`);
+                                                        // Get the last inserted Movie_Crew
+                                                        axios.get(`http://${HOSTNAME}:${PORT}/movie_crew/${result.insertId}`).then(response =>{
+                                                            console.log(response);
+                                                            res.status(201).send(response.data[0]);
+                                                        }).catch(err =>{
+                                                            if(err){
+                                                                console.log(err);
+                                                            }
+                                                            res.status(400).json({
+                                                                message: `Movie_Crew with this ID (${result.insertId}) does not exist!`
+                                                            });
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         }
     });
+
+
+
 });
 
 /**

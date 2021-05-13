@@ -149,9 +149,6 @@ app.get("/review", (req, res) => {
             console.log(err);
         } else {
             res.status(200).send(reviews);
-            // res.status(200).json({
-            //     reviews
-            // });
         }
     });
 });
@@ -176,9 +173,6 @@ app.get("/review/:id", (req, res) => {
         } else {
             if(review.length) {
                 res.status(200).send(review[0]);
-                // res.status(200).json({
-                //     review
-                // });
             } else {
                 res.status(404).json({
                     message: `Review with this ID (${req.params.id}) does not exist!`
