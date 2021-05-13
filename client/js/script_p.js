@@ -524,6 +524,7 @@ $(document).ready(function() {
                                 <span class="tag">Rating Average</span>
                                 <span id="ratingAverage" class="tag-info">${calculateRatingAverage(data)}</span>
                             </p>
+                            <span class="tag">Your Rating</span>
                             <div class="rating">
                                 <span class="rating__result"></span>
                                 <i class="rating__star far fa-star"></i>
@@ -552,6 +553,7 @@ $(document).ready(function() {
                             <div class="loader"></div>
                             <div id="ratingContent">
                                 <p id="ratingText"><i>No Ratings are available for this Movie!</i></p>
+                                <span class="tag">Your Rating</span>
                                 <div class="rating">
                                     <span class="rating__result"></span>
                                     <i class="rating__star far fa-star"></i>
