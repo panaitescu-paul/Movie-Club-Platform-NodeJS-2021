@@ -52,44 +52,43 @@ app.post("/movie", (req, res) => {
             message: 'Title can not be null!'
         });
         return 0;
-    } else {
-        // Check the count of Movies with this Title
-        connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ?;` , 
-                        [title], function (err, result) {
-            console.log('total: ', result[0].total);
-            if (result[0].total > 0) {
-                res.status(409).json({
-                    message: 'Movie with this Title already exists!',
-                });
-            } else {
-                // Create Movie
-                connection.query(sql, [title, overview, runtime, trailerLink, poster, releaseDate], function (err, result) {
-                    if (err) {
-                        res.status(400).json({
-                            message: 'Movie could not be created!',
-                            error: err.message
-                        });
-                        console.log(err.message);
-                    } else {
-                        console.log(`A new row has been inserted!`);
-                        // Get the last inserted Movie
-                        axios.get(`http://${HOSTNAME}:${PORT}/movie/${result.insertId}`).then(response =>{
-                            console.log(response);
-                            res.status(201).send(response.data[0]);
-                        }).catch(err =>{
-                            if(err){
-                                console.log(err);
-                            }
-                            res.status(400).json({
-                                message: `Movie with this ID (${result.insertId}) does not exist!`
-                            });
-                        });
-                    }
-                });
-            }
-        });
-    }
+    } 
 
+    // Check the count of Movies with this Title
+    connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ?;` , 
+                    [title], function (err, result) {
+        console.log('total: ', result[0].total);
+        if (result[0].total > 0) {
+            res.status(409).json({
+                message: 'Movie with this Title already exists!',
+            });
+        } else {
+            // Create Movie
+            connection.query(sql, [title, overview, runtime, trailerLink, poster, releaseDate], function (err, result) {
+                if (err) {
+                    res.status(400).json({
+                        message: 'Movie could not be created!',
+                        error: err.message
+                    });
+                    console.log(err.message);
+                } else {
+                    console.log(`A new row has been inserted!`);
+                    // Get the last inserted Movie
+                    axios.get(`http://${HOSTNAME}:${PORT}/movie/${result.insertId}`).then(response =>{
+                        console.log(response);
+                        res.status(201).send(response.data[0]);
+                    }).catch(err =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        res.status(400).json({
+                            message: `Movie with this ID (${result.insertId}) does not exist!`
+                        });
+                    });
+                }
+            });
+        }
+    });
 });
 
 /**
