@@ -68,71 +68,63 @@ app.post("/rating", (req, res) => {
                 res.status(404).json({
                     message: `User with this ID (${userId}) does not exist!`
                 });
-            }
-        }
-    });
-
-    // Check if there is a Movie with this id
-    connection.query(sqlGetMovie, [movieId], function(err, movie) {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-            console.log(err);
-        } else {
-            if(!movie.length) {
-                res.status(404).json({
-                    message: `Movie with this ID (${movieId}) does not exist!`
-                });
             } else {
-               // TODO: add the next query here, if it doesn't work otherwise
+                // Check if there is a Movie with this id
+                connection.query(sqlGetMovie, [movieId], function(err, movie) {
+                    if (err) {
+                        res.status(400).json({
+                            error: err
+                        });
+                        console.log(err);
+                    } else {
+                        if(!movie.length) {
+                            res.status(404).json({
+                                message: `Movie with this ID (${movieId}) does not exist!`
+                            });
+                        } else {
+                           // Check if this User added a rating to this movie already
+                           connection.query(`SELECT COUNT(*) AS total FROM rating WHERE userId = ? AND movieId = ?;` , 
+                                           [userId, movieId], function (err, result) {
+                               console.log('total: ', result[0].total);
+                               if (result[0].total > 0) {
+                                   res.status(409).json({
+                                       message: 'Rating from this User is already attached to this Movie!',
+                                   });
+                               } else {
+                                   // Add Rating to Movie
+                                   connection.query(sqlAddRating, [userId, movieId, value], function (err, result) {
+                                       if (err) {
+                                           res.status(400).json({
+                                               message: 'The Rating could not be created!',
+                                               error: err.message
+                                           });
+                                           console.log(err.message);
+                                       } else {
+                                           console.log(`A new row has been inserted!`);
+                                           // Get the last inserted Rating
+                                           axios.get(`http://${HOSTNAME}:${PORT}/rating/${result.insertId}`).then(response =>{
+                                               console.log(response);
+                                               res.status(201).send(response.data[0]);
+                                           }).catch(err =>{
+                                               if(err){
+                                                   console.log(err);
+                                               }
+                                               res.status(400).json({
+                                                   message: `Rating with this ID (${result.insertId}) does not exist!`
+                                               });
+                                           });
+                                       }
+                                   });
+                               }
+                           });
+                        }
+                    }
+                });
             }
         }
     });
 
-    // Check if this User added a rating to this movie already
-    connection.query(`SELECT COUNT(*) AS total FROM rating WHERE userId = ? AND movieId = ?;` , 
-                    [userId, movieId], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'Rating from this User is already attached to this Movie!',
-            });
-        } else {
 
-            // Add Rating to Movie
-            connection.query(sqlAddRating, [userId, movieId, value], function (err, result) {
-                if (err) {
-                    res.status(400).json({
-                        message: 'The Rating could not be created!',
-                        error: err.message
-                    });
-                    console.log(err.message);
-                } else {
-                    console.log(`A new row has been inserted!`);
-                    // Get the last inserted Rating
-                    axios.get(`http://${HOSTNAME}:${PORT}/rating/${result.insertId}`).then(response =>{
-                        console.log(response);
-                        res.status(201).send(response.data[0]);
-                        // res.status(201).json({
-                        //     id: response.data.rating[0].id,
-                        //     userId: response.data.rating[0].userId,
-                        //     movieId: response.data.rating[0].movieId,
-                        //     value: response.data.rating[0].value,
-                        //     createdAt: response.data.rating[0].createdAt
-                        // });
-                    }).catch(err =>{
-                        if(err){
-                            console.log(err);
-                        }
-                        res.status(400).json({
-                            message: `Rating with this ID (${result.insertId}) does not exist!`
-                        });
-                    });
-                }
-            });
-        }
-    });
 
 });
 
