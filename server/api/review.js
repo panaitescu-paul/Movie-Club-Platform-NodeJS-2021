@@ -75,6 +75,7 @@ app.post("/review", (req, res) => {
                     message: `User with this ID (${userId}) does not exist!`
                 });
             } else {
+
                 // Check if there is a Movie with this id
                 connection.query(sqlGetMovie, [movieId], function(err, movie) {
                     if (err) {
@@ -88,6 +89,7 @@ app.post("/review", (req, res) => {
                                 message: `Movie with this ID (${movieId}) does not exist!`
                             });
                         } else {
+                            
                            // Check if this User added a rating to this movie already
                            connection.query(`SELECT COUNT(*) AS total FROM review WHERE userId = ? AND movieId = ?;` , 
                                            [userId, movieId], function (err, result) {
