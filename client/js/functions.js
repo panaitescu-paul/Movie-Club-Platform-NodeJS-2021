@@ -333,35 +333,24 @@ function ratingStarsSelection() {
     executeRating(ratingStars, ratingResult);
 }
 
-function chatMessages() {
+function chatMessages(roomId, userId, memberUsername) {
     const socket = io();
 
-    $("#message-form").on("submit", function(e) {
+    $( "#message-form" ).on( "submit", function (e) {
         e.preventDefault();
-        let messageInput = $("#message").val();
-        console.log(messageInput);
-        if (messageInput) {
-            socket.emit('chat message', messageInput);
-            $("#message").val('');
-        }
-    });
-
-    socket.on('chat message', function(msg) {
-        let memberUsername = $('#loggedInMember').text().substring(13);
-
         if (memberUsername === '') {
-            memberUsername = 'Guest User';
+            alert("Guest users can't send messages! You must login as a member!");
+        } else {
+            let messageInput = $( "#message" ).val();
+            if (messageInput) {
+                socket.emit( 'chat message', messageInput );
+                createMessage(userId, roomId, messageInput);
+                $( "#message" ).val( '' );
+            }
         }
-
-        $("#messages").append(`
-           <div class="message">
-                <p>
-                    <span class="message__name">${memberUsername}</span>
-                    <span class="message__meta"></span>
-                </p>
-                <p>${msg}</p>
-            </div>
-        `);
-        window.scrollTo(0, document.body.scrollHeight);
     });
+
+    socket.on( 'chat message', function (msg) {
+        showMessages(roomId);
+    } );
 }

@@ -966,7 +966,8 @@ $(document).ready(function() {
             type: "GET",
             success: function(room) {
                 console.log(room);
-                chatMessages();
+                chatMessages(roomId, loggedInMemberId, memberUsername);
+                showMessages(roomId);
                 // change the title of the room with the one chosen by the user
                 $('.room-title').text(room.name);
                 // show the chat
@@ -1135,5 +1136,72 @@ function showRooms(data) {
                 </div>
             </div>
         `);
+    });
+}
+
+// Show All messages of a room
+function showMessages(roomId) {
+    console.log(roomId)
+    $.ajax({
+        url: `${URLPath}/message/room/${roomId}`,
+        type: "GET",
+        success: function(messages) {
+            console.log(messages);
+            $('#messages').empty();
+            messages.forEach(message => {
+                $.ajax({
+                    url: `${URLPath}/user/${message.userId}`,
+                    type: "GET",
+                    success: function(user) {
+                        console.log(user);
+                        $("#messages").append(`
+                           <div class="message">
+                                <p>
+                                    <span class="message__name">${user.username}</span>
+                                    <span class="message__meta"></span>
+                                </p>
+                                <p>${message.content} <span id="createdAt">${formatDateTime(message.createdAt)}</span></p>
+                            </div>
+                        `);
+                    },
+                    statusCode: {
+                        404: function(data) {
+                            $("#results").empty();
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        }
+                    }
+                });
+            });
+        },
+        statusCode: {
+            404: function(data) {
+                $("#results").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+                alert(errorMsg);
+            }
+        }
+    });
+}
+
+function createMessage(userId, roomId, content) {
+    $.ajax({
+        url: `${URLPath}/message`,
+        type: "POST",
+        data: {
+            userId: userId,
+            roomId: roomId,
+            content: content
+        },
+        success: function() {
+            // showMessages(roomId);
+            // window.scrollTo( 0, document.body.scrollHeight );
+        },
+        statusCode: {
+            400: function(data) {
+                const errorMessage = data.responseJSON.message;
+                alert(errorMessage);
+            }
+        }
     });
 }

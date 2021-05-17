@@ -77,7 +77,6 @@ app.get('/admin',(req,res) => {
             message: "Admin session available!",
             admin: req.session.loggedInAdmin
         });
-        // res.end('Admin session available!');
     } else {
         res.end('Admin session not available!');
     }
