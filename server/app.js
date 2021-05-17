@@ -28,9 +28,9 @@ app.use(session({
 io.on('connection', (socket) => {
     console.log("New WebSocket connection");
 
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
-        console.log(msg);
+    socket.on('chat message', (data) => {
+        io.emit('chat message', data);
+        console.log(data);
     });
 
     socket.on('disconnect', () => {

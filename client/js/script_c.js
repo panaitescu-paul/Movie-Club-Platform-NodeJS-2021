@@ -966,7 +966,7 @@ $(document).ready(function() {
             type: "GET",
             success: function(room) {
                 console.log(room);
-                chatMessages(roomId, loggedInMemberId, memberUsername);
+                chatMessages(roomId, loggedInMemberId);
                 showMessages(roomId);
                 // change the title of the room with the one chosen by the user
                 $('.room-title').text(room.name);
@@ -1146,34 +1146,30 @@ function showMessages(roomId) {
     $.ajax({
         url: `${URLPath}/message/room/${roomId}`,
         type: "GET",
-        success: function(messages) {
-            console.log(messages);
+        success: async function(messages) {
             $('#messages').empty();
-            messages.forEach(message => {
-                $.ajax({
-                    url: `${URLPath}/user/${message.userId}`,
-                    type: "GET",
-                    success: function(user) {
-                        console.log(user);
-                        $("#messages").append(`
-                           <div class="message">
-                                <p>
-                                    <span class="message__name">${user.username}</span>
-                                    <span class="message__meta"></span>
-                                </p>
-                                <p>${message.content} <span id="createdAt">${formatDateTime(message.createdAt)}</span></p>
-                            </div>
-                        `);
-                    },
-                    statusCode: {
-                        404: function(data) {
-                            $("#results").empty();
-                            const errorMsg = JSON.parse(data.responseText).Error;
-                            alert(errorMsg);
-                        }
-                    }
-                });
-            });
+            $('#messages').hide();
+            $('.loader').show();
+            setTimeout(function(){
+                $('.loader').hide();
+                $('#messages').show();
+            }, 2000);
+            for (let i=0; i<messages.length; i++) {
+                const username = await getMessageUsername (messages[i].userId);
+                $("#messages").append(`
+                   <div class="message">
+                        <p>
+                            <span class="message__name">${username}</span>
+                            <span class="message__meta"></span>
+                        </p>
+                        <p>${messages[i].content} <span id="createdAt">${formatDateTime(messages[i].createdAt)}</span></p>
+                    </div>
+                `);
+                document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
+            }
+            setTimeout(function(){
+                document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
+            }, 100);
         },
         statusCode: {
             404: function(data) {
@@ -1205,4 +1201,15 @@ function createMessage(userId, roomId, content) {
             }
         }
     });
+}
+
+async function getMessageUsername (userId) {
+    return await
+        $.ajax({
+            url: `${URLPath}/user/${userId}`,
+            type: "GET",
+        })
+            .then(function(user) {
+                return user.username
+            });
 }

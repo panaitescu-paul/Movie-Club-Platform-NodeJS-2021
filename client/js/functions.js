@@ -333,24 +333,48 @@ function ratingStarsSelection() {
     executeRating(ratingStars, ratingResult);
 }
 
-function chatMessages(roomId, userId, memberUsername) {
+function chatMessages(roomId, userId) {
     const socket = io();
 
     $( "#message-form" ).on( "submit", function (e) {
         e.preventDefault();
+        const memberUsername = $('#loggedInMember').text().substring(13);
         if (memberUsername === '') {
             alert("Guest users can't send messages! You must login as a member!");
         } else {
             let messageInput = $( "#message" ).val();
             if (messageInput) {
-                socket.emit( 'chat message', messageInput );
                 createMessage(userId, roomId, messageInput);
+                let date = new Date();
+                let year = date.getFullYear();
+                let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                let day = ("0" + date.getDate()).slice(-2);
+                let hours = ("0" + date.getHours()).slice(-2);
+                let minutes = ("0" + date.getMinutes()).slice(-2);
+                let seconds = ("0" + date.getSeconds()).slice(-2);
+                let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+                console.log(createdAt)
+                socket.emit( 'chat message', { messageInput, createdAt, memberUsername } );
                 $( "#message" ).val( '' );
             }
         }
     });
 
-    socket.on( 'chat message', function (msg) {
-        showMessages(roomId);
+    socket.on( 'chat message', function (data) {
+        console.log(data.messageInput);
+        console.log(data.createdAt);
+        console.log(data.memberUsername);
+        $("#messages").append(`
+           <div class="message">
+                <p>
+                    <span class="message__name">${data.memberUsername}</span>
+                    <span class="message__meta"></span>
+                </p>
+                <p>${data.messageInput} <span id="createdAt">${formatDateTime(data.createdAt)}</span></p>
+            </div>
+        `);
+        document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
+
+        // showMessages(roomId);
     } );
 }
