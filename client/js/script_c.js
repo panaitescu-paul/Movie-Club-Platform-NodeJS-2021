@@ -977,6 +977,7 @@ $(document).ready(function() {
                 } else {
                     $('#chatUsername').text(memberUsername);
                 }
+                window.scrollTo( 0, document.body.scrollHeight );
             },
             statusCode: {
                 404: function(data) {
