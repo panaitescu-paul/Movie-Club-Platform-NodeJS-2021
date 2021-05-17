@@ -49,7 +49,7 @@ apiEndpoints:
     paths: [ '/room', '/room/*' ]
   message:
     host: localhost
-    paths: [ '/message', '/message/*' ]
+    paths: [ '/message', '/message/*', '/message/room/*' ]
   participant:
     host: localhost
     paths: [ '/participant', '/participant/*', '/participant/roomId/*', '/participant/userId/*' ]

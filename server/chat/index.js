@@ -12,7 +12,6 @@ const io = socketio(server);
 
 const port = process.env.PORT || 3030;
 const publicDirectoryPath = path.join(__dirname, '');
-console.log(publicDirectoryPath)
 
 app.use(express.static(publicDirectoryPath));
 
@@ -41,7 +40,7 @@ io.on("connection", (socket) => {
     socket.on("sendMessage", (message, callback) => {
         const user = getUser(socket.id);
         const filter = new Filter();
-
+        console.log(user, ' - ', message);
         if(filter.isProfane(message)) {
             return callback("Profanity is not allowed!");
         }
@@ -70,5 +69,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-    console.log(`Server is up on port ${port}!`);
+    console.log(`Server running at http://localhost:${port}/`);
 });

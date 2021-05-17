@@ -16,9 +16,10 @@ io.on('connection', (socket) => {
 
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
+        console.log(msg)
     });
 });
 
-server.listen(3000, () => {
-    console.log('Listening on port 3000');
+server.listen(3031, () => {
+    console.log(`Server running at http://localhost:3031/`);
 });

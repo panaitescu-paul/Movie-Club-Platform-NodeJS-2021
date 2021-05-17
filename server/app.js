@@ -3,13 +3,15 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const axios = require('axios');
 const redis = require('redis');
 const redisStore = require('connect-redis')(session);
 const client  = redis.createClient();
 const HOSTNAME = 'localhost';
 const PORT = 4000;
 let app = express();
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
@@ -23,8 +25,17 @@ app.use(session({
     resave: false
 }));
 
-app.get('/',(req,res) => {
-    res.sendFile(path.join(__dirname, '../client') + '/index.html');
+io.on('connection', (socket) => {
+    console.log("New WebSocket connection");
+
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+        console.log(msg);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
 });
 
 app.post('/login/member',(req,res) => {
@@ -82,7 +93,7 @@ app.get('/logout',(req,res) => {
     });
 });
 
-app.listen(PORT, HOSTNAME, (err) => {
+server.listen(PORT, HOSTNAME, (err) => {
     if(err){
         console.log(err);
     }

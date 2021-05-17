@@ -333,3 +333,35 @@ function ratingStarsSelection() {
     executeRating(ratingStars, ratingResult);
 }
 
+function chatMessages() {
+    const socket = io();
+
+    $("#message-form").on("submit", function(e) {
+        e.preventDefault();
+        let messageInput = $("#message").val();
+        console.log(messageInput);
+        if (messageInput) {
+            socket.emit('chat message', messageInput);
+            $("#message").val('');
+        }
+    });
+
+    socket.on('chat message', function(msg) {
+        let memberUsername = $('#loggedInMember').text().substring(13);
+
+        if (memberUsername === '') {
+            memberUsername = 'Guest User';
+        }
+
+        $("#messages").append(`
+           <div class="message">
+                <p>
+                    <span class="message__name">${memberUsername}</span>
+                    <span class="message__meta"></span>
+                </p>
+                <p>${msg}</p>
+            </div>
+        `);
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+}

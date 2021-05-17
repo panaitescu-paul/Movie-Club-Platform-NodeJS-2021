@@ -70,7 +70,6 @@ $(document).ready(function() {
                 showAllRooms();
                 $('.chat').hide();
             });
-            // ShowCommunity();
         } else if (page === "login.html" || page === "login.html?") {
             console.log("PAGE login");
             importHeaderFragment().then( () => {

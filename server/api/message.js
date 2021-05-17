@@ -165,6 +165,40 @@ app.delete("/message/:id", (req, res) => {
     });
 });
 
+// READ All messages from a room
+app.get("/message/room/:roomId", (req, res) => {
+    let stmt = `SELECT * FROM message WHERE roomId = ? ORDER BY createdAt`;
+    let sqlGetRoom = `SELECT * FROM room WHERE id = ?`;
+
+    // Check if there is a Room with this id
+    connection.query(sqlGetRoom, [req.params.roomId], function (err, room) {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            if (!room.length) {
+                res.status(404).json({
+                    message: `Room with this ID (${req.params.roomId}) does not exist!`
+                });
+            } else {
+                connection.query(stmt, [req.params.roomId], function (err, results) {
+                    if (err) {
+                        res.status(400).json({
+                            message: 'The messages for this room could not be showed!',
+                            error: err.message
+                        });
+                        console.log(err);
+                    } else {
+                        res.status(200).send(results);
+                    }
+                } );
+            }
+        }
+    });
+});
+
 app.listen(PORT, HOSTNAME, (err) => {
     if(err){
         console.log(err);

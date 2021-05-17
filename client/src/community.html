@@ -9,6 +9,7 @@
     <link rel="icon" href="../img/movie-icon 2.png" type="image/ico">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="/socket.io/socket.io.js"></script>
     <script src="../js/jquery-3.5.1.js"></script>
     <script src="../js/functions.js"></script>
     <script src="../js/script_c.js"></script>
@@ -51,7 +52,7 @@
 
                 <div class="compose">
                     <form id="message-form">
-                        <input name="message" placeholder="Write a message" required="" autocomplete="off">
+                        <input id="message" name="message" placeholder="Write a message" required="" autocomplete="off">
                         <button>Send</button>
                     </form>
                 </div>

@@ -961,12 +961,12 @@ $(document).ready(function() {
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
         const memberUsername = $('#loggedInMember').text().substring(13);
 
-
         $.ajax({
             url: `${URLPath}/room/${roomId}`,
             type: "GET",
             success: function(room) {
                 console.log(room);
+                chatMessages();
                 // change the title of the room with the one chosen by the user
                 $('.room-title').text(room.name);
                 // show the chat
