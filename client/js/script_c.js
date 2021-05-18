@@ -1119,13 +1119,13 @@ function showAllRooms() {
     });
 }
 
-// Show Admins in a List
+// Show Rooms in a List
 function showRooms(data) {
     $("#results").empty();
     data.forEach(room => {
         $("#results").append(`
             <div class="card">
-                <div data-id="${room.id}" class="card-body roomInfo">
+                <div data-id="${room.id}" data-userid="${room.userId}" class="card-body roomInfo">
                     <h5 class="card-title">${room.name}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -1156,7 +1156,7 @@ function showMessages(roomId) {
             for (let i=0; i<messages.length; i++) {
                 const username = await getMessageUsername (messages[i].userId);
                 $("#messages").append(`
-                   <div class="message">
+                   <div data-id="${messages[i].id}" class="message">
                         <p>
                             <span class="message__name">${username}</span>
                             <span class="message__meta"></span>
@@ -1181,7 +1181,7 @@ function showMessages(roomId) {
 }
 
 function createMessage(userId, roomId, content) {
-    $.ajax({
+    return $.ajax({
         url: `${URLPath}/message`,
         type: "POST",
         data: {
@@ -1189,9 +1189,10 @@ function createMessage(userId, roomId, content) {
             roomId: roomId,
             content: content
         },
-        success: function() {
+        success: function(data) {
             // showMessages(roomId);
             // window.scrollTo( 0, document.body.scrollHeight );
+            return data.id;
         },
         statusCode: {
             400: function(data) {

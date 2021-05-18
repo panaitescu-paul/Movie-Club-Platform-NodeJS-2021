@@ -14,7 +14,8 @@ app.use(cors());
 // CREATE Room
 app.post("/room", (req, res) => {
     let name = req.body.name;
-    let stmt = `INSERT INTO room(name, createdAt) VALUES(?, ?);`;
+    let userId = req.body.userId;
+    let stmt = `INSERT INTO room(name, userId, createdAt) VALUES(?, ?, ?);`;
 
     let date = new Date();
     let year = date.getFullYear();
@@ -25,7 +26,7 @@ app.post("/room", (req, res) => {
     let seconds = ("0" + date.getSeconds()).slice(-2);
     let currentDateAndTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 
-    connection.query(stmt, [name, currentDateAndTime], function (err, result) {
+    connection.query(stmt, [name, userId, currentDateAndTime], function (err, result) {
         if (err) {
             res.status(400).json({
                 message: 'The room could not be created!',

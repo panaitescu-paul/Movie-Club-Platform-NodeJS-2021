@@ -343,17 +343,19 @@ function chatMessages(roomId, userId) {
         } else {
             let messageInput = $( "#message" ).val();
             if (messageInput) {
-                createMessage(userId, roomId, messageInput);
-                let date = new Date();
-                let year = date.getFullYear();
-                let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                let day = ("0" + date.getDate()).slice(-2);
-                let hours = ("0" + date.getHours()).slice(-2);
-                let minutes = ("0" + date.getMinutes()).slice(-2);
-                let seconds = ("0" + date.getSeconds()).slice(-2);
-                let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-                socket.emit( 'chat message', { messageInput, createdAt, memberUsername } );
-                $( "#message" ).val( '' );
+                createMessage(userId, roomId, messageInput).then(createdMessage => {
+                    const messageId = createdMessage.id;
+                    let date = new Date();
+                    let year = date.getFullYear();
+                    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                    let day = ("0" + date.getDate()).slice(-2);
+                    let hours = ("0" + date.getHours()).slice(-2);
+                    let minutes = ("0" + date.getMinutes()).slice(-2);
+                    let seconds = ("0" + date.getSeconds()).slice(-2);
+                    let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+                    socket.emit( 'chat message', { messageInput, createdAt, memberUsername, messageId } );
+                    $( "#message" ).val( '' );
+                });
             }
         }
     });
@@ -378,7 +380,7 @@ function chatMessages(roomId, userId) {
 
     socket.on('chat message', function (data) {
         $("#messages").append(`
-           <div class="message">
+           <div data-id="${data.messageId}" class="message">
                 <p>
                     <span class="message__name">${data.memberUsername}</span>
                     <span class="message__meta"></span>
