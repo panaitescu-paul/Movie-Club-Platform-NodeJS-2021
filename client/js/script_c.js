@@ -802,7 +802,6 @@ $(document).ready(function() {
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
         const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
         const ratingResult = $('.rating__result').text().split('/')[0];
-        console.log(ratingResult)
         $.ajax({
             url: `${URLPath}/rating`,
             type: "POST",
@@ -960,12 +959,13 @@ $(document).ready(function() {
         const roomId = $(this).attr("data-id");
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
         const memberUsername = $('#loggedInMember').text().substring(13);
+        const socket = io();
+        socket.emit('join', {memberUsername, roomId, loggedInMemberId });
 
         $.ajax({
             url: `${URLPath}/room/${roomId}`,
             type: "GET",
             success: function(room) {
-                console.log(room);
                 chatMessages(roomId, loggedInMemberId);
                 showMessages(roomId);
                 // change the title of the room with the one chosen by the user
@@ -1142,7 +1142,6 @@ function showRooms(data) {
 
 // Show All messages of a room
 function showMessages(roomId) {
-    console.log(roomId)
     $.ajax({
         url: `${URLPath}/message/room/${roomId}`,
         type: "GET",

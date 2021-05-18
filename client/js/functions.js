@@ -246,7 +246,6 @@ function ratingStarsSelection() {
     const ratingResult = document.querySelector(".rating__result");
     const loggedInMemberId = $('#loggedInMember').attr("data-id");
     const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
-    console.log(movieId);
     printRatingResult(ratingResult);
 
     function executeRating(stars, result) {
@@ -336,7 +335,7 @@ function ratingStarsSelection() {
 function chatMessages(roomId, userId) {
     const socket = io();
 
-    $( "#message-form" ).on( "submit", function (e) {
+    $("#message-form" ).on( "submit", function (e) {
         e.preventDefault();
         const memberUsername = $('#loggedInMember').text().substring(13);
         if (memberUsername === '') {
@@ -353,17 +352,31 @@ function chatMessages(roomId, userId) {
                 let minutes = ("0" + date.getMinutes()).slice(-2);
                 let seconds = ("0" + date.getSeconds()).slice(-2);
                 let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-                console.log(createdAt)
                 socket.emit( 'chat message', { messageInput, createdAt, memberUsername } );
                 $( "#message" ).val( '' );
             }
         }
     });
 
-    socket.on( 'chat message', function (data) {
-        console.log(data.messageInput);
-        console.log(data.createdAt);
-        console.log(data.memberUsername);
+    socket.on('join', function (data) {
+        console.log(data)
+        const lis = document.getElementById("usersList").getElementsByTagName("li");
+        let elementAlreadyListed = false;
+        for (let i = 0; i < lis.length; i++) {
+            if (lis[i].id === data.loggedInMemberId) {
+                elementAlreadyListed = true;
+            }
+        }
+
+        if (!elementAlreadyListed) {
+            $(".users").append(`
+               <li id="${data.loggedInMemberId}">${data.memberUsername}</li>
+            `);
+        }
+
+    });
+
+    socket.on('chat message', function (data) {
         $("#messages").append(`
            <div class="message">
                 <p>
@@ -374,7 +387,5 @@ function chatMessages(roomId, userId) {
             </div>
         `);
         document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
-
-        // showMessages(roomId);
-    } );
+    });
 }
