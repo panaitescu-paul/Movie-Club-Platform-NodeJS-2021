@@ -448,7 +448,6 @@ $(document).ready(function() {
                     data: {
                         id: data.memberUser.id,
                         username: data.memberUser.username,
-                        password: data.memberUser.password,
                         firstName: data.memberUser.firstName,
                         lastName: data.memberUser.lastName,
                         gender: data.memberUser.gender,
@@ -497,8 +496,7 @@ $(document).ready(function() {
                     type: "POST",
                     data: {
                         id: data.adminUser.id,
-                        username: data.adminUser.username,
-                        password: data.adminUser.password
+                        username: data.adminUser.username
                     },
                     success: function(response) {
                         if (response === 'Admin session created!') {
@@ -1183,7 +1181,7 @@ function showRooms(data) {
     data.forEach(room => {
         $("#results").append(`
             <div class="card">
-                <div data-id="${room.id}" data-userid="${room.userId}" class="card-body roomInfo">
+                <div data-id="${room.id}" class="card-body roomInfo">
                     <h5 class="card-title">${room.name}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -1200,6 +1198,7 @@ function showRooms(data) {
 
 // Show All messages of a room
 function showMessages(roomId) {
+    const loggedInMemberId = $('#loggedInMember').attr("data-id");
     $.ajax({
         url: `${URLPath}/message/room/${roomId}`,
         type: "GET",
@@ -1214,19 +1213,38 @@ function showMessages(roomId) {
             for (let i=0; i<messages.length; i++) {
                 const username = await getMessageUsername (messages[i].userId);
                 $("#messages").append(`
-                   <div data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="message">
+                   <div class="message">
                         <p>
                             <span class="message__name">${username}</span>
-                            <span class="message__meta"></span>
+                            <span class="message__meta"></span>                          
                         </p>
-                        <p>${messages[i].content} <span id="createdAt">${formatDateTime(messages[i].createdAt)}</span></p>
+                        <p>${messages[i].content}
+                            <span class="createdAt">${formatDateTime(messages[i].createdAt)}</span>
+                            <span class="messageUpdateDelete">
+                                <i data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="fas fa-edit messageUpdate"></i>
+                                <i data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="fas fa-trash-alt messageDelete"></i>
+                            </span>
+                        </p>
                     </div>
                 `);
                 document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
             }
             setTimeout(function(){
                 document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
-            }, 100);
+            }, 1000);
+            $('.messageUpdate').each(function () {
+                let userId = $(this).attr('data-userid');
+
+                if (loggedInMemberId === undefined) {
+                    $('.messageUpdate').hide();
+                    $('.messageDelete').hide();
+                }
+                if (loggedInMemberId === userId) {
+                    $(`[data-userid="${userId}"]`).show();
+                } else {
+                    $(`[data-userid="${userId}"]`).hide();
+                }
+            });
         },
         statusCode: {
             404: function(data) {

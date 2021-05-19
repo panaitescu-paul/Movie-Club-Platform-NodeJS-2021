@@ -547,6 +547,19 @@ body {
     padding: 12px 24px 0 24px;
 }
 
-#createdAt {
+.createdAt {
     float: right;
+}
+
+.messageUpdateDelete {
+    float: right;
+    margin-right: 30px;
+}
+
+.messageUpdate, .messageDelete {
+    cursor: pointer;
+}
+
+.messageUpdate {
+    margin-right: 20px;
 }

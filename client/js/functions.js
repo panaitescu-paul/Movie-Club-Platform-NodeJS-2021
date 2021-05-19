@@ -380,14 +380,21 @@ function chatMessages(roomId, userId) {
 
     socket.on('chat message', function (data) {
         $("#messages").append(`
-           <div data-id="${data.messageId}" class="message">
+            <div class="message">
                 <p>
                     <span class="message__name">${data.memberUsername}</span>
-                    <span class="message__meta"></span>
+                    <span class="message__meta"></span>                          
                 </p>
-                <p>${data.messageInput} <span id="createdAt">${formatDateTime(data.createdAt)}</span></p>
+                <p>${data.messageInput}
+                    <span class="createdAt">${formatDateTime(data.createdAt)}</span>
+                    <span class="updateDeleteMessage">
+                        <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-edit messageUpdate"></i>
+                        <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-trash-alt messageDelete"></i>
+                    </span>
+                </p>
             </div>
         `);
+
         document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
     });
 }
