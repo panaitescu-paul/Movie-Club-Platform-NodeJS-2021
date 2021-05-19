@@ -387,8 +387,8 @@ function chatMessages(roomId, userId) {
                 </p>
                 <p>${data.messageInput}
                     <span class="createdAt">${formatDateTime(data.createdAt)}</span>
-                    <span class="updateDeleteMessage">
-                        <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-edit messageUpdate"></i>
+                    <span class="messageUpdateDelete">
+                        <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-edit messageUpdate" data-toggle="modal" data-target="#modal"></i>
                         <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-trash-alt messageDelete"></i>
                     </span>
                 </p>

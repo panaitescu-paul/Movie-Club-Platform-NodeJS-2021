@@ -796,6 +796,7 @@ $(document).ready(function() {
         }
     });
 
+    // Create/Update rating
     $(document).on("click", ".rating", function() {
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
         const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
@@ -968,6 +969,7 @@ $(document).ready(function() {
                 showMessages(roomId);
                 // change the title of the room with the one chosen by the user
                 $('.room-title').text(room.name);
+                $('.room-title').attr('data-id', roomId);
                 // show the chat
                 $('.chat').show();
                 if (memberUsername === '') {
@@ -1043,6 +1045,68 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Update Message
+    $(document).on("click", ".messageUpdate", function() {
+        const messageId = $(this).attr("data-id");
+        const roomId = $('.room-title').attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: `${URLPath}/message/${messageId}`,
+            type: "GET",
+            success: function(message) {
+                $("#modalTitle").text(`Update Message`);
+                $("#modalInfoContent1").append(`
+                    <form id="updateMessageForm">
+                        <div class="form-group form-custom">
+                            <label for="messageContent">Username</label>
+                            <input type="text" class="form-control" id="messageContent" value="${message.content}" required>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-success btn-3">Update Message</button>
+                        </div>
+                    </form>
+                `);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                }
+            },
+            complete: function () {
+                $("#updateMessageForm").on("submit", function(e) {
+                    e.preventDefault();
+                    const messageContent = $("#messageContent").val().trim();
+
+                    $.ajax({
+                        url: `${URLPath}/message/${messageId}`,
+                        type: "PUT",
+                        data: {
+                            content: messageContent
+                        },
+                        success: function() {
+                            alert("The message was successfully updated!");
+                            $('#modal > div > div > div.modal-header > button').click();
+                            showMessages(roomId);
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            },
+                            409: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+
 });
 
 // Show all Crews in a List
@@ -1209,7 +1273,7 @@ function showMessages(roomId) {
             setTimeout(function(){
                 $('.loader').hide();
                 $('#messages').show();
-            }, 2000);
+            }, 3000);
             for (let i=0; i<messages.length; i++) {
                 const username = await getMessageUsername (messages[i].userId);
                 $("#messages").append(`
@@ -1221,7 +1285,7 @@ function showMessages(roomId) {
                         <p>${messages[i].content}
                             <span class="createdAt">${formatDateTime(messages[i].createdAt)}</span>
                             <span class="messageUpdateDelete">
-                                <i data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="fas fa-edit messageUpdate"></i>
+                                <i data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="fas fa-edit messageUpdate" data-toggle="modal" data-target="#modal"></i>
                                 <i data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="fas fa-trash-alt messageDelete"></i>
                             </span>
                         </p>
@@ -1229,9 +1293,6 @@ function showMessages(roomId) {
                 `);
                 document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
             }
-            setTimeout(function(){
-                document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
-            }, 1000);
             $('.messageUpdate').each(function () {
                 let userId = $(this).attr('data-userid');
 
@@ -1245,6 +1306,9 @@ function showMessages(roomId) {
                     $(`[data-userid="${userId}"]`).hide();
                 }
             });
+            setTimeout(function(){
+                document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
+            }, 2000);
         },
         statusCode: {
             404: function(data) {
