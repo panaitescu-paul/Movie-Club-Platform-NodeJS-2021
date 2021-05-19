@@ -1106,7 +1106,27 @@ $(document).ready(function() {
         });
     });
 
+    // Delete Message
+    $(document).on("click", ".messageDelete", function() {
+        const messageId = $(this).attr("data-id");
+        if (confirm("Are you sure that you want to delete this message?")) {
+            $.ajax({
+                url: `${URLPath}/message/${messageId}`,
+                type: "DELETE",
+                success: function() {
+                    $("i[data-id=" + messageId + "]").parent().parent().parent().remove();
 
+                    alert("The message was successfully deleted!");
+                },
+                statusCode: {
+                    400: function(data) {
+                        const errorMessage = data.responseJSON.message;
+                        alert(errorMessage);
+                    }
+                }
+            });
+        }
+    });
 });
 
 // Show all Crews in a List
