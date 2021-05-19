@@ -987,6 +987,64 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Create Room
+    $(document).on("click", "#btnCreateRoom", function() {
+        clearModalData();
+        $("#modalTitle").text(`Create new Room`);
+        $("#modalInfoContent1").append(`
+             <form id="createRoomForm">
+                <div class="form-group form-custom">
+                    <label for="roomName">Room Name</label>
+                    <input type="text" class="form-control" id="roomName" autocomplete="off" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-success btn-3">Create Room</button>
+                </div>
+             </form>
+        `);
+        $("#createRoomForm").on("submit", function(e) {
+            e.preventDefault();
+            const roomName = $("#roomName").val().trim();
+            const loggedInMemberId = $('#loggedInMember').attr("data-id");
+            console.log(roomName)
+            console.log(loggedInMemberId)
+
+            if (loggedInMemberId === undefined) {
+                alert("You must be logged in as a member to be able to create a room!");
+            } else {
+                if (roomName === null || roomName.length === 0) {
+                    alert( "The room name should not be empty!" );
+                } else if (roomName.match( '[=!@#$%^*?":{}|<>;]' )) {
+                    alert( "The room name can't contain invalid characters!" );
+                } else {
+                    $.ajax( {
+                        url: `${URLPath}/room`,
+                        type: "POST",
+                        data: {
+                            name: roomName,
+                            userId: loggedInMemberId
+                        },
+                        success: function () {
+                            alert( "The room was successfully created!" );
+                            $( '#modal > div > div > div.modal-header > button' ).click();
+                            showAllRooms();
+                        },
+                        statusCode: {
+                            400: function (data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert( errorMessage );
+                            },
+                            409: function (data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert( errorMessage );
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
 });
 
 // Show all Crews in a List
@@ -1156,7 +1214,7 @@ function showMessages(roomId) {
             for (let i=0; i<messages.length; i++) {
                 const username = await getMessageUsername (messages[i].userId);
                 $("#messages").append(`
-                   <div data-id="${messages[i].id}" class="message">
+                   <div data-id="${messages[i].id}" data-userid="${messages[i].userId}" class="message">
                         <p>
                             <span class="message__name">${username}</span>
                             <span class="message__meta"></span>
