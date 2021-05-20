@@ -27,14 +27,19 @@ app.use(session({
 
 io.on('connection', (socket) => {
     console.log("New WebSocket connection");
-    socket.on("join", (data) => {
-        io.emit("join", data);
-        console.log(data);
-    });
 
     socket.on('chat message', (data) => {
         io.emit('chat message', data);
         console.log(data);
+    });
+
+    socket.on('chat update delete', () => {
+        io.emit('chat update delete');
+    });
+
+    socket.on('chat participant', () => {
+        console.log("here")
+        io.emit('chat participant');
     });
 
     socket.on('disconnect', () => {

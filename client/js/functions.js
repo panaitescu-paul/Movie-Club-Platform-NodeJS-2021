@@ -353,32 +353,16 @@ function chatMessages(roomId, userId) {
                     let minutes = ("0" + date.getMinutes()).slice(-2);
                     let seconds = ("0" + date.getSeconds()).slice(-2);
                     let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-                    socket.emit( 'chat message', { messageInput, createdAt, memberUsername, messageId } );
+                    socket.emit( 'chat message', { messageInput, createdAt, memberUsername, messageId, userId } );
                     $( "#message" ).val( '' );
                 });
+                createParticipantToRoom(userId, roomId);
             }
         }
-    });
-
-    socket.on('join', function (data) {
-        console.log(data)
-        const lis = document.getElementById("usersList").getElementsByTagName("li");
-        let elementAlreadyListed = false;
-        for (let i = 0; i < lis.length; i++) {
-            if (lis[i].id === data.loggedInMemberId) {
-                elementAlreadyListed = true;
-            }
-        }
-
-        if (!elementAlreadyListed) {
-            $(".users").append(`
-               <li id="${data.loggedInMemberId}">${data.memberUsername}</li>
-            `);
-        }
-
     });
 
     socket.on('chat message', function (data) {
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
         $("#messages").append(`
             <div class="message">
                 <p>
@@ -388,13 +372,32 @@ function chatMessages(roomId, userId) {
                 <p>${data.messageInput}
                     <span class="createdAt">${formatDateTime(data.createdAt)}</span>
                     <span class="messageUpdateDelete">
-                        <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-edit messageUpdate" data-toggle="modal" data-target="#modal"></i>
-                        <i data-id="${data.messageId}" data-userid="${userId}" class="fas fa-trash-alt messageDelete"></i>
+                        <i data-id="${data.messageId}" data-userid="${data.userId}" class="fas fa-edit messageUpdate" data-toggle="modal" data-target="#modal"></i>
+                        <i data-id="${data.messageId}" data-userid="${data.userId}" class="fas fa-trash-alt messageDelete"></i>
                     </span>
                 </p>
             </div>
         `);
-
+        $('.messageUpdate').each(function () {
+            let messageUserId = $(this).attr('data-userid');
+            if (loggedInMemberId === undefined) {
+                $('.messageUpdate').hide();
+                $('.messageDelete').hide();
+            }
+            if (loggedInMemberId === messageUserId) {
+                $(`[data-userid="${messageUserId}"]`).show();
+            } else {
+                $(`[data-userid="${messageUserId}"]`).hide();
+            }
+        });
         document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
+    });
+
+    socket.on('chat update delete', function () {
+        showMessages(roomId);
+    });
+
+    socket.on('chat participant', function () {
+        showAllParticipantsOfARoom(roomId);
     });
 }

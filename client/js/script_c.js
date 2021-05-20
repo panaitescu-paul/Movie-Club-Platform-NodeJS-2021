@@ -958,8 +958,6 @@ $(document).ready(function() {
         const roomId = $(this).attr("data-id");
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
         const memberUsername = $('#loggedInMember').text().substring(13);
-        const socket = io();
-        socket.emit('join', {memberUsername, roomId, loggedInMemberId });
 
         $.ajax({
             url: `${URLPath}/room/${roomId}`,
@@ -977,6 +975,7 @@ $(document).ready(function() {
                 } else {
                     $('#chatUsername').text(memberUsername);
                 }
+                showAllParticipantsOfARoom(roomId);
                 window.scrollTo( 0, document.body.scrollHeight );
             },
             statusCode: {
@@ -1007,8 +1006,6 @@ $(document).ready(function() {
             e.preventDefault();
             const roomName = $("#roomName").val().trim();
             const loggedInMemberId = $('#loggedInMember').attr("data-id");
-            console.log(roomName)
-            console.log(loggedInMemberId)
 
             if (loggedInMemberId === undefined) {
                 alert("You must be logged in as a member to be able to create a room!");
@@ -1088,7 +1085,9 @@ $(document).ready(function() {
                         success: function() {
                             alert("The message was successfully updated!");
                             $('#modal > div > div > div.modal-header > button').click();
-                            showMessages(roomId);
+                            // showMessages(roomId);
+                            const socket = io();
+                            socket.emit('chat update delete');
                         },
                         statusCode: {
                             400: function(data) {
@@ -1109,14 +1108,18 @@ $(document).ready(function() {
     // Delete Message
     $(document).on("click", ".messageDelete", function() {
         const messageId = $(this).attr("data-id");
+        const userId = $(this).attr("data-userid");
+        const roomId = $('.room-title').attr("data-id");
         if (confirm("Are you sure that you want to delete this message?")) {
             $.ajax({
                 url: `${URLPath}/message/${messageId}`,
                 type: "DELETE",
                 success: function() {
                     $("i[data-id=" + messageId + "]").parent().parent().parent().remove();
-
+                    deleteRoomParticipant(roomId, userId);
                     alert("The message was successfully deleted!");
+                    const socket = io();
+                    socket.emit('chat update delete');
                 },
                 statusCode: {
                     400: function(data) {
@@ -1295,7 +1298,7 @@ function showMessages(roomId) {
                 $('#messages').show();
             }, 3000);
             for (let i=0; i<messages.length; i++) {
-                const username = await getMessageUsername (messages[i].userId);
+                const username = await getUsername (messages[i].userId);
                 $("#messages").append(`
                    <div class="message">
                         <p>
@@ -1349,10 +1352,8 @@ function createMessage(userId, roomId, content) {
             roomId: roomId,
             content: content
         },
-        success: function(data) {
-            // showMessages(roomId);
-            // window.scrollTo( 0, document.body.scrollHeight );
-            return data.id;
+        success: function(message) {
+            return message.id;
         },
         statusCode: {
             400: function(data) {
@@ -1363,7 +1364,7 @@ function createMessage(userId, roomId, content) {
     });
 }
 
-async function getMessageUsername (userId) {
+async function getUsername (userId) {
     return await
         $.ajax({
             url: `${URLPath}/user/${userId}`,
@@ -1372,4 +1373,144 @@ async function getMessageUsername (userId) {
             .then(function(user) {
                 return user.username
             });
+}
+
+// Show all Participants of a Room
+function showAllParticipantsOfARoom(roomId) {
+    $(".users").empty();
+    $.ajax({
+        url: `${URLPath}/participant/roomId/${roomId}`,
+        type: "GET",
+        success: async function(participants) {
+            for (let i = 0; i < participants.length; i++) {
+                const username = await getUsername (participants[i].userId);
+                const lis = document.getElementById("usersList").getElementsByTagName("li");
+                let elementAlreadyListed = false;
+                for (let j = 0; j < lis.length; j++) {
+                    if (lis[j].id === participants[i].userId) {
+                        elementAlreadyListed = true;
+                    }
+                }
+
+                if (!elementAlreadyListed) {
+                    $(".users").append(`
+                       <li data-id="${participants[i].id}" id="${participants[i].userId}">${username}</li>
+                    `);
+                }
+            }
+        },
+        statusCode: {
+            404: function(data) {
+                $(".users").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+            }
+        }
+    });
+}
+
+function createParticipantToRoom(userId, roomId) {
+    $.ajax({
+        url: `${URLPath}/participant/roomId/${roomId}`,
+        type: "GET",
+        success: function(participants) {
+            let participantAlreadyExist = false;
+            for (let i = 0; i < participants.length; i++) {
+                if (participants[i].userId === Number(userId)) {
+                    participantAlreadyExist = true;
+                    break;
+                }
+            }
+            if (!participantAlreadyExist) {
+                $.ajax({
+                    url: `${URLPath}/participant`,
+                    type: "POST",
+                    data: {
+                        userId: userId,
+                        roomId: roomId
+                    },
+                    success: function() {
+                        const socket = io();
+                        socket.emit('chat participant');
+                    },
+                    statusCode: {
+                        400: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
+            }
+        },
+        statusCode: {
+            404: function(data) {
+                const errorMsg = JSON.parse(data.responseText).Error;
+                $.ajax({
+                    url: `${URLPath}/participant`,
+                    type: "POST",
+                    data: {
+                        userId: userId,
+                        roomId: roomId
+                    },
+                    success: function() {
+                        const socket = io();
+                        socket.emit('chat participant');
+                    },
+                    statusCode: {
+                        400: function(data) {
+                            const errorMessage = data.responseJSON.message;
+                            alert(errorMessage);
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function deleteRoomParticipant (roomId, userId) {
+    $.ajax({
+        url: `${URLPath}/message/room/${roomId}`,
+        type: "GET",
+        success: function(messages) {
+            let isFound = false;
+            for (let i = 0; i < messages.length; i++) {
+                if (messages[i].userId === Number(userId)) {
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) {
+                console.log("delete participant")
+                const lis = document.getElementById("usersList").getElementsByTagName("li");
+                for (let j = 0; j < lis.length; j++) {
+                    if (lis[j].id === userId) {
+                        let participantId = $(`#${userId}`).attr('data-id');
+                        console.log(participantId);
+                        $.ajax({
+                            url: `${URLPath}/participant/${participantId}`,
+                            type: "DELETE",
+                            success: function() {
+                                const socket = io();
+                                socket.emit('chat participant');
+                            },
+                            statusCode: {
+                                400: function(data) {
+                                    const errorMessage = data.responseJSON.message;
+                                    alert(errorMessage);
+                                }
+                            }
+                        });
+                    }
+                }
+            } else {
+                console.log("the participant has more messages")
+            }
+        },
+        statusCode: {
+            404: function(data) {
+                $(".users").empty();
+                const errorMsg = JSON.parse(data.responseText).Error;
+            }
+        }
+    });
 }
