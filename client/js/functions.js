@@ -129,6 +129,40 @@ function formatDateTime(dateTime) {
     }
 }
 
+async function importHeaderFragment() {
+    return await fetch("../src/header.html")
+        .then(response => {
+            return response.text()
+        })
+        .then(data => {
+            document.querySelector("header").innerHTML = data;
+        });
+}
+
+function importFooterFragment() {
+    fetch("../src/footer.html")
+        .then(response => {
+            return response.text()
+        })
+        .then(data => {
+            document.querySelector("footer").innerHTML = data;
+        });
+}
+
+function loginFormType() {
+    $('#loginAdminForm').hide();
+    $(document).on("click", "#btnMemberTab", function() {
+        $("#loginTitle").text(`Member Login`);
+        $('#loginMemberForm').show();
+        $('#loginAdminForm').hide();
+    });
+    $(document).on("click", "#btnAdminTab", function() {
+        $("#loginTitle").text(`Admin Login`);
+        $('#loginMemberForm').hide();
+        $('#loginAdminForm').show();
+    });
+}
+
 function checkAdminLogin(){
     $.ajax({
         url: `http://localhost:4000/admin`,
@@ -163,40 +197,6 @@ function checkMemberLogin(){
                 $('#loginInfo').empty();
             }
         }
-    });
-}
-
-async function importHeaderFragment() {
-    return await fetch("../src/header.html")
-        .then(response => {
-            return response.text()
-        })
-        .then(data => {
-            document.querySelector("header").innerHTML = data;
-        });
-}
-
-function importFooterFragment() {
-    fetch("../src/footer.html")
-        .then(response => {
-            return response.text()
-        })
-        .then(data => {
-            document.querySelector("footer").innerHTML = data;
-        });
-}
-
-function loginFormType() {
-    $('#loginAdminForm').hide();
-    $(document).on("click", "#btnMemberTab", function() {
-        $("#loginTitle").text(`Member Login`);
-        $('#loginMemberForm').show();
-        $('#loginAdminForm').hide();
-    });
-    $(document).on("click", "#btnAdminTab", function() {
-        $("#loginTitle").text(`Admin Login`);
-        $('#loginMemberForm').hide();
-        $('#loginAdminForm').show();
     });
 }
 
@@ -242,7 +242,9 @@ function scrollPage(position) {
 
 // Rating stars functionality
 function ratingStarsSelection() {
+    // get the list of star dom elements
     const ratingStars = [...document.getElementsByClassName("rating__star")];
+    // get the rating result
     const ratingResult = document.querySelector(".rating__result");
     const loggedInMemberId = $('#loggedInMember').attr("data-id");
     const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
@@ -256,6 +258,7 @@ function ratingStarsSelection() {
 
         stars.map((star) => {
 
+            // when hover over some empty stars fill them, or when hovering over some filled stars empty them
             star.onmouseover = () => {
                 i = stars.indexOf(star);
 
@@ -266,10 +269,12 @@ function ratingStarsSelection() {
                     for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
                 }
             };
+            // when hover out either show no filled star or show the number of filled stars that was saved in the database
             star.onmouseout = () => {
                 showRatingStars(stars);
             }
 
+            // when an empty star is clicked fill all the stars until the one that was clicked
             star.onclick = () => {
                 i = stars.indexOf(star);
 
@@ -291,10 +296,12 @@ function ratingStarsSelection() {
         showRatingStars(stars);
     }
 
+    // print the result of the rating based on what the user has chosen
     function printRatingResult(result, num = 0) {
         result.textContent = `${num}/10`;
     }
 
+    // display the rating from the database when the user opened a movie that was already rated
     function showRatingStars (stars) {
         $.ajax({
             url: `${URLPath}/rating/movie/${movieId}/user/${loggedInMemberId}`,
@@ -332,9 +339,11 @@ function ratingStarsSelection() {
     executeRating(ratingStars, ratingResult);
 }
 
+// function that handles the chat functionality
 function chatMessages(roomId, userId) {
     const socket = io();
 
+    // submit listener for the sending of a message in a chat room
     $("#message-form" ).on( "submit", function (e) {
         e.preventDefault();
         const memberUsername = $('#loggedInMember').text().substring(13);
@@ -353,6 +362,7 @@ function chatMessages(roomId, userId) {
                     let minutes = ("0" + date.getMinutes()).slice(-2);
                     let seconds = ("0" + date.getSeconds()).slice(-2);
                     let createdAt = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+                    // emit the message to backend
                     socket.emit( 'chat message', { messageInput, createdAt, memberUsername, messageId, userId } );
                     $( "#message" ).val( '' );
                 });
@@ -361,6 +371,7 @@ function chatMessages(roomId, userId) {
         }
     });
 
+    // get the message info from the backend and display it on the user interface
     socket.on('chat message', function (data) {
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
         $("#messages").append(`
@@ -393,10 +404,12 @@ function chatMessages(roomId, userId) {
         document.querySelector("#messages").scrollTo(0, document.querySelector("#messages").scrollHeight);
     });
 
+    // refresh the list of messages when a message was updated or deleted
     socket.on('chat update delete', function () {
         showMessages(roomId);
     });
 
+    // refresh the list of participants when a new participant joined or when a participant deleted all their messages in a room
     socket.on('chat participant', function () {
         showAllParticipantsOfARoom(roomId);
     });

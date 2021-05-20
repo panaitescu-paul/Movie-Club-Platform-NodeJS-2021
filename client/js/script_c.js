@@ -1264,9 +1264,17 @@ function showAllRooms() {
 
 // Show Rooms in a List
 function showRooms(data) {
+    const loggedInMemberId = $('#loggedInMember').attr("data-id");
+    if (loggedInMemberId === undefined) {
+        $('#btnCreateRoom').attr('disabled', true);
+    } else {
+        $('#btnCreateRoom').attr('disabled', false);
+    }
     $("#results").empty();
+    $("#results2").empty();
     data.forEach(room => {
-        $("#results").append(`
+        if (room.userId === Number(loggedInMemberId)) {
+            $("#results").append(`
             <div class="card">
                 <div data-id="${room.id}" class="card-body roomInfo">
                     <h5 class="card-title">${room.name}</h5>
@@ -1280,6 +1288,22 @@ function showRooms(data) {
                 </div>
             </div>
         `);
+        } else {
+            $("#results2").append(`
+            <div class="card">
+                <div data-id="${room.id}" class="card-body roomInfo">
+                    <h5 class="card-title">${room.name}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Created at: </b>${formatDateTime(room.createdAt)}</li>
+                </ul>
+                <div class="card-actions">
+                    <button data-id="${room.id}" type="button" class="btn btn-warning
+                            btnShow roomInfo">Open Chat Room</button>
+                </div>
+            </div>
+        `);
+        }
     });
 }
 
@@ -1335,7 +1359,6 @@ function showMessages(roomId) {
         },
         statusCode: {
             404: function(data) {
-                $("#results").empty();
                 const errorMsg = JSON.parse(data.responseText).Error;
                 alert(errorMsg);
             }

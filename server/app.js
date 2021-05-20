@@ -25,28 +25,34 @@ app.use(session({
     resave: false
 }));
 
+// chat socket io connection
 io.on('connection', (socket) => {
     console.log("New WebSocket connection");
 
+    // listens for chat messages emit
     socket.on('chat message', (data) => {
         io.emit('chat message', data);
         console.log(data);
     });
 
+    // listens for chat messages updates or delete
     socket.on('chat update delete', () => {
         io.emit('chat update delete');
     });
 
+    // listens for changes in the list of particiapnts
     socket.on('chat participant', () => {
         console.log("here")
         io.emit('chat participant');
     });
 
+    // disconnect a user from the chat
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
 });
 
+// endpoint that is called when a member successfully manage to login and creates the member session
 app.post('/login/member',(req,res) => {
     console.log(req.body);
     req.session.loggedInMember = req.body;
@@ -57,6 +63,7 @@ app.post('/login/member',(req,res) => {
     }
 });
 
+// endpoint that is called when an admin successfully manage to login and creates the admin session
 app.post('/login/admin',(req,res) => {
     console.log(req.body);
     req.session.loggedInAdmin = req.body;
@@ -67,6 +74,7 @@ app.post('/login/admin',(req,res) => {
     }
 });
 
+// endpoint to check if the member session is active and to get the logged in member's account information
 app.get('/member',(req,res) => {
     console.log(req.session.loggedInMember);
     if(req.session.loggedInMember) {
@@ -79,6 +87,7 @@ app.get('/member',(req,res) => {
     }
 });
 
+// endpoint to check if the admin session is active and to get the logged in admin's account information
 app.get('/admin',(req,res) => {
     console.log(req.session.loggedInAdmin);
     if(req.session.loggedInAdmin) {
@@ -91,6 +100,7 @@ app.get('/admin',(req,res) => {
     }
 });
 
+// logout endpoint that destroys the session
 app.get('/logout',(req,res) => {
     console.log("here");
     req.session.destroy((err) => {
