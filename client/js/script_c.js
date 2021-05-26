@@ -11,6 +11,15 @@ $(document).ready(function() {
                 if(crew.picture === null || crew.picture === '') {
                     crew.picture = "../img/notFoundPicture.jpg";
                 }
+                if(crew.mainActivity === null || crew.mainActivity === '') {
+                    crew.mainActivity = "This person's main activity is not in our database!";
+                }
+                if(crew.birthPlace === null || crew.birthPlace === '') {
+                    crew.birthPlace = "This person's birth place is not in our database!";
+                }
+                if(crew.biography === null || crew.biography === '') {
+                    crew.biography = "This person's biography is not in our database!";
+                }
                 $("#modalTitle").text(`${crew.name} - Information Details`);
                 $("#modalInfoContent1").append(`
                     <div class="modal-image">
@@ -24,7 +33,7 @@ $(document).ready(function() {
                         <p id="dateOfBirth"><span class="tag">Birthday: </span><span class="tag-info">${dateOfBirth}</span></p>
                         <p id="birthPlace"><span class="tag">Birth place: </span><span class="tag-info">${crew.birthPlace}</span></p>
                         <p id="biography"><span class="tag">Biography: </span><span class="tag-info">${crew.biography}</span></p>
-                        <p id="website"><span class="tag">Website: </span><span class="tag-info"><a href="${crew.website}" target="_blank">${crew.website}</a></span></p>
+                        <p id="website"><span class="tag">Website: </span><span class="tag-info" id="websiteContent"><a id="websiteLink" href="${crew.website}" target="_blank">${crew.website}</a></span></p>
                     </div>
                     <h3 class="modal-subtitle">Movies List</h3>
                     <div class="modal-box">
@@ -44,6 +53,10 @@ $(document).ready(function() {
                         </p>
                     </div>
                 `);
+                if(crew.website === null || crew.website === '') {
+                    $('#websiteLink').remove();
+                    $('#websiteContent').text('This person\'s website is not in our database!');
+                }
                 $.ajax({
                     url: `${URLPath}/movie_crew/crewId/${crewId}`,
                     type: "GET",
