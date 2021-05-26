@@ -28,7 +28,20 @@ $(document).ready(function() {
                     </div>
                     <h3 class="modal-subtitle">Movies List</h3>
                     <div class="modal-box">
-                        <p id="movies"><div id="listOfMovies"></div></p>
+                        <p id="movies">
+                            <span id="actorListName"></span>
+                            <span class="tag-info"><div id="actorList"></div></span>
+                            <span id="directorListName"></span>
+                            <span class="tag-info"><div id="directorList"></div></span>
+                            <span id="producerListName"></span>
+                            <span class="tag-info"><div id="producerList"></div></span>
+                            <span id="executiveProducerListName"></span>
+                            <span class="tag-info"><div id="executiveProducerList"></div></span>
+                            <span id="scriptWriterListName"></span>
+                            <span class="tag-info"><div id="scriptWriterList"></div></span>
+                            <span id="musicComposerListName"></span>
+                            <span class="tag-info"><div id="musicComposerList"></div></span>
+                        </p>
                     </div>
                 `);
                 $.ajax({
@@ -45,20 +58,116 @@ $(document).ready(function() {
                                         type: "GET",
                                         success: function(role) {
                                             let releaseDate = formatDate(movie.releaseDate);
-                                            $("#listOfMovies").append(`
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
-                                                        <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
-                                                        <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
-                                                        <p id="role"><b>Role: </b>${role.name}</p>
-                                                    </div>
-                                                    <div class="card-actions">
-                                                        <button data-id="${movie.id}" type="button" class="btn btn-warning
-                                                                btnShow showMovieModal">Details</button>
-                                                    </div>
-                                                </div>
-                                            `);
+                                            switch (role.name) {
+                                                case 'Actor':
+                                                    $('#actorListName').text('Actor:');
+                                                    $('#actorListName').addClass('tag');
+                                                    $('#actorList').append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Director':
+                                                    $('#directorListName').text('Director:');
+                                                    $('#directorListName').addClass('tag');
+                                                    $("#directorList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Producer':
+                                                    $('#producerListName').text('Producer:');
+                                                    $('#producerListName').addClass('tag');
+                                                    $("#producerList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Executive Producer':
+                                                    $('#executiveProducerListName').text('Executive Producer:');
+                                                    $('#executiveProducerListName').addClass('tag');
+                                                    $("#executiveProducerList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Script Writer':
+                                                    $('#scriptWriterListName').text('Script Writer:');
+                                                    $('#scriptWriterListName').addClass('tag');
+                                                    $("#scriptWriterList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Music Composer':
+                                                    $('#musicComposerListName').text('Music Composer:');
+                                                    $('#musicComposerListName').addClass('tag');
+                                                    $("#musicComposerList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                            }
                                         }
                                     });
                                 }
@@ -234,7 +343,20 @@ $(document).ready(function() {
                         <div class="form-group form-custom">
                             <h3 class="modal-subtitle">Movies List</h3>
                             <div class="modal-box">
-                                <p id="movies"><div id="listOfMovies"></div></p>
+                                <p id="movies">
+                                    <span id="actorListName"></span>
+                                    <span class="tag-info"><div id="actorList"></div></span>
+                                    <span id="directorListName"></span>
+                                    <span class="tag-info"><div id="directorList"></div></span>
+                                    <span id="producerListName"></span>
+                                    <span class="tag-info"><div id="producerList"></div></span>
+                                    <span id="executiveProducerListName"></span>
+                                    <span class="tag-info"><div id="executiveProducerList"></div></span>
+                                    <span id="scriptWriterListName"></span>
+                                    <span class="tag-info"><div id="scriptWriterList"></div></span>
+                                    <span id="musicComposerListName"></span>
+                                    <span class="tag-info"><div id="musicComposerList"></div></span>
+                                </p>
                             </div>
                             </br>
                             <hr>
@@ -265,16 +387,116 @@ $(document).ready(function() {
                                         type: "GET",
                                         success: function(role) {
                                             let releaseDate = formatDate(movie.releaseDate);
-                                            $("#listOfMovies").append(`
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
-                                                        <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
-                                                        <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
-                                                        <p id="role"><b>Role: </b>${role.name}</p>
-                                                    </div>
-                                                </div>
-                                            `);
+                                            switch (role.name) {
+                                                case 'Actor':
+                                                    $('#actorListName').text('Actor:');
+                                                    $('#actorListName').addClass('tag');
+                                                    $('#actorList').append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Director':
+                                                    $('#directorListName').text('Director:');
+                                                    $('#directorListName').addClass('tag');
+                                                    $("#directorList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Producer':
+                                                    $('#producerListName').text('Producer:');
+                                                    $('#producerListName').addClass('tag');
+                                                    $("#producerList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Executive Producer':
+                                                    $('#executiveProducerListName').text('Executive Producer:');
+                                                    $('#executiveProducerListName').addClass('tag');
+                                                    $("#executiveProducerList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Script Writer':
+                                                    $('#scriptWriterListName').text('Script Writer:');
+                                                    $('#scriptWriterListName').addClass('tag');
+                                                    $("#scriptWriterList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                                case 'Music Composer':
+                                                    $('#musicComposerListName').text('Music Composer:');
+                                                    $('#musicComposerListName').addClass('tag');
+                                                    $("#musicComposerList").append(`
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <img data-id="${movie.id}" class="card-img-top poster showMovieModal" src="${movie.poster}">
+                                                                <p id="movieTitle"><b>Movie Title: </b>${movie.title}</p>
+                                                                <p id="releaseDate"><b>Release Date: </b>${releaseDate}</p>
+                                                                <p id="role"><b>Role: </b>${role.name}</p>
+                                                            </div>
+                                                            <div class="card-actions">
+                                                                <button data-id="${movie.id}" type="button" class="btn btn-warning
+                                                                        btnShow showMovieModal">Details</button>
+                                                            </div>
+                                                        </div>
+                                                    `);
+                                                    break;
+                                            }
                                         }
                                     });
                                 }
