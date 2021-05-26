@@ -24,7 +24,7 @@ $(document).ready(function() {
                         <p id="dateOfBirth"><span class="tag">Birthday: </span><span class="tag-info">${dateOfBirth}</span></p>
                         <p id="birthPlace"><span class="tag">Birth place: </span><span class="tag-info">${crew.birthPlace}</span></p>
                         <p id="biography"><span class="tag">Biography: </span><span class="tag-info">${crew.biography}</span></p>
-                        <p id="website"><span class="tag">Website: </span><span class="tag-info">${crew.website}</span></p>
+                        <p id="website"><span class="tag">Website: </span><span class="tag-info"><a href="${crew.website}" target="_blank">${crew.website}</a></span></p>
                     </div>
                     <h3 class="modal-subtitle">Movies List</h3>
                     <div class="modal-box">
