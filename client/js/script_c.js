@@ -327,6 +327,18 @@ $(document).ready(function() {
             success: function(crew) {
                 let dateOfBirth = formatDate(crew.dateOfBirth);
                 $("#modalTitle").text(`Update Crew`);
+                if(crew.mainActivity === null || crew.mainActivity === '') {
+                    crew.mainActivity = "";
+                }
+                if(crew.birthPlace === null || crew.birthPlace === '') {
+                    crew.birthPlace = "";
+                }
+                if(crew.biography === null || crew.biography === '') {
+                    crew.biography = "";
+                }
+                if(crew.website === null || crew.website === '') {
+                    crew.website = "";
+                }
                 $("#modalInfoContent1").append(`
                     <form id="updateCrewForm">
                         <div class="form-group form-custom">
