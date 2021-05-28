@@ -148,6 +148,35 @@ app.get("/user/:id", (req, res) => {
 });
 
 /**
+* SEARCH Users by Username
+*
+* Input:    username of the User
+* Output:   an array with all Users with this Username, and their information
+* Errors:   Users with this Username do not exist!
+*/
+app.get("/user/username/search", (req, res) => {
+    console.log("req.query.username: ", req.query.username);
+    let sql = `SELECT * FROM user WHERE username LIKE ?`;
+
+    connection.query(sql, ['%' + req.query.username + '%'], function (err, users) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(users.length) {
+                res.status(200).send(users);
+            } else {
+                res.status(404).json({
+                    message: `Users with this Username (${req.query.username}) do not exist!`
+                });
+            }
+        }
+    });
+});
+
+/**
 * UPDATE User by id
 *
 * Input:    id, username, firstName, lastName,
