@@ -328,6 +328,26 @@ $(document).ready(function() {
         });
     });
 
+    // Populate Dropdown - Crews
+    function populateDropdownCrews() {
+        $.ajax({
+            url: URL + "crew",
+            type: "GET",
+            success: function(crews) {
+                crews.forEach((crew) => {
+                    $('#crewsDropdown').append(`
+                        <option value="${crew.id}">${crew.id}. ${crew.name}</option>
+                    `);
+                })
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    }
     // Update Movie - Form Processing
     $(document).on("click", "#updateMovie", function(e) {
         const movieId = $("#movieId").val(); 
