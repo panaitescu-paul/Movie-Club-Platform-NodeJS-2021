@@ -390,6 +390,28 @@ $(document).ready(function() {
             }
         });
     }
+
+    // Populate Dropdown - Language
+    function populateDropdownLanguages() {
+        $.ajax({
+            url: URL + "language",
+            type: "GET",
+            success: function(languages) {
+                languages.forEach((language) => {
+                    $('#languagesDropdown').append(`
+                        <option value="${language.id}">${language.id}. ${language.name}</option>
+                    `);
+                })
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    }
+
     // Update Movie - Form Processing
     $(document).on("click", "#updateMovie", function(e) {
         const movieId = $("#movieId").val(); 
