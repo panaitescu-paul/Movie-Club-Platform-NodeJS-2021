@@ -12,7 +12,8 @@ $(document).ready(function() {
     const URL = "http://localhost:8000/";
     
     // Constants for Validation
-    const INVALID_TEXT = /[`!@#$%^&*_+\=\[\]{};"\\|<>\/?~]/;
+    const INVALID_TEXT = /[`!@#$%^&*_+\=\[\]{};"\\|<>\?~]/;
+    // const INVALID_TEXT = /[`!@#$%^&*_+\=\[\]{};"\\|<>\/?~]/;
     const INVALID_EMAIL = /[`!#$%^&*+\=\[\]{};"\\|<>\/?~]/;
     const VALID_NUMBER = /^\d+$/;
     // TODO: add valid date pattern;
@@ -61,6 +62,7 @@ $(document).ready(function() {
             showSearchType('None');
             showButtonCreate('None');
             submenuAdmin();
+            $('#btnMoviesTab').click();
         } else if (page === "community.html") {
             console.log("PAGE community");
             importHeaderFragment().then( () => {
@@ -228,7 +230,7 @@ $(document).ready(function() {
             success: function(data) {
                 $("#modalTitle").html("Update Movie");   
                 $("#modalInfoContent1").append(`
-                    <form id="createMovieForm">
+                    <form id="updateMovieForm">
                         <div class="form-group form-custom">
                             <div class="modal-image">
                                 <img class="card-img-top" src="${data.poster}"> 
@@ -254,6 +256,22 @@ $(document).ready(function() {
                             <div class="modal-actions">
                                 <button type="submit" id="updateMovie" class="btn btn-success btn-3" data-dismiss="modal">Update Movie</button>
                             </div>
+                $("#modalInfoContent4").append(`
+                    <form id="updateMovieForm2">
+                        <div class="form-group form-custom">
+                            <label for="crewsDropdown">Select Crew</label>
+                            <select name="crewsDropdown" id="crewsDropdown" class="form-control"></select>
+                            <label for="rolesDropdown">Select Role</label>
+                            <select name="rolesDropdown" id="rolesDropdown" class="form-control"></select>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateMovieCrew" class="btn btn-success btn-3" data-dismiss="modal">Add Crew</button>
+                            </div>
+                            </br>
+                            <hr>
+                            </br>
+                        </div>
+                    </form>
+                `);
                         </div>
                     </form>
                 `);
