@@ -56,7 +56,7 @@ app.post("/crew", (req, res) => {
 
 // READ All Crew Members
 app.get("/crew", (req, res) => {
-    let stmt = `SELECT * FROM crew`;
+    let stmt = `SELECT * FROM crew ORDER BY id`;
     connection.query(stmt, function (err, results) {
         if (err) {
             res.status(400).json({
