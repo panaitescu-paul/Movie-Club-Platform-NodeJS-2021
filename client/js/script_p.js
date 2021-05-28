@@ -348,6 +348,27 @@ $(document).ready(function() {
             }
         });
     }
+
+    // Populate Dropdown - Roles
+    function populateDropdownRoles() {
+        $.ajax({
+            url: URL + "role",
+            type: "GET",
+            success: function(roles) {
+                roles.forEach((role) => {
+                    $('#rolesDropdown').append(`
+                        <option value="${role.id}">${role.id}. ${role.name}</option>
+                    `);
+                })
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    }
     // Update Movie - Form Processing
     $(document).on("click", "#updateMovie", function(e) {
         const movieId = $("#movieId").val(); 
