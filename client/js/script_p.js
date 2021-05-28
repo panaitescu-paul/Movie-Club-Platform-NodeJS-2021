@@ -309,6 +309,12 @@ $(document).ready(function() {
                         </div>
                     </form>
                 `);
+
+                // Populate the Dropdowns
+                populateDropdownCrews();
+                populateDropdownRoles();
+                populateDropdownGenres();
+                populateDropdownLanguages();
             },
             statusCode: {
                 404: function(data) {
