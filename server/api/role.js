@@ -12,7 +12,7 @@ app.use(cors());
 
 // READ All Roles
 app.get("/role", (req, res) => {
-    let stmt = `SELECT * FROM role`;
+    let stmt = `SELECT * FROM role ORDER BY id`;
     connection.query(stmt, function (err, results) {
         if (err) {
             res.status(400).json({
