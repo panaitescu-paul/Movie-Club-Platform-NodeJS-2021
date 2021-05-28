@@ -142,6 +142,35 @@ app.get("/movie/:id", (req, res) => {
 });
 
 /**
+* SEARCH Movies by Title
+*
+* Input:    title of the Movie
+* Output:   an array with all Movies with this Title, and their information
+* Errors:   Movies with this Title do not exist!
+*/
+app.get("/movie/title/search", (req, res) => {
+    console.log("req.query.title: ", req.query.title);
+    let sql = `SELECT * FROM movie WHERE title LIKE ?`;
+
+    connection.query(sql, ['%' + req.query.title + '%'], function (err, movies) {
+        if (err) {
+            res.status(400).json({
+                error: err.message
+            });
+            console.log(err);
+        } else {
+            if(movies.length) {
+                res.status(200).send(movies);
+            } else {
+                res.status(404).json({
+                    message: `Movies with this Title (${req.query.title}) do not exist!`
+                });
+            }
+        }
+    });
+});
+
+/**
 * UPDATE Movie by id
 *
 * Input:    id, title, overview, runtime, trailerLink, poster, releaseDate
