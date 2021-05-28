@@ -542,6 +542,43 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Update Movie Language - Form Processing
+    $(document).on("click", "#updateMovieLanguage", function(e) {
+        const movieId = $("#movieId").val(); 
+        const languageId = $("#languagesDropdown option:selected").val(); 
+
+        $.ajax({
+            url: URL + `movie_language`,
+            type: "POST",
+            data: {
+                movieId: movieId,
+                languageId: languageId,
+            },
+            success: function(data) {
+                // Show the updated List of Movies
+                showAllMovies('admin');
+                // Scroll to the updated Movie
+                scrollPage(e.pageY);
+                alert('This Language was successfully attached to this Movie!');
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                },
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                },
+                409: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    });
+
     // Delete Movie
     $(document).on("click", ".deleteMovie", function(e) {
         const id = $(this).attr("data-id");
