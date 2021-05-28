@@ -247,7 +247,7 @@ app.get("/movie_language/movieId/:movieId", (req, res) => {
 * Errors:   Movie_Language with this Language ID does not exist!
 */
 app.get("/movie_language/languageId/:languageId", (req, res) => {
-    let sql = `SELECT * FROM movie_language WHERE languageId = ?`;
+    let sql = `SELECT * FROM movie_language WHERE languageId = ? ORDER BY id`;
 
     connection.query(sql, [req.params.languageId], function(err, movie_language) {
         if (err) {
