@@ -377,6 +377,31 @@ $(document).ready(function() {
         });
     }
 
+    // Search Movies - Show all Movies in a List
+    $(document).on("click", "#btnSearchMovie", function() {
+        const searchInput = $('#searchMovie').val();
+        $.ajax({
+            url: URL + `movie/title/search?title=${searchInput}`,
+            type: "GET",
+            success: function(movies) {
+                console.log('movies: ', movies);
+                if (window.location.href === 'http://localhost:4000/src/admins.html' || window.location.href === 'http://localhost:4000/src/admins.html?') {
+                    displayMovies(movies, 'admin');
+                } else {
+                    displayMovies(movies, 'guest');
+                }
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    $("#results").empty().append(`
+                        <p><i>${errorMessage}</i></p>
+                    `);
+                }
+            }
+        });
+    });
+
     // Show Movie Trailer - Open Modal
     $(document).on("click", ".showMovieTrailerModal", function() {
         const link = $(this).attr("data-link");
