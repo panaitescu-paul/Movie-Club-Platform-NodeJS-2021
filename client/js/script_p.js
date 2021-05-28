@@ -506,6 +506,42 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Update Movie Genre - Form Processing
+    $(document).on("click", "#updateMovieGenre", function(e) {
+        const movieId = $("#movieId").val(); 
+        const genreId = $("#genresDropdown option:selected").val(); 
+
+        $.ajax({
+            url: URL + `movie_genre`,
+            type: "POST",
+            data: {
+                movieId: movieId,
+                genreId: genreId,
+            },
+            success: function(data) {
+                // Show the updated List of Movies
+                showAllMovies('admin');
+                // Scroll to the updated Movie
+                scrollPage(e.pageY);
+                alert('This Genre was successfully attached to this Movie!');
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                },
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                },
+                409: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    });
     // Delete Movie
     $(document).on("click", ".deleteMovie", function(e) {
         const id = $(this).attr("data-id");
