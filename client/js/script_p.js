@@ -256,6 +256,18 @@ $(document).ready(function() {
                             <div class="modal-actions">
                                 <button type="submit" id="updateMovie" class="btn btn-success btn-3" data-dismiss="modal">Update Movie</button>
                             </div>
+                            </br>
+                            <hr>
+                            </br>
+                        </div>
+                    </form>
+                `);
+
+                // Show Elements
+                showMovieCrews(id);
+                showMovieGenres(id);
+                showMovieLanguages(id); 
+
                 $("#modalInfoContent4").append(`
                     <form id="updateMovieForm2">
                         <div class="form-group form-custom">
@@ -272,6 +284,17 @@ $(document).ready(function() {
                         </div>
                     </form>
                 `);
+                $("#modalInfoContent5").append(`
+                    <form id="updateMovieForm3">
+                        <div class="form-group form-custom">
+                            <label for="genresDropdown">Select Genre</label>
+                            <select name="genresDropdown" id="genresDropdown" class="form-control"></select>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateMovieGenre" class="btn btn-success btn-3" data-dismiss="modal">Add Genre</button>
+                            </div>
+                            </br>
+                            <hr>
+                            </br>
                         </div>
                     </form>
                 `);
