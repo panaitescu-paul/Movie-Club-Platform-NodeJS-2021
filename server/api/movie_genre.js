@@ -247,7 +247,7 @@ app.get("/movie_genre/movieId/:movieId", (req, res) => {
 * Errors:   Movie_Genre with this Genre ID does not exist!
 */
 app.get("/movie_genre/genreId/:genreId", (req, res) => {
-    let sql = `SELECT * FROM movie_genre WHERE genreId = ?`;
+    let sql = `SELECT * FROM movie_genre WHERE genreId = ? ORDER BY id`;
 
     connection.query(sql, [req.params.genreId], function(err, movie_genre) {
         if (err) {
