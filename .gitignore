@@ -1,3 +1,5 @@
 server/node_modules
 .idea
 /server/gateway/mcdb_gateway/node_modules/
+server/dump.rdb
+dump.rdb
