@@ -414,6 +414,7 @@ $(document).ready(function() {
                                             let releaseDate = formatDate(movie.releaseDate);
                                             switch (role.name) {
                                                 case 'Actor':
+                                                    // TODO: Simplify what is repetitive
                                                     $('#actorListName').text('Actor:');
                                                     $('#actorListName').addClass('tag');
                                                     $('#actorList').append(`
