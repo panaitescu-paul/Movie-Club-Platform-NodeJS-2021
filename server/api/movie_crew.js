@@ -242,7 +242,7 @@ app.delete("/movie_crew/:id", (req, res) => {
 * Errors:   Movie_Crew with this Movie ID does not exist!
 */
  app.get("/movie_crew/movieId/:movieId", (req, res) => {
-    let sql = `SELECT * FROM movie_crew WHERE movieId = ?`;
+    let sql = `SELECT * FROM movie_crew WHERE movieId = ? ORDER BY id`;
 
     connection.query(sql, [req.params.movieId], function(err, movie_crew) {
         if (err) {
@@ -270,7 +270,7 @@ app.delete("/movie_crew/:id", (req, res) => {
 * Errors:   Movie_Crew with this Crew ID does not exist!
 */
 app.get("/movie_crew/crewId/:crewId", (req, res) => {
-    let sql = `SELECT * FROM movie_crew WHERE crewId = ?`;
+    let sql = `SELECT * FROM movie_crew WHERE crewId = ? ORDER BY id`;
 
     connection.query(sql, [req.params.crewId], function(err, movie_crew) {
         if (err) {
