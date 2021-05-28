@@ -369,6 +369,27 @@ $(document).ready(function() {
             }
         });
     }
+
+    // Populate Dropdown - Genres
+    function populateDropdownGenres() {
+        $.ajax({
+            url: URL + "genre",
+            type: "GET",
+            success: function(genres) {
+                genres.forEach((genre) => {
+                    $('#genresDropdown').append(`
+                        <option value="${genre.id}">${genre.id}. ${genre.name}</option>
+                    `);
+                })
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    }
     // Update Movie - Form Processing
     $(document).on("click", "#updateMovie", function(e) {
         const movieId = $("#movieId").val(); 
