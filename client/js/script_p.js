@@ -469,6 +469,43 @@ $(document).ready(function() {
         }
     });
 
+    // Update Movie Crew - Form Processing
+    $(document).on("click", "#updateMovieCrew", function(e) {
+        const movieId = $("#movieId").val(); 
+        const crewId = $("#crewsDropdown option:selected").val(); 
+        const roleId = $("#rolesDropdown option:selected").val(); 
+
+        $.ajax({
+            url: URL + `movie_crew`,
+            type: "POST",
+            data: {
+                movieId: movieId,
+                crewId: crewId,
+                roleId: roleId,
+            },
+            success: function(data) {
+                // Show the updated List of Movies
+                showAllMovies('admin');
+                // Scroll to the updated Movie
+                scrollPage(e.pageY);
+                alert('This Crew was successfully attached to this Movie!');
+            },
+            statusCode: {
+                400: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                },
+                404: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                },
+                409: function(data) {
+                    const errorMsg = data.responseJSON.message;
+                    alert(errorMsg);
+                }
+            }
+        });
+    });
     // Delete Movie
     $(document).on("click", ".deleteMovie", function(e) {
         const id = $(this).attr("data-id");
