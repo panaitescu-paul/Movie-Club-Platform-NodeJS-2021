@@ -298,6 +298,17 @@ $(document).ready(function() {
                         </div>
                     </form>
                 `);
+                $("#modalInfoContent6").append(`
+                    <form id="updateMovieForm4">
+                        <div class="form-group form-custom">
+                            <label for="languagesDropdown">Select Language</label>
+                            <select name="languagesDropdown" id="languagesDropdown" class="form-control"></select>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateMovieLanguage" class="btn btn-success btn-3" data-dismiss="modal">Add Language</button>
+                            </div>
+                        </div>
+                    </form>
+                `);
             },
             statusCode: {
                 404: function(data) {
