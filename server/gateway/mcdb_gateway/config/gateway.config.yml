@@ -8,10 +8,10 @@ apiEndpoints:
   # Endpoints by Paul Panaitescu
   movie:
     host: localhost
-    paths: [ '/movie', '/movie/*' ]
+    paths: [ '/movie', '/movie/*', '/movie/title/search' ]
   user:
     host: localhost
-    paths: [ '/user', '/user/*', '/user/login' ]
+    paths: [ '/user', '/user/*', '/user/login', '/user/username/search' ]
   rating:
     host: localhost
     paths: [ '/rating', '/rating/*', '/rating/movie/*', '/rating/movie/*/user/*' ]
