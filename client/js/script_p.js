@@ -1115,6 +1115,29 @@ $(document).ready(function() {
         });
     }
 
+    // Search Users - Show all Users in a List
+    $(document).on("click", "#btnSearchMember", function() {
+        const searchInput = $('#searchMember').val();
+        $.ajax({
+            url: URL + `user/username/search?username=${searchInput}`,
+            type: "GET",
+            success: function(users) {
+                console.log('users: ', users);
+                if (window.location.href === 'http://localhost:4000/src/admins.html' || window.location.href === 'http://localhost:4000/src/admins.html?') {
+                    displayUsers(users, 'admin');
+                }
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    $("#results").empty().append(`
+                        <p><i>${errorMessage}</i></p>
+                    `);
+                }
+            }
+        });
+    });
+
     function displayUsers(users, user = 'guest') {
         $("section#userResults").empty();
         $("#results").empty();
