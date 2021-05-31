@@ -1554,4 +1554,49 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Update User Password - Form Processing
+    $(document).on("click", "#updateUserPassword", function(e) {
+        console.log('#updateUserPassword');
+        const userId = $("#userId").val(); 
+        const oldPassword = $("#oldPassword").val(); 
+        const newPassword = $("#newPassword").val(); 
+
+        if (oldPassword === null || oldPassword.length === 0) {
+            alert("The field Old Password can not be empty!");
+        } else if (newPassword === null || newPassword.length === 0) {
+            alert("The field New Password can not be empty!");
+        } else if (INVALID_TEXT.test(oldPassword)) {
+            alert("The field Old Password can not contain invalid characters!");
+        } else if (INVALID_TEXT.test(newPassword)) {
+            alert("The field New Password can not contain invalid characters!");
+        } else {
+            $.ajax({
+                url: URL + `user/password/${userId}`,
+                type: "PUT",
+                data: {
+                    oldPassword: oldPassword,
+                    newPassword: newPassword,
+                },
+                success: function(data) {
+                    alert('User Password was successfully updated!');
+                    $("#memberLogout").click();
+                },
+                statusCode: {
+                    400: function(data) {
+                        alert(data.responseJSON.message);
+                    },
+                    403: function(data) {
+                        alert(data.responseJSON.message);
+                    },
+                    404: function(data) {
+                        alert(data.responseJSON.message);
+                    },
+                    409: function(data) {
+                        alert(data.responseJSON.message);
+                    }
+                }
+            });
+        }
+    });
 });
