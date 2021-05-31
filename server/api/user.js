@@ -193,7 +193,7 @@ app.put("/user/:id", (req, res) => {
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
     let gender = req.body.gender;
-    let birthday = req.body.birthday;
+    let birthday = req.body.birthday || null;
     let country = req.body.country;
     let sqlGet = `SELECT * FROM user WHERE id = ?`;
     let sqlUpdate = `UPDATE user SET username = ?, firstName = ?, lastName = ?, 
