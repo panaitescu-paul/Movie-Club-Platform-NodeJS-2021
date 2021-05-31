@@ -683,6 +683,9 @@ $(document).ready(function() {
             $("section#movieResults").html("There are no Movies matching the entered text.");
         } else {
             movies.forEach(element => {
+                if(element.poster === null || element.poster === '') {
+                    element.poster = "../img/noImageAvailable.jpg";
+                }
                 if (user == 'guest') {
                     // Version 3
                     $("#results").append(`
