@@ -208,8 +208,8 @@ app.put("/user/:id", (req, res) => {
     } 
 
     // Check the count of Users with this Username
-    connection.query(`SELECT COUNT(*) AS total FROM user WHERE username = ?;` , 
-                    [username], function (err, result) {
+    connection.query(`SELECT COUNT(*) AS total FROM user WHERE username = ? AND id != ?;` , 
+                    [username, req.params.id], function (err, result) {
         console.log('total: ', result[0].total);
         if (result[0].total > 0) {
             res.status(409).json({
