@@ -647,7 +647,7 @@ $(document).ready(function() {
                 404: function(data) {
                     const errorMessage = data.responseJSON.message;
                     $("#results").empty().append(`
-                        <p><i>${errorMessage}</i></p>
+                        <p class="alert alert-warning">${errorMessage}</p>
                     `);
                 }
             }

@@ -563,3 +563,10 @@ body {
 .messageUpdate {
     margin-right: 20px;
 }
+
+.alert {
+    width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: 500;
+}
