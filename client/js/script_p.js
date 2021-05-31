@@ -1161,6 +1161,7 @@ $(document).ready(function() {
     // Update User - Open Modal
     $(document).on("click", ".updateUserModal", function() {
         const id = $(this).attr("data-id");
+        // const id = $('#loggedInMember').attr("data-id");
         clearModalData();
         $.ajax({
             url: URL + `user/${id}`,
@@ -1192,22 +1193,6 @@ $(document).ready(function() {
                         </div>
                     </form>
                 `);
-                // $("#modalInfoContent2").append(`
-                //     </br>
-                //     <hr>
-                //     </br>
-                //     <form id="updatePasswordUserForm">
-                //         <div class="form-group form-custom">
-                //             <label for="oldPassword">OldPassword</label>
-                //             <input type="password" id="oldPassword" class="form-control" required>
-                //             </br>
-                //             <label for="newPassword">New Password</label>
-                //             <input type="password" id="newPassword" class="form-control" required>
-                //             </br>
-                //             <button type="submit" id="updateUserPassword" class="btn btn-success btn-3" data-dismiss="modal">Update Member Password</button>
-                //         </div>
-                //     </form>
-                // `);    
             },
             statusCode: {
                 404: function(data) {
@@ -1273,54 +1258,6 @@ $(document).ready(function() {
                     409: function(data) {
                         const errorMsg = JSON.parse(data.responseText).Error;
                         alert(errorMsg);
-                    }
-                }
-            });
-        }
-    });
-
-    // Update User Password - Form Processing
-    $(document).on("click", "#updateUserPassword", function(e) {
-        console.log('#updateUserPassword');
-        const userId = $("#userId").val(); 
-        const oldPassword = $("#oldPassword").val(); 
-        const newPassword = $("#newPassword").val(); 
-
-        if (oldPassword === null || oldPassword.length === 0) {
-            alert("The field Old Password can not be empty!");
-        } else if (newPassword === null || newPassword.length === 0) {
-            alert("The field New Password can not be empty!");
-        } else if (INVALID_TEXT.test(oldPassword)) {
-            alert("The field Old Password can not contain invalid characters!");
-        } else if (INVALID_TEXT.test(newPassword)) {
-            alert("The field New Password can not contain invalid characters!");
-        } else {
-            $.ajax({
-                url: URL + `user/password/${userId}`,
-                type: "PUT",
-                data: {
-                    oldPassword: oldPassword,
-                    newPassword: newPassword,
-                },
-                success: function(data) {
-                    // Show the updated List of Users
-                    showAllUsers('admin');
-                    // Scroll to the updated User
-                    scrollPage(e.pageY);
-                    alert('User Password was successfully updated!');
-                },
-                statusCode: {
-                    400: function(data) {
-                        alert(data.responseJSON.message);
-                    },
-                    403: function(data) {
-                        alert(data.responseJSON.message);
-                    },
-                    404: function(data) {
-                        alert(data.responseJSON.message);
-                    },
-                    409: function(data) {
-                        alert(data.responseJSON.message);
                     }
                 }
             });
@@ -1487,4 +1424,79 @@ $(document).ready(function() {
         });
     };
 
+    // --------------------------------
+    // Update User Profile
+    // --------------------------------
+
+    // Update User - Open Modal
+    $(document).on("click", "#updateProfileModal", function() {
+        // const id = $(this).attr("data-id");
+        const id = $('#loggedInMember').attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: URL + `user/${id}`,
+            type: "GET",
+            success: function(data) {
+                $("#modalTitle").html("Update User Profile");   
+                $("#modalInfoContent1").append(`
+                    <form id="createUserForm">
+                        <div class="form-group form-custom">
+                            <label for="userId">User Id</label>
+                            <input type="text" id="userId" class="form-control" value="${data.id}" disabled>
+                            <label for="username">Username</label>
+                            <input type="text" id="username" class="form-control" value="${data.username}" required>
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-control" value="${data.firstName}">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" value="${data.lastName}">
+                            <label for="gender">Gender</label>
+                            <input type="text" id="gender" class="form-control" value="${data.gender}">
+                            <label for="birthday">Birthday</label>
+                            <input type="date" id="birthday" class="form-control" value="${formatDate(data.birthday)}">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" class="form-control" value="${data.country}">
+                            <label for="createdAt">Created At</label>
+                            <input type="text" id="createdAt" class="form-control" value="${formatDate(data.createdAt)}" disabled>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateUserProfile" class="btn btn-success btn-3" data-dismiss="modal">Update Member</button>
+                            </div>
+                        </div>
+                    </form>
+                `);
+                $("#modalInfoContent2").append(`
+                    </br>
+                    <hr>
+                    <h3 class="modal-subtitle">Update Password</h3>
+                    <form id="updatePasswordUserForm">
+                        <div class="form-group form-custom">
+                            <label for="oldPassword">OldPassword</label>
+                            <input type="password" id="oldPassword" class="form-control" required>
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" class="form-control" required>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateUserPassword" class="btn btn-success btn-3" data-dismiss="modal">Update Password</button>
+                            </div>
+                        </div>
+                    </form>
+                `);    
+                $("#modalInfoContent3").append(`
+                    </br>
+                    <hr>
+                    <h3 class="modal-subtitle">Delete Profile</h3>
+                    <div class="modal-actions">
+                        <button type="submit" id="deleteUser" class="btn btn-danger btn-3" data-dismiss="modal">Delete</button>
+                    </div>
+                `);    
+            },
+            statusCode: {
+                404: function(data) {
+                    $("#modalInfoContent1").append(`
+                        <div class="modal-box">
+                            <p><i>No User Details are available for this User!</i></p>
+                        </div>
+                    `);
+                }
+            }
+        });
+    });
 });
