@@ -180,6 +180,7 @@ function checkAdminLogin(){
     });
 }
 
+// For Movies, Crews, Community
 function checkMemberLogin(){
     $.ajax({
         url: `http://localhost:4000/member`,
@@ -187,12 +188,14 @@ function checkMemberLogin(){
         success: function(response) {
             if (response.message === 'Member session available!') {
                 $('#memberLogout').show();
+                $('#updateProfileModal').show();
                 $('#loginPageBtn').hide();
                 $("#loginInfo").append(`
                     <span id="loggedInMember" data-id="${response.member.id}" class="btn btn-success btn-custom1 mb-2 btnNav">Logged in as <b>${response.member.username}</b></span>
                 `);
             } else {
                 $('#memberLogout').hide();
+                $('#updateProfileModal').hide();
                 $('#loginPageBtn').show();
                 $('#loginInfo').empty();
             }
@@ -200,6 +203,7 @@ function checkMemberLogin(){
     });
 }
 
+// Check for the Login Page
 function checkIfMemberLoggedIn() {
     $.ajax({
         url: `http://localhost:4000/member`,
@@ -209,6 +213,7 @@ function checkIfMemberLoggedIn() {
                 window.location.href='../src/movies.html';
             } else {
                 $('#memberLogout').hide();
+                $('#updateProfileModal').hide();
                 $('#loginPageBtn').show();
                 $('#loginInfo').empty();
             }
