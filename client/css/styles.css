@@ -415,6 +415,12 @@ body {
     top: 8px;
 }
 
+#loggedInMember, #loggedInAdmin {
+    position: absolute;
+    right: 100px;
+    top: 8px;
+}
+
 .rating {
     width: 500px;
 }
@@ -569,4 +575,12 @@ body {
     margin-right: auto;
     margin-left: auto;
     font-weight: 500;
+}
+
+.navbar {
+    height: 67px;
+}
+
+#btnCreateMember {
+    margin-top: 10px;
 }
