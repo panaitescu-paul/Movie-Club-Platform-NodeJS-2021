@@ -201,8 +201,8 @@ app.put("/movie/:id", (req, res) => {
     } 
 
     // Check the count of Movies with this Title
-    connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ?;` , 
-                    [title], function (err, result) {
+    connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ? AND id != ?;` , 
+                    [title, req.params.id], function (err, result) {
         console.log('total: ', result[0].total);
         if (result[0].total > 0) {
             res.status(409).json({
