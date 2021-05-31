@@ -107,7 +107,7 @@ app.get("/crew/name/search", (req, res) => {
                 res.status(200).send(results);
             } else {
                 res.status(404).json({
-                    message: `No crew member found with the name ${req.query.name}!`
+                    message: `Crews with this Name (${req.query.name}) do not exist!`
                 });
             }
         }

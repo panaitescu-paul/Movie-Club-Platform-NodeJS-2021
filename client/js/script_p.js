@@ -47,6 +47,11 @@ $(document).ready(function() {
                 checkIfAdminLoggedIn();
                 checkMemberLogin();
                 showAllMovies('guest');
+                $(document).on('keypress',function(e) {
+                    if(e.which === 13) {
+                        $("#btnSearchMovie").click();
+                    }
+                });
             });
         } else if (page === "crews.html") {
             console.log("PAGE crews");
@@ -55,6 +60,11 @@ $(document).ready(function() {
                 checkIfAdminLoggedIn();
                 checkMemberLogin();
                 showAllCrews('guest');
+                $(document).on('keypress',function(e) {
+                    if(e.which === 13) {
+                        $("#btnSearchCrew").click();
+                    }
+                });
             });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");

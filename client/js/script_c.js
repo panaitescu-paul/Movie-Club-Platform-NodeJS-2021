@@ -158,7 +158,7 @@ $(document).ready(function() {
                 404: function(data) {
                     const errorMessage = data.responseJSON.message;
                     $("#results").empty().append(`
-                        <p><b>${errorMessage}</b></p>
+                        <p class="alert alert-warning">${errorMessage}</p>
                     `);
                 }
             }

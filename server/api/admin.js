@@ -152,7 +152,7 @@ app.get("/admin/username/search", (req, res) => {
                 res.status(200).send(results);
             } else {
                 res.status(404).json({
-                    message: `No admin user found with the username ${req.query.username}!`
+                    message: `Admins with this Username (${req.query.username}) do not exist!`
                 });
             }
         }
