@@ -1,105 +1,27 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Movie Club - Home</title>
+    <title>Movie Club</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Policy against XSS Atacks -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'self'; child-src 'none';"> -->
     <link rel="icon" href="img/movie-icon 2.png" type="image/ico">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/jquery-3.5.1.js"></script>
     <script src="js/functions.js"></script>
     <script src="js/script_c.js"></script>
     <script src="js/script_p.js"></script>
+    <script src="js/bootstrap.js"></script>
     <script>
         // Show Movies Page
         $(document).ready(function(){
-            window.location.href='../src/movies.html';
+            window.location.href='src/movies.html';
         });
     </script>
-
-<!--    <script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!--    <script>-->
-<!--        $(document).ready(function(){-->
-<!--            let email,pass;-->
-<!--            $("#submit").click(function(){-->
-<!--                email=$("#email").val();-->
-<!--                pass=$("#password").val();-->
-<!--                /*-->
-<!--                * Perform some validation here.-->
-<!--                */-->
-<!--                $.post("http://localhost:3000/login",{email:email,pass:pass},function(data){-->
-<!--                    if(data==='done') {-->
-<!--                        window.location.href="/admin";-->
-<!--                    }-->
-<!--                });-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
 </head>
 <body>
-    <header>
-        <p>Movie Club - Home</p>
-        <a href="../index.html">Home</a>
-        <a href="movies.html">Movie List</a>
-        <a href="movie-details.html">Movie Details</a>
-        <a href="crew.html">Crew List</a>
-        <a href="crew-details.html">Crew Details</a>
-        <a href="login.html">Login</a>
-        <a href="admin.html">Admin</a>
-        <a href="user.html">User</a>
-        <a href="community.html">Community</a>
-        <br>
-
-        <!-- Buttons to select pages -->
-        <button type="button" class="btn btn-primary" id="showMoviesPage">Show Movies Page</button>
-        <button type="button" class="btn btn-primary" id="showMovieDetailsPage">Show Movie Details Page</button>
-        <button type="button" class="btn btn-primary" id="showCrewPage">Show Crew Page</button>
-        <button type="button" class="btn btn-primary" id="showCrewDetailsPage">Show Crew Details Page</button>
-
-<!--        <input type="text" size="40" placeholder="Type your email" id="email"><br />-->
-<!--        <input type="password" size="40" placeholder="Type your password" id="password"><br />-->
-<!--        <input type="button" value="Submit" id="submit">-->
-    </header>
-
-    <main>
-        <form id="customerForm" method="POST">
-            <fieldset>
-                <legend>Customer panel</legend>
-                <p>Browse:</p>
-                <input type="radio" id="moviesSearch" name="searchType" value="moviesSearch">
-                <label for="moviesSearch">Movies</label><br>
-                <input type="radio" id="crewsSearch" name="searchType" value="crewsSearch">
-                <label for="crewsSearch" >Crews</label><br>
-            </fieldset>
-        </form>
-        <div id="showList" class="d-flex flex-row"></div>
-
-        <!-- Crew modal -->
-        <div id="crewModal" class="modal2">
-            <div class="modal-content2">
-                <div class="modal-header2">
-                    <h3 id="headerCrew">Crew Information</h3>
-                </div>
-
-                <div class="modal-body2">
-                    <div id="crewDetails"></div>
-                </div>
-
-                <div class="modal-footer2">
-                    <button id="btnCrewCancel">Ok</button>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-
-    <footer>
-
-    </footer>
+    <p>Index page</p>
 </body>
 </html>
