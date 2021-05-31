@@ -1599,4 +1599,34 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Delete User - Form Processing
+    $(document).on("click", "#deleteUser", function(e) {
+        const id = $('#loggedInMember').attr("data-id");
+        if (confirm("Are you sure that you want to delete your User Profile?")) {
+            if (id !== null) {
+                $.ajax({
+                    url: URL + `user/${id}`,
+                    type: "DELETE",
+                    success: function(data) {
+                        alert('User Profile was successfully deleted!');
+                        $("#memberLogout").click();
+                    },
+                    statusCode: {
+                        400: function(data) {
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        },
+                        404: function(data) {
+                            const errorMsg = JSON.parse(data.responseText).Error;
+                            alert(errorMsg);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+
+
 });
