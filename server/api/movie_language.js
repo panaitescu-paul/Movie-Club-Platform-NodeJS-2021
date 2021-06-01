@@ -93,7 +93,7 @@ app.post("/movie_language", (req, res) => {
                                             // Get the last inserted Movie_Language
                                             axios.get(`http://${HOSTNAME}:${PORT}/movie_language/${result.insertId}`).then(response =>{
                                                 console.log(response);
-                                                res.status(201).send(response.data[0]);
+                                                res.status(201).send(response.data);
                                             }).catch(err =>{
                                                 if(err){
                                                     console.log(err);

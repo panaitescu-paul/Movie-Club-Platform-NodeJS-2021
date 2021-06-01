@@ -110,7 +110,7 @@ app.post("/movie_crew", (req, res) => {
                                                         // Get the last inserted Movie_Crew
                                                         axios.get(`http://${HOSTNAME}:${PORT}/movie_crew/${result.insertId}`).then(response =>{
                                                             console.log(response);
-                                                            res.status(201).send(response.data[0]);
+                                                            res.status(201).send(response.data);
                                                         }).catch(err =>{
                                                             if(err){
                                                                 console.log(err);

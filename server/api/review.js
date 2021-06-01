@@ -109,7 +109,7 @@ app.post("/review", (req, res) => {
                                            console.log(`A new row has been inserted!`);
                                            // Get the last inserted Review
                                            axios.get(`http://${HOSTNAME}:${PORT}/review/${result.insertId}`).then(response =>{
-                                               res.status(201).send(response.data[0]);    
+                                               res.status(201).send(response.data);
                                            }).catch(err =>{
                                                if(err){
                                                    console.log(err);
