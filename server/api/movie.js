@@ -120,7 +120,6 @@ app.get("/movie", (req, res) => {
 * Errors:   Movie with this ID does not exist!
 */
 app.get("/movie/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let sql = `SELECT * FROM movie WHERE id = ?`;
 
     connection.query(sql, [req.params.id], function (err, movie) {

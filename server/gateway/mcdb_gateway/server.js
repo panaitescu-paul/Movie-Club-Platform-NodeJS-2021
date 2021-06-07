@@ -20,3 +20,5 @@ require("../../api/participant");
 gateway()
   .load(path.join(__dirname, 'config'))
   .run();
+
+module.exports = gateway;
