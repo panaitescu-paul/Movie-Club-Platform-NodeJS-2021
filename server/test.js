@@ -18,11 +18,11 @@ let assert = require('chai').assert;
 
 chai.should();
 chai.use(chaiHttp);
-require("./gateway/mcdb_gateway/server");
+let gateway = require("./gateway/mcdb_gateway/server");
+// let movie = require("./api/movie");
 let server = 'http://localhost:8000';
 
 describe('Movies API', () => {
-
     /*
     * Test the GET route
     */
