@@ -33,13 +33,7 @@ jobs:
     #- run: npm test
     - run: npm install
       working-directory: ${{env.working-directory}}
-    - run: npm run coverage
+    - run: npm test
       working-directory: ${{env.working-directory}}
       env:
         CI: true
-      
-    - name: Archive code coverage results
-      uses: actions/upload-artifact@v1
-      with:
-        name: code-coverage-report
-        path: coverage/
