@@ -33,6 +33,8 @@ jobs:
     #- run: npm test
     - run: npm install
       working-directory: ${{env.working-directory}}
+    - run: npm install
+      working-directory: ./server/gateway/mcdb_gateway
     - run: npm test
       working-directory: ${{env.working-directory}}
       env:
