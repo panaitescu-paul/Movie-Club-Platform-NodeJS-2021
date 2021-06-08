@@ -3,3 +3,5 @@ server/node_modules
 /server/gateway/mcdb_gateway/node_modules/
 server/dump.rdb
 dump.rdb
+/server/.nyc_output
+/server/coverage
