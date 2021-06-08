@@ -29,19 +29,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
       working-directory: ${{env.working-directory}}
+    #- run: npm run build --if-present
+    #- run: npm test
     - run: npm install
       working-directory: ${{env.working-directory}}
     - run: npm install
       working-directory: ./server/gateway/mcdb_gateway
     - run: npm test
       working-directory: ${{env.working-directory}}
-    - run: npm run coverage
-      working-directory: ${{env.working-directory}}
       env:
         CI: true
-        
-    - name: Archive code coverage results
-      uses: actions/upload-artifact@v1
-      with:
-        name: code-coverage-report
-        path: coverage/
