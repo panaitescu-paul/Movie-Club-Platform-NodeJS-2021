@@ -50,44 +50,42 @@ app.post("/movie", (req, res) => {
             message: 'Title can not be null!'
         });
         return 0;
-    } 
-
-    // Check the count of Movies with this Title
-    connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ?;` , 
-                    [title], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'Movie with this Title already exists!',
-            });
-        } else {
-
-            // Create Movie
-            connection.query(sql, [title, overview, runtime, trailerLink, poster, releaseDate], function (err, result) {
-                if (err) {
-                    res.status(400).json({
-                        message: 'Movie could not be created!',
-                        error: err.message
+    } else {
+        // Check the count of Movies with this Title
+        connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ?;` ,
+            [title], function (err, result) {
+                if (result[0].total > 0) {
+                    res.status(409).json({
+                        message: 'Movie with this Title already exists!',
                     });
-                    console.log(err.message);
                 } else {
-                    console.log(`A new row has been inserted!`);
-                    // Get the last inserted Movie
-                    axios.get(`http://${HOSTNAME}:${PORT}/movie/${result.insertId}`).then(response =>{
-                        console.log(response);
-                        res.status(201).send(response.data);
-                    }).catch(err =>{
-                        if(err){
-                            console.log(err);
+
+                    // Create Movie
+                    connection.query(sql, [title, overview, runtime, trailerLink, poster, releaseDate], function (err, result) {
+                        if (err) {
+                            res.status(400).json({
+                                message: 'Movie could not be created!',
+                                error: err.message
+                            });
+                            console.log(err.message);
+                        } else {
+                            console.log(`A new row has been inserted!`);
+                            // Get the last inserted Movie
+                            axios.get(`http://${HOSTNAME}:${PORT}/movie/${result.insertId}`).then(response =>{
+                                res.status(201).send(response.data);
+                            }).catch(err =>{
+                                if(err){
+                                    console.log(err);
+                                }
+                                res.status(400).json({
+                                    message: `Movie with this ID (${result.insertId}) does not exist!`
+                                });
+                            });
                         }
-                        res.status(400).json({
-                            message: `Movie with this ID (${result.insertId}) does not exist!`
-                        });
                     });
                 }
             });
-        }
-    });
+    }
 });
 
 /**
@@ -180,7 +178,6 @@ app.get("/movie/title/search", (req, res) => {
 *           The Movie could not be updated!
 */
 app.put("/movie/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let title = req.body.title;
     let overview = req.body.overview;
     let runtime = req.body.runtime;
@@ -197,50 +194,49 @@ app.put("/movie/:id", (req, res) => {
             message: 'Title can not be null!'
         });
         return 0;
-    } 
-
-    // Check the count of Movies with this Title
-    connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ? AND id != ?;` , 
-                    [title, req.params.id], function (err, result) {
-        console.log('total: ', result[0].total);
-        if (result[0].total > 0) {
-            res.status(409).json({
-                message: 'Movie with this Title already exists!',
-            });
-        } else {
-
-            // Get Movie
-            connection.query(sqlGet, [req.params.id], function (err, movie) {
-                if (err) {
-                    res.status(400).json({
-                        error: err
+    } else {
+        // Check the count of Movies with this Title
+        connection.query(`SELECT COUNT(*) AS total FROM movie WHERE title = ? AND id != ?;` ,
+            [title, req.params.id], function (err, result) {
+                if (result[0].total > 0) {
+                    res.status(409).json({
+                        message: 'Movie with this Title already exists!',
                     });
-                    console.log(err);
                 } else {
-                    if(!movie.length) {
-                        res.status(404).json({
-                            message: `Movie with this ID (${req.params.id}) does not exist!`
-                        });
-                    } else {
 
-                        // Update Movie
-                        connection.query(sqlUpdate, [title, overview, runtime, trailerLink, 
-                            poster, releaseDate, req.params.id], function (err) {
-                            if (err) {
-                                res.status(400).json({
-                                    message: 'The Movie could not be updated!',
-                                    error: err.message
+                    // Get Movie
+                    connection.query(sqlGet, [req.params.id], function (err, movie) {
+                        if (err) {
+                            res.status(400).json({
+                                error: err
+                            });
+                            console.log(err);
+                        } else {
+                            if(!movie.length) {
+                                res.status(404).json({
+                                    message: `Movie with this ID (${req.params.id}) does not exist!`
                                 });
-                                console.log(err.message);
                             } else {
-                                res.sendStatus(204);
+
+                                // Update Movie
+                                connection.query(sqlUpdate, [title, overview, runtime, trailerLink,
+                                    poster, releaseDate, req.params.id], function (err) {
+                                    if (err) {
+                                        res.status(400).json({
+                                            message: 'The Movie could not be updated!',
+                                            error: err.message
+                                        });
+                                        console.log(err.message);
+                                    } else {
+                                        res.sendStatus(204);
+                                    }
+                                });
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             });
-        }
-    });
+    }
 });
 
 /**
@@ -252,7 +248,6 @@ app.put("/movie/:id", (req, res) => {
 *           The Movie could not be deleted!
 */
 app.delete("/movie/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let sqlGet = `SELECT * FROM movie WHERE id = ?`;
     let sqlDelete = `DELETE FROM movie WHERE id = ?`;
     
