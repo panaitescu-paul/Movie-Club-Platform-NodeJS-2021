@@ -30,7 +30,6 @@ describe('Movies API', () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
-                    res.body.length.should.be.eql(73);
                     done();
                 });
         });
@@ -62,6 +61,7 @@ describe('Movies API', () => {
                     res.body.should.have.property('releaseDate');
                     res.body.should.have.property('createdAt');
                     res.body.should.have.property('poster');
+                    res.body.should.have.property('trailerLink');
                     res.body.should.have.property('id').eql(movieId);
                     res.body.should.have.property('title').eql('The Godfather (1972)');
                     done();
@@ -93,7 +93,7 @@ describe('Movies API', () => {
                 trailerLink: "Test Trailer Link",
                 poster: "Test Poster",
                 releaseDate: "2021-01-01"
-            }
+            };
             chai.request(server)
                 .post('/movie')
                 .send(movie)
@@ -107,6 +107,7 @@ describe('Movies API', () => {
                     res.body.should.have.property('releaseDate');
                     res.body.should.have.property('createdAt');
                     res.body.should.have.property('poster');
+                    res.body.should.have.property('trailerLink');
                     res.body.should.have.property('title').eql(movie.title);
                     res.body.should.have.property('overview').eql(movie.overview);
                     res.body.should.have.property('runtime').eql(movie.runtime);
@@ -170,13 +171,13 @@ describe('Movies API', () => {
                 trailerLink: "Test Trailer Link 2",
                 poster: "Test Poster 2",
                 releaseDate: "2021-01-01"
-            }
+            };
+            // get all movies to find the last movie inserted in the database
             chai.request(server)
                 .get('/movie')
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
-                    res.body.length.should.be.eql(74);
                     let movies = res.body;
                     const lastMovie = movies[movies.length - 1];
                     chai.request(server)
@@ -198,12 +199,12 @@ describe('Movies API', () => {
                 poster: "Test Poster 2",
                 releaseDate: "2021-01-01"
             }
+            // get all movies to find the last movie inserted in the database
             chai.request(server)
                 .get('/movie')
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
-                    res.body.length.should.be.eql(74);
                     let movies = res.body;
                     const lastMovie = movies[movies.length - 1];
                     chai.request(server)
@@ -228,6 +229,7 @@ describe('Movies API', () => {
                 poster: "Test Poster 2",
                 releaseDate: "2021-01-01"
             }
+            // get all movies to find the last movie inserted in the database
             chai.request(server)
                 .put('/movie/' + movieId)
                 .send(updatedMovie)
@@ -248,12 +250,12 @@ describe('Movies API', () => {
                 poster: "Test Poster 2",
                 releaseDate: "2021-01-01"
             }
+            // get all movies to find the last movie inserted in the database
             chai.request(server)
                 .get('/movie')
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
-                    res.body.length.should.be.eql(74);
                     let movies = res.body;
                     const lastMovie = movies[movies.length - 1];
                     chai.request(server)
@@ -272,17 +274,15 @@ describe('Movies API', () => {
     * Test the DELETE route
     */
     describe('Test DELETE route /movie/:id', () => {
-        let lastMovieId;
         it('it should DELETE a movie given the id', (done) => {
+            // get all movies to find the last movie inserted in the database
             chai.request(server)
                 .get('/movie')
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
-                    res.body.length.should.be.eql(74);
                     let movies = res.body;
                     const lastMovie = movies[movies.length - 1];
-                    lastMovieId = lastMovie.id;
                     chai.request(server)
                         .delete('/movie/' + lastMovie.id)
                         .end((err, res) => {
