@@ -149,7 +149,6 @@ app.get("/user/:id", (req, res) => {
 * Errors:   Users with this Username do not exist!
 */
 app.get("/user/username/search", (req, res) => {
-    console.log("req.query.username: ", req.query.username);
     let sql = `SELECT * FROM user WHERE username LIKE ?`;
 
     connection.query(sql, ['%' + req.query.username + '%'], function (err, users) {

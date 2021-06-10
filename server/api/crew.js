@@ -35,7 +35,6 @@ app.post("/crew", (req, res) => {
                 });
                 console.log(err);
             } else {
-                console.log("A new crew record inserted, ID: " + result.insertId );
                 axios.get(`http://${HOSTNAME}:${PORT}/crew/${result.insertId}`).then(response =>{
                     res.status(201).send(response.data);
                 }).catch(err =>{

@@ -92,7 +92,33 @@ describe('Movies API', () => {
                 });
         });
     });
+    /*
+    * Test the Search Movie by title
+    */
+    describe('Test Movie Search', () => {
+        it('it should GET movies based on title', (done) => {
+            const title = 'Star';
+            chai.request(server)
+                .get('/movie/title/search/?title=' + title)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
 
+        it('it should NOT GET any movie', (done) => {
+            const title = 'Star Trek';
+            chai.request(server)
+                .get('/movie/title/search/?title=' + title)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`Movies with this Title (${title}) do not exist!`);
+                    done();
+                });
+        });
+    });
     /*
     * Test the POST route
     */
@@ -384,7 +410,33 @@ describe('Crews API', () => {
                 });
         });
     });
+    /*
+    * Test the Search Crew by name
+    */
+    describe('Test Crew Search', () => {
+        it('it should GET crews based on name', (done) => {
+            const name = 'Leo';
+            chai.request(server)
+                .get('/crew/name/search?name=' + name)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
 
+        it('it should NOT GET any crew', (done) => {
+            const name = 'Leonardo da Vinci';
+            chai.request(server)
+                .get('/crew/name/search?name=' + name)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`Crews with this Name (${name}) do not exist!`);
+                    done();
+                });
+        });
+    });
     /*
     * Test the POST route
     */
@@ -600,7 +652,33 @@ describe('Admins API', () => {
                 });
         });
     });
+    /*
+    * Test the Search Admin by username
+    */
+    describe('Test Admin Search', () => {
+        it('it should GET admins based on username', (done) => {
+            const username = 'admin';
+            chai.request(server)
+                .get('/admin/username/search?username=' + username)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
 
+        it('it should NOT GET any admin', (done) => {
+            const username = 'admin12';
+            chai.request(server)
+                .get('/admin/username/search?username=' + username)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`Admins with this Username (${username}) do not exist!`);
+                    done();
+                });
+        });
+    });
     /*
     * Test the POST route
     */
@@ -788,7 +866,33 @@ describe('Users API', () => {
                 });
         });
     });
+    /*
+    * Test the Search Member by username
+    */
+    describe('Test Member Search', () => {
+        it('it should GET members based on username', (done) => {
+            const username = 'member';
+            chai.request(server)
+                .get('/user/username/search?username=' + username)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
 
+        it('it should NOT GET any member', (done) => {
+            const username = 'member12';
+            chai.request(server)
+                .get('/user/username/search?username=' + username)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`Users with this Username (${username}) do not exist!`);
+                    done();
+                });
+        });
+    });
     /*
     * Test the POST route
     */

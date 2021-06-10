@@ -145,7 +145,6 @@ app.get("/movie/:id", (req, res) => {
 * Errors:   Movies with this Title do not exist!
 */
 app.get("/movie/title/search", (req, res) => {
-    console.log("req.query.title: ", req.query.title);
     let sql = `SELECT * FROM movie WHERE title LIKE ?`;
 
     connection.query(sql, ['%' + req.query.title + '%'], function (err, movies) {
