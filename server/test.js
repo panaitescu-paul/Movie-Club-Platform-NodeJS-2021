@@ -409,7 +409,28 @@ describe('Users API', () => {
                 });
         });
 
-                        });
+        it('it should NOT POST a user that already exists in the database', (done) => {
+            let user = {
+                username: "Test User",
+                password: "pass",
+                firstName: "John",
+                lastName: "Smith",
+                gender: "male",
+                birthday: "2021-01-01",
+                country: "DK"
+            };
+            chai.request(server)
+                .post('/user')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(409);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql('User with this Username already exists!');
+                    done();
+                });
+        });
+
+                });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
