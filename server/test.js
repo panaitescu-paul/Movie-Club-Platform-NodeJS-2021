@@ -587,6 +587,27 @@ describe('Users API', () => {
                 });
         });
     });
+    /*
+    * Test the DELETE route
+    */
+    describe('Test DELETE route /user/:id', () => {
+        it('it should DELETE a user given the id', (done) => {
+            // get all users to find the last user inserted in the database
+            chai.request(server)
+                .get('/user')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let users = res.body;
+                    const lastUser = users[users.length - 1];
+                    chai.request(server)
+                        .delete('/user/' + lastUser.id)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
+                        });
+                });
+        });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
