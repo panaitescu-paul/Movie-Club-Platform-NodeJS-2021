@@ -451,7 +451,28 @@ describe('Users API', () => {
                 });
         });
 
-});
+        it('it should NOT POST a user with no Password', (done) => {
+            let user = {
+                username: "Test User",
+                password: "",
+                firstName: "John",
+                lastName: "Smith",
+                gender: "male",
+                birthday: "2021-01-01",
+                country: "DK"
+            };
+            chai.request(server)
+                .post('/user')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(409);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql('Password can not be null!');
+                    done();
+                });
+        });
+    });
+                        });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
