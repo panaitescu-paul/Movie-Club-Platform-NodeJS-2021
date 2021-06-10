@@ -25,6 +25,12 @@ chai.use(chaiHttp);
 require("./gateway/mcdb_gateway/server");
 let server = 'http://localhost:8000';
 
+// ******************************************************
+// ***                                                ***
+// ***          Unit Tests for Movies Endpoint        ***
+// ***                                                ***
+// ******************************************************
+
 describe('Movies API', () => {
     /*
     * Test the GET route
