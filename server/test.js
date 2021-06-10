@@ -362,7 +362,20 @@ describe('Users API', () => {
                 });
         });
 
+        it('it should NOT GET any user', (done) => {
+            const userId = -1;
+            chai.request(server)
+                .get('/user/' + userId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`User with this ID (${userId}) does not exist!`);
+                    done();
+                });
+        });
     });
+
+        });
 
         });
 function formatDate(date) {
