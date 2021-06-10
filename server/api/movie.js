@@ -69,7 +69,6 @@ app.post("/movie", (req, res) => {
                             });
                             console.log(err.message);
                         } else {
-                            console.log(`A new row has been inserted!`);
                             // Get the last inserted Movie
                             axios.get(`http://${HOSTNAME}:${PORT}/movie/${result.insertId}`).then(response =>{
                                 res.status(201).send(response.data);
