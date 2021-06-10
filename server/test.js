@@ -375,9 +375,41 @@ describe('Users API', () => {
         });
     });
 
+    /*
+    * Test the POST route
+    */
+    describe('Test POST route /user', () => {
+        it('it should POST a user', (done) => {
+            let user = {
+                username: "Test User",
+                password: "pass",
+                firstName: "John",
+                lastName: "Smith",
+                gender: "male",
+                birthday: "2021-01-01",
+                country: "DK"
+            };
+            chai.request(server)
+                .post('/user')
+                .send(user)
+                .end((err, res) => {
+                    res.should.have.status(201);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('id');
+                    res.body.should.have.property('username');
+                    res.body.should.have.property('password');
+                    res.body.should.have.property('firstName');
+                    res.body.should.have.property('lastName');
+                    res.body.should.have.property('gender');
+                    res.body.should.have.property('birthday');
+                    res.body.should.have.property('country');
+                    res.body.should.have.property('createdAt');
+                    res.body.should.have.property('username').eql(user.username);
+                    done();
+                });
         });
 
-        });
+                        });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
