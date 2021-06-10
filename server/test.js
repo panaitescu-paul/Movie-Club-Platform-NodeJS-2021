@@ -1,5 +1,5 @@
 /**
-* Unit Tests for Endpoints from the RESTful API
+* Unit Tests for Services from the RESTful API
 *
 * @version 1.0 1 JUNE 2021
 */
@@ -27,7 +27,7 @@ let server = 'http://localhost:8000';
 
 // ******************************************************
 // ***                                                ***
-// ***          Unit Tests for Movies Endpoint        ***
+// ***          Unit Tests for Movies API             ***
 // ***                                                ***
 // ******************************************************
 
@@ -319,7 +319,227 @@ describe('Movies API', () => {
 
 // ******************************************************
 // ***                                                ***
-// ***           Unit Tests for Crews Endpoint        ***
+// ***           Unit Tests for Crews API             ***
+// ***                                                ***
+// ******************************************************
+
+describe('Crews API', () => {
+    /*
+    * Test the GET route
+    */
+    describe('Test GET route /crew', () => {
+        it('it should GET all the crew', (done) => {
+            chai.request(server)
+                .get('/crew')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
+
+        it('it should NOT GET all the crew', (done) => {
+            chai.request(server)
+                .get('/crews')
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    done();
+                });
+        });
+    });
+    /*
+    * Test the GET by id route
+    */
+    describe('Test GET route /crew/:id', () => {
+        it('it should GET a crew by id', (done) => {
+            const crewId = 1;
+            chai.request(server)
+                .get('/crew/' + crewId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('id');
+                    res.body.should.have.property('name');
+                    res.body.should.have.property('mainActivity');
+                    res.body.should.have.property('dateOfBirth');
+                    res.body.should.have.property('birthPlace');
+                    res.body.should.have.property('biography');
+                    res.body.should.have.property('picture');
+                    res.body.should.have.property('website');
+                    res.body.should.have.property('id').eql(crewId);
+                    res.body.should.have.property('name').eql('Quentin Tarantino');
+                    done();
+                });
+        });
+
+        it('it should NOT GET any crew', (done) => {
+            const crewId = -1;
+            chai.request(server)
+                .get('/crew/' + crewId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`No crew member found with the id ${crewId}!`);
+                    done();
+                });
+        });
+    });
+
+    /*
+    * Test the POST route
+    */
+    describe('Test POST route /crew', () => {
+        it('it should POST a crew', (done) => {
+            let crew = {
+                name: "Test Crew Name",
+                mainActivity: "Test Movie Overview",
+                dateOfBirth: "2021-06-06",
+                birthPlace: "Test Birth Place",
+                biography: "Test Biography",
+                picture: "2021-01-01",
+                website: "www.test.com"
+            };
+            chai.request(server)
+                .post('/crew')
+                .send(crew)
+                .end((err, res) => {
+                    res.should.have.status(201);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('id');
+                    res.body.should.have.property('name');
+                    res.body.should.have.property('mainActivity');
+                    res.body.should.have.property('dateOfBirth');
+                    res.body.should.have.property('birthPlace');
+                    res.body.should.have.property('biography');
+                    res.body.should.have.property('picture');
+                    res.body.should.have.property('website');
+                    res.body.should.have.property('name').eql(crew.name);
+                    res.body.should.have.property('mainActivity').eql(crew.mainActivity);
+                    res.body.should.have.property('birthPlace').eql(crew.birthPlace);
+                    res.body.should.have.property('biography').eql(crew.biography);
+                    res.body.should.have.property('picture').eql(crew.picture);
+                    res.body.should.have.property('website').eql(crew.website);
+                    const dateOfBirth = formatDate(res.body.dateOfBirth);
+                    dateOfBirth.should.eql(crew.dateOfBirth);
+                    done();
+                });
+        });
+
+        it('it should NOT POST a crew with no title', (done) => {
+            let crew = {
+                name: "",
+                mainActivity: "Test Movie Overview",
+                dateOfBirth: "2021-06-06",
+                birthPlace: "Test Birth Place",
+                biography: "Test Biography",
+                picture: "2021-01-01",
+                website: "www.test.com"
+            };
+            chai.request(server)
+                .post('/crew')
+                .send(crew)
+                .end((err, res) => {
+                    res.should.have.status(409);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql('The Crew must have a name!');
+                    done();
+                });
+        });
+    });
+    /*
+    * Test the PUT route
+    */
+    describe('Test PUT route /crew/:id', () => {
+        it('it should UPDATE a crew given the id', (done) => {
+            let updatedCrew = {
+                name: "Test Crew Name",
+                mainActivity: "Test Movie Overview 2",
+                dateOfBirth: "2021-06-06",
+                birthPlace: "Test Birth Place 2",
+                biography: "Test Biography 2",
+                picture: "2021-01-01",
+                website: "www.test12.com"
+            };
+            // get all movies to find the last movie inserted in the database
+            chai.request(server)
+                .get('/crew')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let crews = res.body;
+                    const lastCrew = crews[crews.length - 1];
+                    chai.request(server)
+                        .put('/crew/' + lastCrew.id)
+                        .send(updatedCrew)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
+                        });
+                });
+        });
+
+        it('it should NOT UPDATE a crew that does not exist', (done) => {
+            const crewId = -1;
+            let updatedCrew = {
+                name: "Test Crew Name2",
+                mainActivity: "Test Movie Overview 2",
+                dateOfBirth: "2021-06-06",
+                birthPlace: "Test Birth Place 2",
+                biography: "Test Biography 2",
+                picture: "2021-01-01",
+                website: "www.test12.com"
+            };
+            // get all movies to find the last movie inserted in the database
+            chai.request(server)
+                .put('/crew/' + crewId)
+                .send(updatedCrew)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`No crew member found with the id ${crewId}!`);
+                    done();
+                });
+        });
+
+    });
+    /*
+    * Test the DELETE route
+    */
+    describe('Test DELETE route /crew/:id', () => {
+        it('it should DELETE a crew given the id', (done) => {
+            // get all crew to find the last movie inserted in the database
+            chai.request(server)
+                .get('/crew')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let crews = res.body;
+                    const lastCrew = crews[crews.length - 1];
+                    chai.request(server)
+                        .delete('/crew/' + lastCrew.id)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
+                        });
+                });
+        });
+        it('it should NOT DELETE a crew that does not exist', (done) => {
+            const crewId = -1;
+            chai.request(server)
+                .delete('/crew/' + crewId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`No crew member found with the id ${crewId}!`);
+                    done();
+                });
+        });
+    });
+});
+
+// ******************************************************
+// ***                                                ***
+// ***           Unit Tests for Admins API            ***
 // ***                                                ***
 // ******************************************************
 
@@ -328,16 +548,7 @@ describe('Movies API', () => {
 
 // ******************************************************
 // ***                                                ***
-// ***           Unit Tests for Admins Endpoint       ***
-// ***                                                ***
-// ******************************************************
-
-
-// TODO
-
-// ******************************************************
-// ***                                                ***
-// ***           Unit Tests for Users Endpoint        ***
+// ***           Unit Tests for Users API             ***
 // ***                                                ***
 // ******************************************************
 

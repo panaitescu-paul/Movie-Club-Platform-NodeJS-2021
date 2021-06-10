@@ -13,9 +13,6 @@ app.use(cors());
 
 // CREATE Crew
 app.post("/crew", (req, res) => {
-    console.log("here")
-    console.log(req.body);
-    console.log(req.body.name);
     let name = req.body.name;
     let mainActivity = req.body.mainActivity || null;
     let dateOfBirth = req.body.dateOfBirth || null;
