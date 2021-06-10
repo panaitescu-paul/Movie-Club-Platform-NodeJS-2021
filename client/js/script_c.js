@@ -1249,6 +1249,65 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Update Room
+    $(document).on("click", ".roomUpdate", function() {
+        const roomId = $(this).attr("data-id");
+        clearModalData();
+        $.ajax({
+            url: `${URLPath}/room/${roomId}`,
+            type: "GET",
+            success: function(room) {
+                $("#modalTitle").text(`Update Room`);
+                $("#modalInfoContent1").append(`
+                    <form id="roomMessageForm">
+                        <div class="form-group form-custom">
+                            <label for="roomName">Room Name</label>
+                            <input type="text" class="form-control" id="roomName" value="${room.name}" required>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="submit" class="btn btn-success btn-3">Update Room</button>
+                        </div>
+                    </form>
+                `);
+            },
+            statusCode: {
+                404: function(data) {
+                    const errorMessage = data.responseJSON.message;
+                    alert(errorMessage);
+                }
+            },
+            complete: function () {
+                $("#roomMessageForm").on("submit", function(e) {
+                    e.preventDefault();
+                    const roomName = $("#roomName").val().trim();
+
+                    $.ajax({
+                        url: `${URLPath}/room/${roomId}`,
+                        type: "PUT",
+                        data: {
+                            name: roomName
+                        },
+                        success: function() {
+                            alert("The room was successfully updated!");
+                            $('#modal > div > div > div.modal-header > button').click();
+                            showAllRooms();
+                        },
+                        statusCode: {
+                            400: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            },
+                            409: function(data) {
+                                const errorMessage = data.responseJSON.message;
+                                alert(errorMessage);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
 });
 
 // Show all Crews in a List
@@ -1404,6 +1463,10 @@ function showRooms(data) {
                 <div class="card-actions">
                     <button data-id="${room.id}" type="button" class="btn btn-warning
                             btnShow roomInfo">Open Chat Room</button>
+                    <button data-id="${room.id}" type="button" class="btn btn-success
+                            btnShow roomUpdate" data-toggle="modal" data-target="#modal">Update</button>
+                    <button data-id="${room.id}" type="button" class="btn btn-danger
+                        btnShow roomDelete">Delete</button>
                 </div>
             </div>
         `);
