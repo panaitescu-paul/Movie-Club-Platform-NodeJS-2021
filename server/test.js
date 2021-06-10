@@ -534,7 +534,30 @@ describe('Users API', () => {
                 });
         });
 
-    });
+        it('it should NOT UPDATE a user that does not exist', (done) => {
+            const userId = -1;
+            let updatedUser = {
+                username: "Test User 3",
+                password: "pass",
+                firstName: "John",
+                lastName: "Smith",
+                gender: "male",
+                birthday: "2021-01-01",
+                country: "DK"
+            };
+            // get all users to find the last user inserted in the database
+            chai.request(server)
+                .put('/user/' + userId)
+                .send(updatedUser)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`User with this ID (${userId}) does not exist!`);
+                    done();
+                });
+        });
+
+});
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
