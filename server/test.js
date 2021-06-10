@@ -305,6 +305,29 @@ describe('Movies API', () => {
     });
 });
 
+
+
+// Tests for Crews
+
+// Tests for Admins
+
+// Tests for Users
+describe('Users API', () => {
+    /*
+    * Test the GET route
+    */
+    describe('Test GET route /user', () => {
+        it('it should GET all the users', (done) => {
+            chai.request(server)
+                .get('/user')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
+
+    });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
