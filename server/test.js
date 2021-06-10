@@ -336,6 +336,34 @@ describe('Users API', () => {
                 });
         });
     });
+    /*
+    * Test the GET by id route
+    */
+    describe('Test GET route /user/:id', () => {
+        it('it should GET a user by id', (done) => {
+            const userId = 1;
+            chai.request(server)
+                .get('/user/' + userId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('id');
+                    res.body.should.have.property('username');
+                    res.body.should.have.property('password');
+                    res.body.should.have.property('firstName');
+                    res.body.should.have.property('lastName');
+                    res.body.should.have.property('gender');
+                    res.body.should.have.property('birthday');
+                    res.body.should.have.property('country');
+                    res.body.should.have.property('createdAt');
+                    res.body.should.have.property('id').eql(userId);
+                    res.body.should.have.property('username').eql('member');
+                    done();
+                });
+        });
+
+    });
+
         });
 function formatDate(date) {
     if (date == null) {
