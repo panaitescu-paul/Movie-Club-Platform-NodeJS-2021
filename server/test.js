@@ -327,7 +327,16 @@ describe('Users API', () => {
                 });
         });
 
+        it('it should NOT GET all the users', (done) => {
+            chai.request(server)
+                .get('/users')
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    done();
+                });
+        });
     });
+        });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
