@@ -608,6 +608,20 @@ describe('Users API', () => {
                         });
                 });
         });
+        it('it should NOT DELETE a user that does not exist', (done) => {
+            const userId = -1;
+            chai.request(server)
+                .delete('/user/' + userId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`User with this ID (${userId}) does not exist!`);
+                    done();
+                });
+        });
+    });
+});
+
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
@@ -625,4 +639,3 @@ function formatDate(date) {
         return [year, month, day].join('-');
     }
 }
-// test
