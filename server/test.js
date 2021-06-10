@@ -328,7 +328,7 @@ describe('Crews API', () => {
     * Test the GET route
     */
     describe('Test GET route /crew', () => {
-        it('it should GET all the crew', (done) => {
+        it('it should GET all the crews', (done) => {
             chai.request(server)
                 .get('/crew')
                 .end((err, res) => {
@@ -338,7 +338,7 @@ describe('Crews API', () => {
                 });
         });
 
-        it('it should NOT GET all the crew', (done) => {
+        it('it should NOT GET all the crews', (done) => {
             chai.request(server)
                 .get('/crews')
                 .end((err, res) => {
@@ -460,7 +460,7 @@ describe('Crews API', () => {
                 picture: "2021-01-01",
                 website: "www.test12.com"
             };
-            // get all movies to find the last movie inserted in the database
+            // get all crews to find the last crew inserted in the database
             chai.request(server)
                 .get('/crew')
                 .end((err, res) => {
@@ -489,7 +489,7 @@ describe('Crews API', () => {
                 picture: "2021-01-01",
                 website: "www.test12.com"
             };
-            // get all movies to find the last movie inserted in the database
+            // get all crews to find the last crew inserted in the database
             chai.request(server)
                 .put('/crew/' + crewId)
                 .send(updatedCrew)
@@ -507,7 +507,7 @@ describe('Crews API', () => {
     */
     describe('Test DELETE route /crew/:id', () => {
         it('it should DELETE a crew given the id', (done) => {
-            // get all crew to find the last movie inserted in the database
+            // get all crews to find the last crew inserted in the database
             chai.request(server)
                 .get('/crew')
                 .end((err, res) => {
@@ -543,8 +543,182 @@ describe('Crews API', () => {
 // ***                                                ***
 // ******************************************************
 
+describe('Admins API', () => {
+    /*
+    * Test the GET route
+    */
+    describe('Test GET route /admin', () => {
+        it('it should GET all the admins', (done) => {
+            chai.request(server)
+                .get('/admin')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
 
-// TODO
+        it('it should NOT GET all the admins', (done) => {
+            chai.request(server)
+                .get('/admins')
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    done();
+                });
+        });
+    });
+    /*
+    * Test the GET by id route
+    */
+    describe('Test GET route /admin/:id', () => {
+        it('it should GET an admin by id', (done) => {
+            const adminId = 2;
+            chai.request(server)
+                .get('/admin/' + adminId)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('id');
+                    res.body.should.have.property('username');
+                    res.body.should.have.property('password');
+                    res.body.should.have.property('createdAt');
+                    res.body.should.have.property('id').eql(adminId);
+                    res.body.should.have.property('username').eql('cons0343');
+                    done();
+                });
+        });
+
+        it('it should NOT GET any admin', (done) => {
+            const adminId = -1;
+            chai.request(server)
+                .get('/admin/' + adminId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`No admin user found with the id ${adminId}!`);
+                    done();
+                });
+        });
+    });
+
+    /*
+    * Test the POST route
+    */
+    describe('Test POST route /admin', () => {
+        it('it should POST an admin', (done) => {
+            let admin = {
+                username: "test",
+                password: "test123",
+            };
+            chai.request(server)
+                .post('/admin')
+                .send(admin)
+                .end((err, res) => {
+                    res.should.have.status(201);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('id');
+                    res.body.should.have.property('username');
+                    res.body.should.have.property('password');
+                    res.body.should.have.property('createdAt');
+                    res.body.should.have.property('username').eql(admin.username);
+                    done();
+                });
+        });
+
+        it('it should NOT POST an admin that already exists in the database', (done) => {
+            let admin = {
+                username: "test",
+                password: "test123",
+            };
+            chai.request(server)
+                .post('/admin')
+                .send(admin)
+                .end((err, res) => {
+                    res.should.have.status(409);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql('An admin with this Username already exists!');
+                    done();
+                });
+        });
+    });
+    /*
+    * Test the PUT route
+    */
+    describe('Test PUT route /admin/:id', () => {
+        it('it should UPDATE an admin given the id', (done) => {
+            let updatedAdmin = {
+                username: "test12",
+            };
+            // get all movies to find the last movie inserted in the database
+            chai.request(server)
+                .get('/admin')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let admins = res.body;
+                    const lastAdmin = admins[admins.length - 1];
+                    chai.request(server)
+                        .put('/admin/' + lastAdmin.id)
+                        .send(updatedAdmin)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
+                        });
+                });
+        });
+
+        it('it should NOT UPDATE an admin that does not exist', (done) => {
+            const adminId = -1;
+            let updatedAdmin = {
+                username: "test123",
+            };
+            // get all movies to find the last movie inserted in the database
+            chai.request(server)
+                .put('/admin/' + adminId)
+                .send(updatedAdmin)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`No admin user found with the id ${adminId}!`);
+                    done();
+                });
+        });
+
+    });
+    /*
+    * Test the DELETE route
+    */
+    describe('Test DELETE route /admin/:id', () => {
+        it('it should DELETE an admin given the id', (done) => {
+            // get all admins to find the last admin inserted in the database
+            chai.request(server)
+                .get('/admin')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let admins = res.body;
+                    const lastAdmin = admins[admins.length - 1];
+                    chai.request(server)
+                        .delete('/admin/' + lastAdmin.id)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
+                        });
+                });
+        });
+        it('it should NOT DELETE an admin that does not exist', (done) => {
+            const adminId = -1;
+            chai.request(server)
+                .delete('/admin/' + adminId)
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.have.property('message');
+                    res.body.should.have.property('message').eql(`No admin user found with the id ${adminId}!`);
+                    done();
+                });
+        });
+    });
+});
 
 // ******************************************************
 // ***                                                ***

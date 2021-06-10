@@ -42,7 +42,6 @@ app.post("/admin", (req, res) => {
                     });
                     console.log(err);
                 } else {
-                    console.log("A new admin user record inserted, ID: " + result.insertId );
                     axios.get(`http://${HOSTNAME}:${PORT}/admin/${result.insertId}`).then(response =>{
                         res.status(201).send(response.data);
                     }).catch(err =>{
