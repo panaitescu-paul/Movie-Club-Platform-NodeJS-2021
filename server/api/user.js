@@ -40,8 +40,6 @@ app.post("/user", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     let sql = `INSERT INTO user(username, password) VALUES(?, ?);`;
-    console.log(username);
-    console.log(password);
 
     // Check if Username and Password are null
     if(username.length == 0) {
@@ -59,7 +57,6 @@ app.post("/user", (req, res) => {
     // Check the count of Users with this Username
     connection.query(`SELECT COUNT(*) AS total FROM user WHERE username = ?;` , 
                     [username], function (err, result) {
-        console.log('total: ', result[0].total);
         if (result[0].total > 0) {
             res.status(409).json({
                 message: 'User with this Username already exists!',
@@ -77,10 +74,8 @@ app.post("/user", (req, res) => {
                     });
                     console.log(err.message);
                 } else {
-                    console.log(`A new row has been inserted!`);
                     // Get the last inserted User
                     axios.get(`http://${HOSTNAME}:${PORT}/user/${result.insertId}`).then(response =>{
-                        console.log(response);
                         res.status(201).send(response.data);
                     }).catch(err =>{
                         if(err){
@@ -126,7 +121,6 @@ app.get("/user", (req, res) => {
 * Errors:   User with this ID does not exist!
 */
 app.get("/user/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let sql = `SELECT * FROM user WHERE id = ?`;
 
     connection.query(sql, [req.params.id], function (err, user) {
@@ -188,7 +182,6 @@ app.get("/user/username/search", (req, res) => {
 *           The User could not be updated!
 */
 app.put("/user/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let username = req.body.username;
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
@@ -210,7 +203,6 @@ app.put("/user/:id", (req, res) => {
     // Check the count of Users with this Username
     connection.query(`SELECT COUNT(*) AS total FROM user WHERE username = ? AND id != ?;` , 
                     [username, req.params.id], function (err, result) {
-        console.log('total: ', result[0].total);
         if (result[0].total > 0) {
             res.status(409).json({
                 message: 'User with this Username already exists!',
@@ -260,7 +252,6 @@ app.put("/user/:id", (req, res) => {
 *           The User could not be deleted!
 */
 app.delete("/user/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let sqlGet = `SELECT * FROM user WHERE id = ?`;
     let sqlDelete = `DELETE FROM user WHERE id = ?`;
     
@@ -354,7 +345,6 @@ app.post("/user/login", (req, res) => {
 *           User could not be updated!
 */
 app.put("/user/password/:id", (req, res) => {
-    console.log("req.params.id: ", req.params.id);
     let oldPassword = req.body.oldPassword;
     let newPassword = req.body.newPassword;
     let sqlGet = `SELECT password FROM user WHERE id = ?`;

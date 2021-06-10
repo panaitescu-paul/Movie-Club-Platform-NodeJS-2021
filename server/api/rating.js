@@ -277,7 +277,7 @@ app.delete("/rating/:id", (req, res) => {
 // ******************************************************
 
 /**
-* READ all Ratings for a Movies
+* READ all Ratings for a Movie
 *
 * Output:   an array with all Ratings from a Movie and their information
 * Errors:   There are no Ratings for this Movie!
