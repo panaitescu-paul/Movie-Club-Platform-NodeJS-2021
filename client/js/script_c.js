@@ -142,7 +142,8 @@ $(document).ready(function() {
     });
 
     // Search Crew
-    $(document).on("click", "#btnSearchCrew", function() {
+    $("#crewSearchForm").on("submit", function(e) {
+        e.preventDefault();
         const searchValue = $('#searchCrew').val();
         $.ajax({
             url: `${URLPath}/crew/name/search?name=${searchValue}`,
@@ -681,7 +682,8 @@ $(document).ready(function() {
     });
 
     // Search Admin
-    $(document).on("click", "#btnSearchAdmin", function() {
+    $("#adminSearchForm").on("submit", function(e) {
+        e.preventDefault();
         const searchValue = $('#searchAdmin').val();
         $.ajax({
             url: `${URLPath}/admin/username/search?username=${searchValue}`,
@@ -693,7 +695,7 @@ $(document).ready(function() {
                 404: function(data) {
                     const errorMessage = data.responseJSON.message;
                     $("#results").empty().append(`
-                        <p><b>${errorMessage}</b></p>
+                        <p class="alert alert-warning">${errorMessage}</p>
                     `);
                 }
             }
@@ -1307,6 +1309,28 @@ $(document).ready(function() {
                 });
             }
         });
+    });
+
+    // Delete Room
+    $(document).on("click", ".roomDelete", function() {
+        const roomId = $(this).attr("data-id");
+        if (confirm("Are you sure that you want to delete this room?")) {
+            $.ajax({
+                url: `${URLPath}/room/${roomId}`,
+                type: "DELETE",
+                success: function() {
+                    $("button[data-id=" + roomId + "]").parent().parent().remove();
+                    alert("The room was successfully deleted!");
+                    location.reload();
+                },
+                statusCode: {
+                    400: function(data) {
+                        const errorMessage = data.responseJSON.message;
+                        alert(errorMessage);
+                    }
+                }
+            });
+        }
     });
 });
 

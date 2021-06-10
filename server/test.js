@@ -13,7 +13,7 @@
 *           Install Dependencies:   npm install             *
 *           Run Unit Tests:         npm test                *
 *           Code Coverage:          npm run coverage        *
-* ----------------------------------------------------------*/
+*-----------------------------------------------------------*/
 
 let mocha = require('mocha');
 let chai = require('chai');

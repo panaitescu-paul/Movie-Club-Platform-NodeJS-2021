@@ -45,32 +45,13 @@ function showSearchType(type = 'None') {
 
     if (type == 'Movie') {
         $('#movieSearch').show();
-        $(document).on('keypress',function(e) {
-            if(e.which === 13) {
-                $("#btnSearchMovie").click();
-            }
-        });
+
     } else if (type == 'Crew') {
         $('#crewSearch').show();
-        $(document).on('keypress',function(e) {
-            if(e.which === 13) {
-                $("#btnSearchCrew").click();
-            }
-        });
     } else if (type == 'Admin') {
         $('#adminSearch').show();
-        $(document).on('keypress',function(e) {
-            if(e.which === 13) {
-                $("#btnSearchAdmin").click();
-            }
-        });
     } else if (type == 'Member') {
         $('#memberSearch').show();
-        $(document).on('keypress',function(e) {
-            if(e.which === 13) {
-                $("#btnSearchMember").click();
-            }
-        });
     } else if (type == 'None') {
     }
 }

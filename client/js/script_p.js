@@ -47,11 +47,6 @@ $(document).ready(function() {
                 checkIfAdminLoggedIn();
                 checkMemberLogin();
                 showAllMovies('guest');
-                $(document).on('keypress',function(e) {
-                    if(e.which === 13) {
-                        $("#btnSearchMovie").click();
-                    }
-                });
             });
         } else if (page === "crews.html") {
             console.log("PAGE crews");
@@ -60,11 +55,6 @@ $(document).ready(function() {
                 checkIfAdminLoggedIn();
                 checkMemberLogin();
                 showAllCrews('guest');
-                $(document).on('keypress',function(e) {
-                    if(e.which === 13) {
-                        $("#btnSearchCrew").click();
-                    }
-                });
             });
         } else if (page === "admins.html" || page === "admins.html?") {
             console.log("PAGE admins");
@@ -640,7 +630,8 @@ $(document).ready(function() {
     }
 
     // Search Movies - Show all Movies in a List
-    $(document).on("click", "#btnSearchMovie", function() {
+    $("#movieSearchForm").on("submit", function(e) {
+        e.preventDefault();
         const searchInput = $('#searchMovie').val();
         $.ajax({
             url: URL + `movie/title/search?title=${searchInput}`,
@@ -1318,7 +1309,8 @@ $(document).ready(function() {
     }
 
     // Search Users - Show all Users in a List
-    $(document).on("click", "#btnSearchMember", function() {
+    $("#memberSearchForm").on("submit", function(e) {
+        e.preventDefault();
         const searchInput = $('#searchMember').val();
         $.ajax({
             url: URL + `user/username/search?username=${searchInput}`,
@@ -1333,7 +1325,7 @@ $(document).ready(function() {
                 404: function(data) {
                     const errorMessage = data.responseJSON.message;
                     $("#results").empty().append(`
-                        <p><i>${errorMessage}</i></p>
+                        <p class="alert alert-warning">${errorMessage}</p>
                     `);
                 }
             }
