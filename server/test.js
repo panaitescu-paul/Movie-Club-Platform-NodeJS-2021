@@ -504,7 +504,37 @@ describe('Users API', () => {
                 });
         });
 
+        it('it should NOT UPDATE a user with no Username', (done) => {
+            let updatedUser = {
+                username: "",
+                password: "pass",
+                firstName: "John",
+                lastName: "Smith",
+                gender: "male",
+                birthday: "2021-01-01",
+                country: "DK"
+            };
+            // get all users to find the last user inserted in the database
+            chai.request(server)
+                .get('/user')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let users = res.body;
+                    const lastUser = users[users.length - 1];
+                    chai.request(server)
+                        .put('/user/' + lastUser.id)
+                        .send(updatedUser)
+                        .end((err, res) => {
+                            res.should.have.status(409);
+                            res.body.should.have.property('message');
+                            res.body.should.have.property('message').eql('Username can not be null!');
+                            done();
+                        });
+                });
         });
+
+    });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
