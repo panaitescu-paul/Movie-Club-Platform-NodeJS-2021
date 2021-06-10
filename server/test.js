@@ -472,7 +472,39 @@ describe('Users API', () => {
                 });
         });
     });
+    /*
+    * Test the PUT route
+    */
+    describe('Test PUT route /user/:id', () => {
+        it('it should UPDATE a user given the id', (done) => {
+            let updatedUser = {
+                username: "Test User 2",
+                password: "pass",
+                firstName: "John 2",
+                lastName: "Smith 2",
+                gender: "male",
+                birthday: "2021-01-02",
+                country: "Denmark"
+            };
+            // get all users to find the last user inserted in the database
+            chai.request(server)
+                .get('/user')
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    let users = res.body;
+                    const lastUser = users[users.length - 1];
+                    chai.request(server)
+                        .put('/user/' + lastUser.id)
+                        .send(updatedUser)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
                         });
+                });
+        });
+
+        });
 function formatDate(date) {
     if (date == null) {
         return 'Unknown';
