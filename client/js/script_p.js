@@ -1137,6 +1137,9 @@ $(document).ready(function() {
         const title = $("#reviewTitle").val(); 
         const content = $("#reviewContent").val(); 
 
+        if (loggedInMemberId === undefined) {
+            alert("To create a Review, you must be Logged in as a Member!");
+        } else {
             $.ajax({
                 url: URL + `review`,
                 type: "POST",
@@ -1161,6 +1164,8 @@ $(document).ready(function() {
                     }
                 }
             });
+        }
+    });
     });
 
     // ******************************************************
