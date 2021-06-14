@@ -1200,6 +1200,34 @@ $(document).ready(function() {
         });
     });
 
+    // Update Movie Review - Form Processing
+    $(document).on("click", "#updateReviewConfirm", function(e) {
+        const reviewId = $(this).attr("review-id");
+        const title = $("#reviewTitleUpdate").val(); 
+        const content = $("#reviewContentUpdate").val();
+        $.ajax({
+            url: URL + `review/${reviewId}`,
+            type: "PUT",
+            data: {
+                title: title,
+                content: content
+            },
+            success: function(data) {
+                alert('Review was successfully updated!');
+            },
+            statusCode: {
+                400: function(data) {
+                    alert(data.responseJSON.message);
+                },
+                404: function(data) {
+                    alert(data.responseJSON.message);
+                },
+                409: function(data) {
+                    alert(data.responseJSON.message);
+                }
+            }
+        });
+    });
     // ******************************************************
     // ***                                                ***
     // ***                 User Functionality             ***
