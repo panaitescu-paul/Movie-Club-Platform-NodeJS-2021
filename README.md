@@ -48,11 +48,11 @@ There are 3 kinds of users for this platform, each of them with different access
 
 ![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/main/screenshots/1.png)
 
-![alt text](https://github.com/panaitescu-paul/BA-Project-2021/screenshots/2.png)
+![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/main/screenshots/2.png)
 
-![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/master/screenshots/3.png)
+![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/main/screenshots/3.png)
 
-![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/master/screenshots/4.png)
+![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/main/screenshots/4.png)
 
 
 ## Installation Guide
