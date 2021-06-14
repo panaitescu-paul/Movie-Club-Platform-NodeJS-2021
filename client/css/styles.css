@@ -402,7 +402,7 @@ body {
     cursor: pointer;
 }
 .crewDiv, .adminDiv {
-    width: 220px !important;
+    /*width: 220px !important;*/
 }
 .detailsBtn {
     margin-right: 19px;
@@ -584,3 +584,10 @@ body {
 #btnCreateMember {
     margin-top: 10px;
 }
+/* Review */
+
+/* .btn-custom-1:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0px;
+} */
