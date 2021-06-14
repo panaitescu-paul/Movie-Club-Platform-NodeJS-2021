@@ -588,10 +588,31 @@ body {
 #btnCreateMember {
     margin-top: 10px;
 }
-/* Review */
 
-/* .btn-custom-1:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    padding: 0px;
-} */
+/*  */
+
+.crew-section {
+    height: 50px;
+}
+
+.crew-section .tag {
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.small-picture {
+    width: 40px!important;
+    float: right;
+}
+
+.crewInfo {
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-left: 1px solid #107df5;
+}
+.crewInfo:hover {
+    cursor: pointer;
+    border: 1px solid #107df5;
+    background-color: rgba(16, 125, 245, 0.1);
+}
