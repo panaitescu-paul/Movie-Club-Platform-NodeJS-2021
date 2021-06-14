@@ -1,11 +1,11 @@
 # Movie Club Platform - NodeJS, JavaScript - 2021
-The Movie Club is a Web Application that is lightweight, fast, and easy to use, in order to access relevant information about movies and have conversations with other people that care about movies.
+The Movie Club is a Web Application that is ***lightweight, fast, and easy to use***, in order to ***access relevant information about movies and have conversations with other people that care about movies***.
 
 ### Features:
 There are 3 kinds of users for this platform, each of them with different access over the website:
-1. Guest User
-2. Member User
-3. Admin User
+***1. Guest User***
+***2. Member User***
+***3. Admin User***
 
 #### 1. The Guest User will be able to:
 - Read and search Movies and Crews
@@ -33,15 +33,16 @@ There are 3 kinds of users for this platform, each of them with different access
 
 
 ### The Project Objectives are to create a Web Paltform that has the next important implementations:
-1. Database
-2. Backend (with Restful APIs and Gateway) 
-3. Frontend
-4. Microservices Architecture
+***1. Database***
+***2. Backend (with Restful APIs and Gateway)***
+***3. Frontend***
+***4. Microservices Architecture***
 
 ### Technologies:
-- NodeJS, Javascript
-- Mocha, Chai
-- HTML, CSS, JS
+- Backend (NodeJS, Javascript)
+- Frontend (HTML, CSS, JS, jQuery)
+- Testing (Mocha, Chai)
+
 
 ### Preview:
 
