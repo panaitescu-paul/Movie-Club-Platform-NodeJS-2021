@@ -876,10 +876,11 @@ $(document).ready(function() {
                                 type: "GET",
                                 success: function(role) {
                                     $("#modalInfoContent3").append(`
-                                        <div class="modal-box">
-                                            <p>
+                                        <div class="modal-box crewInfo" data-id="${crew.id}">
+                                            <p class="crew-section">
                                                 <span class="tag">${role.name}</span>
                                                 <span class="tag-info">${crew.name}</span>
+                                                <img class="card-img-top small-picture" src="${crew.picture}"> 
                                             </p>
                                         </div>
                                     `);
@@ -1104,7 +1105,7 @@ $(document).ready(function() {
     // Show Create Review Section
     function showCreateReviewSection() {
         // Show the New Review section
-        $("#modalInfoContent6").append(`
+            $("#modalInfoContent6").append(`
             </br>
             <hr>
             <h3 class="modal-subtitle">New Review</h3>
@@ -1119,7 +1120,7 @@ $(document).ready(function() {
                     </div>
                 </div>
             </form>
-        `);
+            `);
     };
 
     // Create Movie Review - Form Processing
@@ -1129,30 +1130,30 @@ $(document).ready(function() {
         const title = $("#reviewTitle").val(); 
         const content = $("#reviewContent").val(); 
 
-        $.ajax({
-            url: URL + `review`,
-            type: "POST",
-            data: {
-                userId: loggedInMemberId,
-                movieId: movieId,
-                title: title,
-                content: content
-            },
-            success: function(data) {
-                alert('Movie Review was successfully created!');
-            },
-            statusCode: {
-                400: function(data) {
-                    alert(data.responseJSON.message);
+            $.ajax({
+                url: URL + `review`,
+                type: "POST",
+                data: {
+                    userId: loggedInMemberId,
+                    movieId: movieId,
+                    title: title,
+                    content: content
                 },
-                404: function(data) {
-                    alert(data.responseJSON.message);
+                success: function(data) {
+                    alert('Movie Review was successfully created!');
                 },
-                409: function(data) {
-                    alert(data.responseJSON.message);
+                statusCode: {
+                    400: function(data) {
+                        alert(data.responseJSON.message);
+                    },
+                    404: function(data) {
+                        alert(data.responseJSON.message);
+                    },
+                    409: function(data) {
+                        alert(data.responseJSON.message);
+                    }
                 }
-            }
-        });
+            });
     });
 
     // ******************************************************
@@ -1698,8 +1699,4 @@ $(document).ready(function() {
             }
         }
     });
-
-// Test commit
-// Test commit 2
-
 });
