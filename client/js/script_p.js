@@ -1166,6 +1166,38 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Update Movie Review
+    $(document).on("click", ".updateReview", function() {
+        const id = $(this).attr("data-id");
+        console.log("id", id);
+        $.ajax({
+            url: URL + `review/${id}`,
+            type: "GET",
+            success: function(data) {
+                $(`#${id}`).append(`
+                    </br>
+                    <hr>
+                    <h3 class="modal-subtitle">Update Review</h3>
+                    <form id="createReviewForm">
+                        <div class="form-group form-custom">
+                            <label for="reviewTitleUpdate">Title</label>
+                            <input type="text" id="reviewTitleUpdate" class="form-control" value="${data.title}" required>
+                            <label for="reviewContentUpdate">Content</label>
+                            <textarea id="reviewContentUpdate" class="form-control" rows="3">${data.content}</textarea>
+                            <div class="modal-actions">
+                                <button type="submit" id="updateReviewConfirm" review-id="${id}" class="btn btn-success btn-3" data-dismiss="modal">Update Review</button>
+                            </div>
+                        </div>
+                    </form>
+                `);
+            },
+            statusCode: {
+                404: function(data) {
+                    alert(data.responseJSON.message);
+                }
+            }
+        });
     });
 
     // ******************************************************
