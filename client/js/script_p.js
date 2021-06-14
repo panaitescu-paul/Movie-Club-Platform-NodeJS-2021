@@ -1105,7 +1105,8 @@ $(document).ready(function() {
 
     // Show Create Review Section
     function showCreateReviewSection() {
-        // Show the New Review section
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
+        if (loggedInMemberId) {
             $("#modalInfoContent6").append(`
             </br>
             <hr>
@@ -1122,6 +1123,11 @@ $(document).ready(function() {
                 </div>
             </form>
             `);
+        } else {
+            $("#modalInfoContent6").append(`
+                <p class="alert alert-warning">To create a Review, you must be Logged in as a Member!</p>
+            `);
+        }
     };
 
     // Create Movie Review - Form Processing
