@@ -1228,6 +1228,36 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Delete Movie Rating
+    $(document).on("click", ".deleteReview", function(e) {
+        const id = $(this).attr("data-id");
+        if (confirm("Are you sure that you want to delete this Review?")) {
+            if (id !== null) {
+                $.ajax({
+                    url: URL + `review/${id}`,
+                    type: "DELETE",
+                    success: function(data) {
+                        // Close the modal
+                        $('#modal > div > div > div.modal-header > button').click();
+                        alert('Review was successfully deleted!');
+                    },
+                    statusCode: {
+                        400: function(data) {
+                            alert(data.responseJSON.message);
+                        },
+                        404: function(data) {
+                            alert(data.responseJSON.message);
+                        },
+                        409: function(data) {
+                            alert(data.responseJSON.message);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
     // ******************************************************
     // ***                                                ***
     // ***                 User Functionality             ***
