@@ -1018,7 +1018,6 @@ $(document).ready(function() {
     // Show Movie Reviews
     function showMovieReviews(id) {
         const loggedInMemberId = $('#loggedInMember').attr("data-id");
-
         $.ajax({
             url: URL + `review/movie/${id}`,
             type: "GET",
@@ -1047,6 +1046,8 @@ $(document).ready(function() {
                             <div class="card-actions">
                                 <button data-id="${element.id}" data-user-id="${element.userId}" type="button" class="btn btn-success updateReview">Update</button>
                                 <button data-id="${element.id}" data-user-id="${element.userId}" type="button" class="btn btn-danger deleteReview">Delete</button>
+                            </div>
+                            <div class="update-section" id="${element.id}">
                             </div>
                         </div>
                     `);
