@@ -1121,6 +1121,40 @@ $(document).ready(function() {
             </form>
         `);
     };
+
+    // Create Movie Review - Form Processing
+    $(document).on("click", "#createReview", function(e) {
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
+        const movieId = $('#modalInfoContent2 > div').attr("data-movieid");
+        const title = $("#reviewTitle").val(); 
+        const content = $("#reviewContent").val(); 
+
+        $.ajax({
+            url: URL + `review`,
+            type: "POST",
+            data: {
+                userId: loggedInMemberId,
+                movieId: movieId,
+                title: title,
+                content: content
+            },
+            success: function(data) {
+                alert('Movie Review was successfully created!');
+            },
+            statusCode: {
+                400: function(data) {
+                    alert(data.responseJSON.message);
+                },
+                404: function(data) {
+                    alert(data.responseJSON.message);
+                },
+                409: function(data) {
+                    alert(data.responseJSON.message);
+                }
+            }
+        });
+    });
+
     // ******************************************************
     // ***                                                ***
     // ***                 User Functionality             ***
