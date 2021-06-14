@@ -577,6 +577,10 @@ body {
     font-weight: 500;
 }
 
+.alert-warning {
+    width: auto;
+}
+
 .navbar {
     height: 67px;
 }
