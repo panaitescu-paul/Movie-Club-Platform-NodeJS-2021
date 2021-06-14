@@ -393,7 +393,7 @@ describe('Crews API', () => {
                     res.body.should.have.property('picture');
                     res.body.should.have.property('website');
                     res.body.should.have.property('id').eql(crewId);
-                    res.body.should.have.property('name').eql('Quentin Tarantino');
+                    res.body.should.have.property('name').eql('Martin Scorsese');
                     done();
                 });
         });
