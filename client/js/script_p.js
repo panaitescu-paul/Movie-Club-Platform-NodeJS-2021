@@ -1016,6 +1016,8 @@ $(document).ready(function() {
 
     // Show Movie Reviews
     function showMovieReviews(id) {
+        const loggedInMemberId = $('#loggedInMember').attr("data-id");
+
         $.ajax({
             url: URL + `review/movie/${id}`,
             type: "GET",
@@ -1029,7 +1031,7 @@ $(document).ready(function() {
                         <div class="modal-box">
                             <p>
                                 <span>By: </span>
-                                <span class="tag" id="user-name"></span>
+                                <span class="tag" id="${element.userId}"></span>
                                 <span>at: </span>
                                 <span class="tag">${formatDate(element.createdAt)}</span>
                             </p>
@@ -1041,15 +1043,20 @@ $(document).ready(function() {
                                     <span class="review-content">${element.content}</span>
                                 </p>
                             </div>
+                            <div class="card-actions">
+                                <button data-id="${element.id}" data-user-id="${element.userId}" type="button" class="btn btn-success updateReview">Update</button>
+                                <button data-id="${element.id}" data-user-id="${element.userId}" type="button" class="btn btn-danger deleteReview">Delete</button>
                             </div>
-                    `)
+                        </div>
+                    `);
+          
                     let userId = element.userId;
                     $.ajax({
                         url: URL + `user/${userId}`,
                         type: "GET",
                         success: function(data) {
-                            document.getElementById("user-name").innerHTML = data.firstName + ' ' + data.lastName;
-                            $("#modalInfoContent6").append(elem);
+                            console.log("userId", userId);
+                            document.getElementById(`${userId}`).innerHTML = data.firstName + ' ' + data.lastName;
                         },
                         statusCode: {
                             404: function(data) {
@@ -1059,6 +1066,24 @@ $(document).ready(function() {
                         }
                     });
                 }); 
+                
+                // Show the New Review section
+                showCreateReviewSection();
+
+                // Show Update and Delete buttons only for the Member that created that Review
+                $('.updateReview').each(function () {
+                    let userId = $(this).attr('data-user-id');
+                    console.log("userId", userId);
+                    if (loggedInMemberId === undefined) {
+                        $('.updateReview').hide();
+                        $('.deleteReview').hide();
+                    }
+                    if (loggedInMemberId === userId) {
+                        $(`[data-user-id="${userId}"]`).show();
+                    } else {
+                        $(`[data-user-id="${userId}"]`).hide();
+                    }
+                });
             },
             statusCode: {
                 404: function(data) {
@@ -1068,6 +1093,9 @@ $(document).ready(function() {
                             <p><i>No Reviews are available for this Movie!</i></p>
                         </div>
                     `);
+
+                    // Show the New Review section
+                    showCreateReviewSection();
                 }
             }
         });
