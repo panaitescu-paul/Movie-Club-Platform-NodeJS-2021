@@ -39,6 +39,7 @@ There are 3 kinds of users for this platform, each of them with different access
 4. Microservices Architecture
 
 ### Technologies:
+- Database (MySQL)
 - Backend (NodeJS, Javascript)
 - Frontend (HTML, CSS, JS, jQuery)
 - Testing (Mocha, Chai)
