@@ -202,18 +202,13 @@ $(document).ready(function() {
                     alert('Movie was successfully created!');
                 },
                 statusCode: {
-                    404: function(data) {
+                    400: function(data) {
                         const errorMsg = JSON.parse(data.responseText).Error;
                         alert(errorMsg);
                     },
                     409: function(data) {
                         const errorMsg = JSON.parse(data.responseText).Error;
                         alert(errorMsg);
-                    },
-                    500: function(data) {
-                        console.log('data: ', data);
-                        // const errorMsg = JSON.parse(data.responseText).Error;
-                        // alert(errorMsg);
                     }
                 }
             });
@@ -1046,7 +1041,7 @@ $(document).ready(function() {
                                     <span class="review-content">${element.content}</span>
                                 </p>
                             </div>
-                        </div>
+                            </div>
                     `)
                     let userId = element.userId;
                     $.ajax({
@@ -1063,7 +1058,7 @@ $(document).ready(function() {
                             }
                         }
                     });
-                });                
+                }); 
             },
             statusCode: {
                 404: function(data) {
