@@ -3,9 +3,9 @@ The Movie Club is a Web Application that is ***lightweight, fast, and easy to us
 
 ### Features:
 There are 3 kinds of users for this platform, each of them with different access over the website:
-***1. Guest User***
-***2. Member User***
-***3. Admin User***
+1. Guest User
+2. Member User
+3. Admin User
 
 #### 1. The Guest User will be able to:
 - Read and search Movies and Crews
@@ -33,10 +33,10 @@ There are 3 kinds of users for this platform, each of them with different access
 
 
 ### The Project Objectives are to create a Web Paltform that has the next important implementations:
-***1. Database***
-***2. Backend (with Restful APIs and Gateway)***
-***3. Frontend***
-***4. Microservices Architecture***
+1. Database
+2. Backend (with Restful APIs and Gateway)
+3. Frontend
+4. Microservices Architecture
 
 ### Technologies:
 - Backend (NodeJS, Javascript)
@@ -46,9 +46,9 @@ There are 3 kinds of users for this platform, each of them with different access
 
 ### Preview:
 
-![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/master/screenshots/1.png)
+![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/main/screenshots/1.png)
 
-![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/master/screenshots/2.png)
+![alt text](https://github.com/panaitescu-paul/BA-Project-2021/screenshots/2.png)
 
 ![alt text](https://github.com/panaitescu-paul/BA-Project-2021/blob/master/screenshots/3.png)
 
