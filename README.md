@@ -71,5 +71,5 @@ In order to install this application you should first make sure that you have ev
 Afterwards, open the project in a code editor, open a terminal or command prompt and change directory to the project’s folder and then change the directory to the server folder. Then, in order to install all the dependencies you should type the command npm install. Then open a new terminal or command prompt and change the directory again to the server folder, then go into the gateway folder, then change the directory into the mcdb_gateway folder and type the command npm install to install de gateway’s dependencies. Now, open the redis server, either by writing in a new terminal the command redis-server if you are a MacOS user, or by opening the redis-server.exe file if you are a Windows user. After that, open a terminal or command prompt and change the directory to the mcdb_gateway folder and write the command npm start. Finally, open another terminal or command prompt and change the directory into the server folder of the application and type the command node app. Now, you can either click on the link provided on the terminal (http://localhost:4000/) or you can copy and paste the link into a browser url to open the Movie Club web application.
 
 ### Creators
-- Paul Panaitescu (https://github.com/panaitescu-paul)
-- Constantin Razvan Tarau (https://github.com/Cons19)
+- © Paul Panaitescu (https://github.com/panaitescu-paul)
+- © Constantin Razvan Tarau (https://github.com/Cons19)
