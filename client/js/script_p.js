@@ -1101,6 +1101,26 @@ $(document).ready(function() {
         });
     };
 
+    // Show Create Review Section
+    function showCreateReviewSection() {
+        // Show the New Review section
+        $("#modalInfoContent6").append(`
+            </br>
+            <hr>
+            <h3 class="modal-subtitle">New Review</h3>
+            <form id="createReviewForm">
+                <div class="form-group form-custom">
+                    <label for="reviewTitle">Title</label>
+                    <input type="text" id="reviewTitle" class="form-control" required>
+                    <label for="reviewContent">Content</label>
+                    <textarea id="reviewContent" class="form-control" rows="3"></textarea>
+                    <div class="modal-actions">
+                        <button type="submit" id="createReview" class="btn btn-success btn-3" data-dismiss="modal">Create Review</button>
+                    </div>
+                </div>
+            </form>
+        `);
+    };
     // ******************************************************
     // ***                                                ***
     // ***                 User Functionality             ***
