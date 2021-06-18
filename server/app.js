@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
         io.emit('chat update delete');
     });
 
-    // listens for changes in the list of particiapnts
+    // listens for changes in the list of participants
     socket.on('chat participant', () => {
         console.log("here")
         io.emit('chat participant');

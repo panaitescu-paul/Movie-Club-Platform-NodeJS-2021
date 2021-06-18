@@ -4,8 +4,6 @@
     <title>Movie Club</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Policy against XSS Atacks -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'self'; child-src 'none';"> -->
     <link rel="icon" href="../img/movie-icon 2.png" type="image/ico">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/bootstrap.css">
@@ -40,8 +38,8 @@
         <div class="chat">
             <div id="sidebar" class="chat__sidebar">
                 <h2 class="room-title"></h2>
-                <h3 class="list-title">User: <b><span id="chatUsername"></span></b></h3>
-                <h3 class="list-title">List of users:</h3>
+                <h3 class="list-title">Current User: <b><span id="chatUsername"></span></b></h3>
+                <h3 class="list-title">Participants:</h3>
                 <ul id="usersList" class="users"></ul>
             </div>
             <div class="chat__main">
