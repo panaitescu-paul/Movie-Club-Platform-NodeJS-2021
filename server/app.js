@@ -25,6 +25,12 @@ app.use(session({
     resave: false
 }));
 
+// ******************************************************
+// ***                                                ***
+// ***                 SOCKET IO Server               ***
+// ***                                                ***
+// ******************************************************
+
 // chat socket io connection
 io.on('connection', (socket) => {
     console.log("New WebSocket connection");
@@ -51,6 +57,12 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
 });
+
+// ******************************************************
+// ***                                                ***
+// ***                  For SESSIONS                  ***
+// ***                                                ***
+// ******************************************************
 
 // endpoint that is called when a member successfully manage to login and creates the member session
 app.post('/login/member',(req,res) => {
