@@ -325,6 +325,12 @@ function ratingStarsSelection() {
     executeRating(ratingStars, ratingResult);
 }
 
+// ******************************************************
+// ***                                                ***
+// ***               Community Chat                   ***
+// ***                                                ***
+// ******************************************************
+
 // function that handles the chat functionality
 function chatMessages(roomId, userId) {
     const socket = io();
