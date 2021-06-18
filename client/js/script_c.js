@@ -1446,6 +1446,12 @@ function showAdmins(data) {
     });
 }
 
+// ******************************************************
+// ***                                                ***
+// ***            Community Functionality             ***
+// ***                                                ***
+// ******************************************************
+
 // Show all Rooms in a List
 function showAllRooms() {
     $.ajax({
