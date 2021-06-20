@@ -754,7 +754,9 @@ $(document).ready(function() {
                         </p>
                         <p>
                             <span class="tag">TrailerLink</span>
-                            <span class="tag-info">${data.trailerLink}</span>
+                            <span class="tag-info">
+                                <a href="${data.trailerLink}" target="_blank">${data.trailerLink}</a>
+                            </span>
                         </p>
                         <p>
                             <span class="tag">RelseaseDate</span>
