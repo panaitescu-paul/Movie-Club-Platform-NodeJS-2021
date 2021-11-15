@@ -331,6 +331,10 @@ body {
     padding-bottom: 15px;
 }
 
+.modal-box .card-actions {
+    margin-bottom: 10px;
+}
+
 /* Modal Buttons */
 .modal-actions {
     width: 100%;
@@ -423,6 +427,7 @@ body {
 
 .rating {
     width: 500px;
+    margin: 10px 0px;
 }
 
 .rating__star {
@@ -614,6 +619,11 @@ body {
 }
 .crewInfo:hover {
     cursor: pointer;
-    border: 1px solid #107df5;
+    border: 1px solid transparent;
     background-color: rgba(16, 125, 245, 0.1);
+}
+
+.room-title1 {
+    margin-top: 30px !important;
+    margin-bottom: 10px !important;
 }

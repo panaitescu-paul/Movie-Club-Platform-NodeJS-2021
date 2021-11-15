@@ -1433,7 +1433,7 @@ function showAdmins(data) {
                     <h5 class="card-title">${admin.username}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Created at: </b>${formatDateTime(admin.createdAt)}</li>
+                    <li class="list-group-item"><b>Created on: </b>${formatDate(admin.createdAt)}</li>
                 </ul>
                 <div class="card-actions">
                     <button data-id="${admin.id}" type="button" class="btn btn-success
@@ -1488,11 +1488,11 @@ function showRooms(data) {
                     <h5 class="card-title">${room.name}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Created at: </b>${formatDateTime(room.createdAt)}</li>
+                    <li class="list-group-item"><b>Created on: </b>${formatDate(room.createdAt)}</li>
                 </ul>
                 <div class="card-actions">
                     <button data-id="${room.id}" type="button" class="btn btn-warning
-                            btnShow roomInfo">Open Chat Room</button>
+                            btnShow roomInfo">Open Room</button>
                     <button data-id="${room.id}" type="button" class="btn btn-success
                             btnShow roomUpdate" data-toggle="modal" data-target="#modal">Update</button>
                     <button data-id="${room.id}" type="button" class="btn btn-danger
@@ -1507,11 +1507,11 @@ function showRooms(data) {
                     <h5 class="card-title">${room.name}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Created at: </b>${formatDateTime(room.createdAt)}</li>
+                    <li class="list-group-item"><b>Created on: </b>${formatDate(room.createdAt)}</li>
                 </ul>
                 <div class="card-actions">
                     <button data-id="${room.id}" type="button" class="btn btn-warning
-                            btnShow roomInfo">Open Chat Room</button>
+                            btnShow roomInfo">Open Room</button>
                 </div>
             </div>
         `);
